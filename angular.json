@@ -2,13 +2,18 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "9d18b3bb-ca70-4701-8840-89c6145b1f19"
   },
   "newProjectRoot": "projects",
   "projects": {
     "ProjetoWEBII": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+          "@schematics/angular:component": {
+            "style": "css"
+          }
+        },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
