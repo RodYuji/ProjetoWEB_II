@@ -1,11 +1,11 @@
-<main>
-    <section class="titulo-cliente">
+<main class="container">
+    <section class="titulo-cliente mb-4">
         <h1>Bem-vindo Gabriel!</h1>
         <p>Acompanhe suas solicitações!</p>
     </section>
 
     <section class="nova-solicitacao">
-        <button class="btn-solicitacao">Nova Solicitação +</button>
+        <button class="btn btn-secondary bt-2">Nova Solicitação +</button>
     </section>
 
     <section class="minhas-solicitacoes">
@@ -19,21 +19,17 @@
                 <option value="concluida">Concluídas</option>
             </select>
         </div>
-        <div class="solicitacao">
-            <h3>Notebook não liga</h3>
-            <p>Equipamento: Notebook Dell</p>
-            <p>Data: 18/08/2026</p>
-            <span>Aberta</span>
-            <button class="btn-detalhes">-- Ver detalhes --</button>
-        </div>
-    
-    <!-- COMPONENTIZAR ISSO -->
-        <div class="solicitacao">
-            <h3>Impressora com problema</h3>
-            <p>Equipamento: Impressora HP</p>
-            <p>Data: 19/08/2026</p>
-            <span>Em andamento</span>
-            <button class="btn-detalhes">-- Ver detalhes --</button>
-        </div>
+        <app-solicitacao-card 
+            titulo="Notebook não liga" 
+            equipamento="Notebook Dell" 
+            data="18/08/2026" 
+            status="Aberta">
+        </app-solicitacao-card>
+        <app-solicitacao-card 
+            titulo="Impressora com problema" 
+            equipamento="Impressora HP" 
+            data="19/08/2026" 
+            status="Em andamento">
+        </app-solicitacao-card>
     </section>
 </main>
