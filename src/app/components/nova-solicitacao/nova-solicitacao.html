@@ -1,0 +1,30 @@
+<h2>Nova Solicitação de Manutenção</h2>
+
+<form action="#" method="post">
+  <p>
+    <label for="descricaoEquipamento">Descrição do equipamento:</label><br>
+    <input type="text" id="descricaoEquipamento" name="descricaoEquipamento" placeholder="Ex: Notebook Dell Inspiron">
+  </p>
+
+  <p>
+    <label for="categoria">Categoria do equipamento:</label><br>
+    <!-- aqui deve puxar categorias do banco de dados -->
+    <select id="categoria" name="categoria">
+      <option value="" disabled selected>Selecione...</option>
+      <option value="notebook">Notebook</option>
+      <option value="desktop">Desktop</option>
+      <option value="impressora">Impressora</option>
+      <option value="mouse">Mouse</option>
+      <option value="teclado">Teclado</option>
+    </select>
+  </p>
+
+  <p>
+    <label for="descricaoDefeito">Descrição do defeito:</label><br>
+    <textarea id="descricaoDefeito" name="descricaoDefeito" rows="4" placeholder="Descreva o problema apresentado"></textarea>
+  </p>
+
+  <p>
+    <button type="submit">Registrar Solicitação</button>
+  </p>
+</form>
