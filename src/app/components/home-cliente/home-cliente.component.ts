@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import {SolicitacaoCard} from "./solicitacao-card/solicitacao-card";
 
 @Component({
   selector: 'app-home-cliente',
-  imports: [],
+  imports: [SolicitacaoCard],
   templateUrl: './home-cliente.component.html',
   styleUrl: './home-cliente.component.css',
 })
