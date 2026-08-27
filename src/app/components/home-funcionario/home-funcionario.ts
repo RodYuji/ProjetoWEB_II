@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { SolicitacaoCard } from '../solicitacao-card/solicitacao-card';
 
-interface SolicitacaoAberta {
+export interface SolicitacaoAberta {
   data: string;
   hora: string;
   nomeCliente: string;
@@ -9,7 +10,7 @@ interface SolicitacaoAberta {
 
 @Component({
   selector: 'app-home-funcionario',
-  imports: [],
+  imports: [SolicitacaoCard],
   templateUrl: './home-funcionario.html',
   styleUrl: './home-funcionario.css',
 })
@@ -21,6 +22,12 @@ export class HomeFuncionario {
       hora: '15:06',
       nomeCliente: 'Jose',
       descricao: 'Concerto de computador'
+    },
+    {
+      data: '23/07/2026',
+      hora: '18:59',
+      nomeCliente: 'Arthur',
+      descricao: 'Concerto de notebook, placa'
     }
   ]
 }
