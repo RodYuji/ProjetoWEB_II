@@ -4,6 +4,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AutocadastroComponent } from './components/autocadastro/autocadastro.component';
 import { HomeFuncionario } from './components/home-funcionario/home-funcionario';
 import { EfetuarOrcamento } from './components/efetuar-orcamento/efetuar-orcamento';
+import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
 
 export const routes: Routes = [
   { path: '', component: HomeClienteComponent },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'autocadastro', component: AutocadastroComponent },
   { path: 'home-funcionario', component: HomeFuncionario },
   { path: 'efetuar-orcamento', component: EfetuarOrcamento },
+  { path: 'nova-solicitacao', component: NovaSolicitacao },
   { path: '**', redirectTo: '' },
 ];
