@@ -1,9 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { SolicitacaoAberta } from '../home-funcionario/home-funcionario'
+import { SolicitacaoAberta } from '../home-funcionario';
+import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-solicitacao-card',
-  imports: [],
+  imports: [TruncarTextoPipe, RouterLink],
   templateUrl: './solicitacao-card.html',
   styleUrl: './solicitacao-card.css',
 })
