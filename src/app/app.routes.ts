@@ -11,7 +11,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'autocadastro', component: AutocadastroComponent },
   { path: 'home-funcionario', component: HomeFuncionario },
-  { path: 'efetuar-orcamento', component: EfetuarOrcamento },
+  { path: 'efetuar-orcamento/:id', component: EfetuarOrcamento },
   { path: 'nova-solicitacao', component: NovaSolicitacao },
   { path: '**', redirectTo: '' },
 ];
