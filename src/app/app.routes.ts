@@ -5,6 +5,7 @@ import { AutocadastroComponent } from './components/autocadastro/autocadastro.co
 import { HomeFuncionario } from './components/home-funcionario/home-funcionario';
 import { EfetuarOrcamento } from './components/efetuar-orcamento/efetuar-orcamento';
 import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
+import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manutencao';
 
 export const routes: Routes = [
   { path: '', component: HomeClienteComponent },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'home-funcionario', component: HomeFuncionario },
   { path: 'efetuar-orcamento/:id', component: EfetuarOrcamento },
   { path: 'nova-solicitacao', component: NovaSolicitacao },
+  { path: 'efetuar-manutencao/:id', component: EfetuarManutencao },
   { path: '**', redirectTo: '' },
 ];
