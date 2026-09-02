@@ -1,0 +1,13 @@
+.card {
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.btn-orcamento {
+    display: block;
+    margin: 16px auto 0;
+    padding: 8px;
+    border-radius: 5px;
+}
