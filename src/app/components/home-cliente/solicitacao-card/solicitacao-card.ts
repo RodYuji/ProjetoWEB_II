@@ -1,4 +1,4 @@
-import { Component, input, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-solicitacao-card',
@@ -11,9 +11,12 @@ export class SolicitacaoCard {
   @Input() equipamento = '';
   @Input() data = '';
   @Input() status = '';
+  @Input() hora = '';
+
+ @Output() detalhes = new EventEmitter<void>();
 
   verDetalhes() {
     // Lógica para exibir os detalhes da solicitação
-    console.log('Exibindo detalhes da solicitação:', this.titulo);
+    this.detalhes.emit();
   }
 }
