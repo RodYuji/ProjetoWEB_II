@@ -1,11 +1,11 @@
 <main class="container">
     <section class="titulo-cliente mb-4">
-        <h1>Bem-vindo Gabriel!</h1>
+        <h1>Bem-vindo!!</h1>
         <p>Acompanhe suas solicitações!</p>
     </section>
 
     <section class="nova-solicitacao">
-        <button class="btn btn-secondary bt-2">Nova Solicitação +</button>
+        <button class="btn btn-secondary mt-2">Nova Solicitação +</button>
     </section>
 
     <section class="minhas-solicitacoes">
@@ -19,17 +19,15 @@
                 <option value="concluida">Concluídas</option>
             </select>
         </div>
-        <app-solicitacao-card 
-            titulo="Notebook não liga" 
-            equipamento="Notebook Dell" 
-            data="18/08/2026" 
-            status="Aberta">
-        </app-solicitacao-card>
-        <app-solicitacao-card 
-            titulo="Impressora com problema" 
-            equipamento="Impressora HP" 
-            data="19/08/2026" 
-            status="Em andamento">
-        </app-solicitacao-card>
+        @for (solicitacao of solicitacoes; track solicitacao) {
+            <app-solicitacao-card
+                [titulo]="solicitacao.descricao"
+                [equipamento]="solicitacao.equipamento"
+                [data]="solicitacao.data"
+                [hora]="solicitacao.hora"
+                [status]="solicitacao.status"
+                (detalhes)="verDetalhes(solicitacao)">
+            </app-solicitacao-card>
+        }
     </section>
 </main>
