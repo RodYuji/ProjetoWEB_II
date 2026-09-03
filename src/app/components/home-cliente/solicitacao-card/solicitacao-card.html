@@ -1,0 +1,22 @@
+<div class="solicitacao">
+    <h3>{{ titulo }}</h3>
+    <p>{{ equipamento }}</p>
+    <p>Data: {{ data }}</p>
+    <p>Hora: {{ hora }}</p>
+    <span>{{ status }}</span>
+    <button class="btn-detalhes" (click)="verDetalhes()">
+    -- Ver detalhes --
+    </button>
+    @if (status === 'ORÇADA') {
+    <button>Aprovar</button>
+    <button>Rejeitar</button>
+}
+
+@if (status === 'REJEITADA') {
+    <button>Resgatar Serviço</button>
+}
+
+@if (status === 'ARRUMADA') {
+    <button>Pagar Serviço</button>
+}
+</div>

@@ -1,27 +1,14 @@
-import { Component } from '@angular/core';
-
-interface SolicitacaoAberta {
-  data: string;
-  hora: string;
-  nomeCliente: string;
-  descricao: string;
-}
+import { Component, inject } from '@angular/core';
+import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
+import { Solicitacao } from '../../shared/services/solicitacao';
 
 @Component({
   selector: 'app-home-funcionario',
-  imports: [],
+  imports: [SolicitacaoCard],
   templateUrl: './home-funcionario.html',
   styleUrl: './home-funcionario.css',
 })
-
 export class HomeFuncionario {
-  solicitacoesAbertas: SolicitacaoAberta[] = [
-    {
-      data: '01/08/2026',
-      hora: '15:06',
-      nomeCliente: 'Jose',
-      descricao: 'Concerto de computador'
-    }
-  ]
+  private solicitacaoService = inject(Solicitacao);
+  solicitacoesAbertas = this.solicitacaoService.listarAbertas();
 }
-

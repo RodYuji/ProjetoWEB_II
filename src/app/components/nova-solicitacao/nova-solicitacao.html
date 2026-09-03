@@ -1,0 +1,66 @@
+<h1>Nova Solicitação de Manutenção</h1>
+
+<p>Registre o equipamento e o defeito para que a empresa possa apresentar um orçamento.</p>
+
+<form (ngSubmit)="registrarSolicitacao()" #solicitacaoForm="ngForm">
+  <p>
+    <label for="descricaoEquipamento">Descrição do equipamento:</label><br>
+    <input
+      type="text"
+      id="descricaoEquipamento"
+      name="descricaoEquipamento"
+      [(ngModel)]="descricaoEquipamento"
+      required
+      maxlength="150"
+      placeholder="Ex: Notebook Dell Inspiron"
+    >
+  </p>
+
+  <p>
+    <label for="categoriaEquipamento">Categoria do equipamento:</label><br>
+    <select
+      id="categoriaEquipamento"
+      name="categoriaEquipamento"
+      [(ngModel)]="categoriaEquipamento"
+      required
+    >
+      <option value="" disabled>Selecione uma categoria</option>
+      @for (categoria of categorias; track categoria) {
+        <option [value]="categoria">{{ categoria }}</option>
+      }
+    </select>
+  </p>
+
+  <p>
+    <label for="descricaoDefeito">Descrição do defeito:</label><br>
+    <textarea
+      id="descricaoDefeito"
+      name="descricaoDefeito"
+      [(ngModel)]="descricaoDefeito"
+      required
+      maxlength="500"
+      rows="6"
+      placeholder="Descreva o problema apresentado"
+    ></textarea>
+  </p>
+
+  @if (mensagemErro) {
+    <p role="alert">{{ mensagemErro }}</p>
+  }
+
+  <p>
+    <button type="submit" [disabled]="solicitacaoForm.invalid">Registrar Solicitação</button>
+    <button type="button" (click)="limparFormulario()">Limpar</button>
+  </p>
+</form>
+
+@if (solicitacaoRegistrada; as solicitacao) {
+  <section aria-live="polite">
+    <h2>Solicitação registrada</h2>
+    <p><strong>Estado:</strong> {{ solicitacao.estado }}</p>
+    <p><strong>Data e hora:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+    <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
+    <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+    <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
+  </section>
+}

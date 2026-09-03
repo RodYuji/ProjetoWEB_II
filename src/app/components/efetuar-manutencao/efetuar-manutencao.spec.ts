@@ -1,16 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HomeFuncionario } from './home-funcionario';
 
-describe('HomeFuncionario', () => {
-  let component: HomeFuncionario;
-  let fixture: ComponentFixture<HomeFuncionario>;
+import { EfetuarManutencao } from './efetuar-manutencao';
+
+describe('EfetuarManutencao', () => {
+  let component: EfetuarManutencao;
+  let fixture: ComponentFixture<EfetuarManutencao>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeFuncionario],
+      imports: [EfetuarManutencao],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HomeFuncionario);
+    fixture = TestBed.createComponent(EfetuarManutencao);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

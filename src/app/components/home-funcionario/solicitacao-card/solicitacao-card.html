@@ -1,0 +1,9 @@
+<div class="card">
+    <p>CARD TESTES</p>
+    <h3>Detalhes da solicitação</h3>
+    <p>Data: {{ solicitacao.data }} </p>
+    <p>Hora: {{ solicitacao.hora }}</p>
+    <p>Autor: {{ solicitacao.nomeCliente }}</p>
+    <p>Descrição: {{ solicitacao.descricao | truncarTexto }}</p>
+    <input type="button" class="btn btn-secondary mt-2" routerLink="/efetuar-orcamento/{{ solicitacao.id }}" value="Efetuar orçamento"/>
+</div>

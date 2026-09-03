@@ -1,11 +1,11 @@
-<main>
-    <section class="titulo-cliente">
-        <h1>Bem-vindo Gabriel!</h1>
+<main class="container">
+    <section class="titulo-cliente mb-4">
+        <h1>Bem-vindo!!</h1>
         <p>Acompanhe suas solicitações!</p>
     </section>
 
     <section class="nova-solicitacao">
-        <button class="btn-solicitacao">Nova Solicitação +</button>
+        <input type="button" class="btn btn-secondary mt-2" routerLink="/nova-solicitacao" value="Nova Solicitação +"/>
     </section>
 
     <section class="minhas-solicitacoes">
@@ -19,21 +19,15 @@
                 <option value="concluida">Concluídas</option>
             </select>
         </div>
-        <div class="solicitacao">
-            <h3>Notebook não liga</h3>
-            <p>Equipamento: Notebook Dell</p>
-            <p>Data: 18/08/2026</p>
-            <span>Aberta</span>
-            <button class="btn-detalhes">-- Ver detalhes --</button>
-        </div>
-    
-    <!-- COMPONENTIZAR ISSO -->
-        <div class="solicitacao">
-            <h3>Impressora com problema</h3>
-            <p>Equipamento: Impressora HP</p>
-            <p>Data: 19/08/2026</p>
-            <span>Em andamento</span>
-            <button class="btn-detalhes">-- Ver detalhes --</button>
-        </div>
+        @for (solicitacao of solicitacoes; track solicitacao) {
+            <app-solicitacao-card
+                [titulo]="solicitacao.descricao"
+                [equipamento]="solicitacao.equipamento"
+                [data]="solicitacao.data"
+                [hora]="solicitacao.hora"
+                [status]="solicitacao.status"
+                (detalhes)="verDetalhes(solicitacao)">
+            </app-solicitacao-card>
+        }
     </section>
 </main>

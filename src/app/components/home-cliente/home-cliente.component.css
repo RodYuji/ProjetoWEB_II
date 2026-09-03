@@ -1,0 +1,115 @@
+main {
+    min-height: 100vh;
+    background-color: #F5F7FA;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.titulo-cliente {
+    background-color: #FFFFFF;
+    border-left: 5px solid #1E3A5F;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.titulo-cliente h1 {
+    color: #1E3A5F;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.titulo-cliente p {
+    color: #667085;
+    font-size: 16px;
+    margin: 0;
+}
+
+.nova-solicitacao {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 35px;
+}
+
+.btn-primary {
+    background-color: #1E3A5F;
+    border-color: #1E3A5F;
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 6px;
+}
+
+.btn-primary:hover {
+    background-color: #162E4A;
+    border-color: #162E4A;
+}
+
+.minhas-solicitacoes h2 {
+    color: #1E3A5F;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.filtro-solicitacoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.filtro-solicitacoes label {
+    color: #475467;
+    font-weight: 500;
+}
+
+.filtro-solicitacoes select {
+    border: 1px solid #D0D5DD;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background-color: #FFFFFF;
+    color: #344054;
+}
+
+.solicitacao {
+    background-color: #FFFFFF;
+    border: 1px solid #E4E7EC;
+    border-radius: 10px;
+    padding: 22px 25px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(16, 24, 40, 0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.solicitacao:hover {
+    box-shadow: 0 5px 14px rgba(16, 24, 40, 0.10);
+    transform: translateY(-2px);
+}
+
+.solicitacao h3 {
+    color: #1E3A5F;
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.solicitacao p {
+    color: #667085;
+    margin-bottom: 6px;
+}
+
+.btn-detalhes {
+    background-color: transparent;
+    border: 1px solid #3A6EA5;
+    color: #3A6EA5;
+    padding: 7px 14px;
+    border-radius: 6px;
+    margin-left: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-detalhes:hover {
+    background-color: #3A6EA5;
+    color: #FFFFFF;
+}
