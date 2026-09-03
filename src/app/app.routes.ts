@@ -9,9 +9,9 @@ import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manut
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
 
 export const routes: Routes = [
-  { path: '', component: HomeClienteComponent },
+  { path: 'home-cliente', component: HomeClienteComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'autocadastro', component: AutocadastroComponent },
+  { path: '', component: AutocadastroComponent },
   { path: 'home-funcionario', component: HomeFuncionario },
   { path: 'efetuar-orcamento/:id', component: EfetuarOrcamento },
   { path: 'nova-solicitacao', component: NovaSolicitacao },

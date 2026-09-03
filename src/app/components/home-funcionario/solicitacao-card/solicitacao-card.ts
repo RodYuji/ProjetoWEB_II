@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SolicitacaoAberta } from '../home-funcionario';
+import { SolicitacaoAberta } from '../../../shared/services/solicitacao';
 import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { RouterLink } from "@angular/router";
 
