@@ -1,21 +1,21 @@
-<h2>Login</h2>
+<div class="mt-5 mb-3 container card" style="width: 30rem; background-color: #234677; color: white;">
+  <h1 class="mt-3 mb-3 align-self-center">Olá novamente!</h1>
+  <div class="d-flex align-items-center justify-content-center">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3 input-group">
+        <span class="input-group-text">E-mail:</span>
+        <input type="email" formControlName="email" placeholder="seu@email.com" class="form-control">
+      </div>
 
-<form action="#" method="post">
-  <p>
-    <label for="email">E-mail:</label><br>
-    <input type="email" id="email" name="email" placeholder="seu@email.com">
-  </p>
+      <div class="mb-3 input-group">
+        <span class="input-group-text">Senha:</span>
+        <input type="password" formControlName="password" placeholder="Sua senha" class="form-control">
+      </div>
 
-  <p>
-    <label for="senha">Senha:</label><br>
-    <input type="password" id="senha" name="senha" placeholder="digite sua senha">
-  </p>
-
-  <p>
-    <button type="submit">Entrar</button>
-  </p>
-</form>
-
-<p>
-  <a href="#">Esqueci minha senha</a>
-</p>
+      <div class="mt-5 mb-3 d-flex flex-column align-items-center justify-content-center">
+        <input type="submit" class="btn btn-light mb-3" value="Entrar"/>
+        <a routerLink="/recuperar-senha" class="text-light">Esqueci minha senha</a>
+      </div>
+    </form>
+  </div>
+</div>
