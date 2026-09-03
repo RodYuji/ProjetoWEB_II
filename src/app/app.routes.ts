@@ -8,6 +8,7 @@ import { VisualizarSolicitacao } from './components/visualizar-solicitacao/visua
 import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
 import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manutencao';
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
+import { PagarServico } from './components/home-cliente/pagar-servico/pagar-servico';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },
@@ -20,5 +21,6 @@ export const routes: Routes = [
   { path: 'nova-solicitacao', component: NovaSolicitacao },
   { path: 'efetuar-manutencao/:id', component: EfetuarManutencao },
   { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
+  { path: 'pagar-servico/:id', component: PagarServico },
   { path: '**', redirectTo: '' },
 ];
