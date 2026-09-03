@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import {SolicitacaoCard} from "./solicitacao-card/solicitacao-card";
 import { Router } from '@angular/router';
 import { SolicitacaoService } from '../../services/solicitacao.service';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-home-cliente',
-  imports: [SolicitacaoCard],
+  imports: [SolicitacaoCard, RouterLink],
   templateUrl: './home-cliente.component.html',
   styleUrl: './home-cliente.component.css',
 })

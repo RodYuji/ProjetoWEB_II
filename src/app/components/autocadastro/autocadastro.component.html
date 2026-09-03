@@ -1,34 +1,35 @@
-<h1>Seja Bem-vindo!</h1>
+<div class="mt-5 mb-3 container card" style="width: 30rem; background-color: #234677; color: white;">
+  <h1 class="mt-3 mb-3 align-self-center">Seja Bem-vindo!</h1>
+  <div class="d-flex align-items-center justify-content-center">
+    <form action="#" method="post">
+    <div class="mt-3 input-group mb-3">
+      <span class="input-group-text">Olá,</span>
+      <input type="text" class="form-control" placeholder="Seu nome">
+    </div>
+      <div class="mb-3 input-group">
+        <span class="input-group-text">CPF:</span>
+        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" class="form-control">
+      </div>
+      <div class="mb-3 input-group">
+        <span class="input-group-text">E-mail:</span>
+        <input type="email" id="email" name="email" placeholder="seu@email.com" class="form-control">
+      </div>
 
-<h2>Autocadastro</h2>
+      <div class="mb-3 input-group">
+        <span class="input-group-text">Telefone:</span>
+        <input type="text" id="telefone" name="telefone" placeholder="(00) 0000-0000" class="form-control">
+      </div>
+      <div class="mb-3 input-group">
+        <span class="input-group-text">CEP:</span>
+        <input type="text" id="cep" name="cep" placeholder="00000-000" class="form-control">
+      </div>
+    
+      <div class="mt-5 mb-3 d-flex flex-column align-items-center justify-content-center">
+        <button type="submit" class="btn btn-light mb-3">Gerar senha</button>
+        <a href="/login" class="text-light">Já tenho cadastro</a>
+      </div>
 
+    </form>
+  </div>
+</div>
 
-<form action="#" method="post">
-  <p>
-    <label for="Nome">Nome:</label><br>
-    <input type="text" id="Nome" name="Nome" placeholder="seu nome">
-  </p>
-
-  <p>
-    <label for="email">E-mail:</label><br>
-    <input type="email" id="email" name="email" placeholder="seu@email.com">
-  </p>
-
-  <p>
-    <label for="senha">Senha:</label><br>
-    <input type="password" id="senha" name="senha" placeholder="digite sua senha">
-  </p>
-
-  <p>
-    <label for="telefone">Telefone:</label><br>
-    <input type="text" id="telefone" name="telefone" placeholder="(00) 0000-0000">
-  </p>
-
-  <p>
-    <button type="submit">Entrar</button>
-  </p>
-</form>
-
-<p>
-  <a href="#">Esqueci minha senha</a>
-</p>
