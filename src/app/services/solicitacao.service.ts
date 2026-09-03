@@ -43,7 +43,10 @@ solicitacoes = [
     defeito: 'não inicia',
     data: '21/08/2026',
     hora: '16:45',
-    status: 'ARRUMADA'
+    status: 'ARRUMADA',
+    valor: 250.00,
+    dataPagamento: null,
+    horaPagamento: null
   }
   ];
 }
