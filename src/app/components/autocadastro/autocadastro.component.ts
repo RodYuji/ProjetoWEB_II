@@ -7,4 +7,6 @@ import { RouterLink } from "@angular/router";
   templateUrl: './autocadastro.component.html',
   styleUrl: './autocadastro.component.css',
 })
-export class AutocadastroComponent {}
+export class AutocadastroComponent {
+  
+}

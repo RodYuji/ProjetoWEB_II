@@ -8,8 +8,8 @@ import { Router } from '@angular/router';
   styleUrl: './solicitacao-card.css',
 })
 export class SolicitacaoCard {
-  @Input() titulo = '';
-  @Input() equipamento = '';
+  @Input() descricaoEquipamento = '';
+  @Input() descricaoDefeito = '';
   @Input() data = '';
   @Input() status = '';
   @Input() hora = '';

@@ -1,52 +1,60 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { SolicitacaoManutencao } from '../models/solicitacao.model';
+
+const STORAGE_KEY = 'solicitacoes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitacaoService {
-solicitacoes = [
-    {
-      id: 1,
-      descricao: 'notebook dell nao liga',
-      equipamento: 'notebook dell',
-      categoria: 'notebook',
-      defeito: 'nao liga',
-      data: '2023-06-01',
-      hora: '14:30',
-      status: 'ABERTA',
-    },
-     {
-      id: 2,
-    descricao: 'Impressora com problema',
-    equipamento: 'Impressora HP',
-    categoria: 'impressora',
-    defeito: 'problema',
-    data: '19/08/2026',
-    hora: '10:00',
-    status: 'ORÇADA'
-  },
-  {
-    id: 3,
-    descricao: 'Monitor com tela quebrada',
-    equipamento: 'Monitor Samsung',
-    categoria: 'monitor',
-    defeito: 'tela quebrada',
-    data: '20/08/2026',
-    hora: '09:15',
-    status: 'REJEITADA'
-  },
-  {
-    id: 4,
-    descricao: 'Computador não inicia',
-    equipamento: 'Desktop Dell',
-    categoria: 'computador',
-    defeito: 'não inicia',
-    data: '21/08/2026',
-    hora: '16:45',
-    status: 'ARRUMADA',
-    valor: 250.00,
-    dataPagamento: null,
-    horaPagamento: null
+  private proximoId = 1;
+  solicitacoes: SolicitacaoManutencao[] = [];
+  private isBrowser: boolean;
+
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
+    if (this.isBrowser) {
+      this.carregarDoStorage();
+    }
   }
-  ];
+
+  listar(): SolicitacaoManutencao[] {
+    return this.solicitacoes;
+  }
+
+  buscarPorId(id: number): SolicitacaoManutencao | undefined {
+    return this.solicitacoes.find(s => s.id === id);
+  }
+
+  adicionarSolicitacao(dados: Omit<SolicitacaoManutencao, 'id'>): SolicitacaoManutencao {
+    const novaSolicitacao: SolicitacaoManutencao = {
+      id: this.proximoId++,
+      descricaoEquipamento: dados.descricaoEquipamento,
+      estado: dados.estado,
+      dataHora: dados.dataHora,
+      categoriaEquipamento: dados.categoriaEquipamento,
+      descricaoDefeito: dados.descricaoDefeito      
+    };
+    this.solicitacoes.push(novaSolicitacao);
+    this.salvarNoStorage();
+    return novaSolicitacao;
+  }
+
+  private salvarNoStorage(): void {
+    if (!this.isBrowser) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.solicitacoes));
+  }
+
+  private carregarDoStorage(): void {
+    const dados = localStorage.getItem(STORAGE_KEY);
+    if (!dados) return;
+
+    this.solicitacoes = JSON.parse(dados).map((s: SolicitacaoManutencao) => ({
+      ...s,
+      dataHora: new Date(s.dataHora),
+    }));
+
+    this.proximoId = this.solicitacoes.reduce((max, s) => Math.max(max, s.id), 0) + 1;
+  }
 }

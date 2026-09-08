@@ -19,16 +19,16 @@
                 <option value="concluida">Concluídas</option>
             </select>
         </div>
-        @for (solicitacao of solicitacoes; track solicitacao) {
+            @for (solicitacao of solicitacoes; track solicitacao.id) {
             <app-solicitacao-card
-                [titulo]="solicitacao.descricao"
-                [equipamento]="solicitacao.equipamento"
-                [data]="solicitacao.data"
-                [hora]="solicitacao.hora"
-                [status]="solicitacao.status"
                 [solicitacaoId]="solicitacao.id"
-                (detalhes)="verDetalhes(solicitacao)">
-            </app-solicitacao-card>
-        }
+                [descricaoEquipamento]="solicitacao.descricaoEquipamento"
+                [descricaoDefeito]="solicitacao.descricaoDefeito"
+                [status]="solicitacao.estado"
+                [data]="(solicitacao.dataHora | date:'dd/MM/yyyy') ?? 'N/A'"
+                [hora]="(solicitacao.dataHora | date:'HH:mm') ?? 'N/A'"
+                (detalhes)="verDetalhes(solicitacao)"
+            />
+            }
     </section>
 </main>
