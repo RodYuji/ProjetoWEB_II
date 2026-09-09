@@ -5,8 +5,5 @@
     <p>Hora: {{ solicitacao.hora }}</p>
     <p>Autor: {{ solicitacao.nomeCliente }}</p>
     <p>Descrição: {{ solicitacao.descricao | truncarTexto }}</p>
-    <a href="#" title="Efetuar orçamento" class="btn-orcamento"
-       [routerLink]="['/efetuar-orcamento', solicitacao.id]">
-       Efetuar orçamento
-    </a>
+    <input type="button" class="btn btn-secondary mt-2" routerLink="/efetuar-orcamento/{{ solicitacao.id }}" value="Efetuar orçamento"/>
 </div>

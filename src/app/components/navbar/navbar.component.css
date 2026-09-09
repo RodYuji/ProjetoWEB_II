@@ -3,17 +3,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 2rem;
-  background-color: #1f2937;
+  padding: 0.5rem 2rem;
+  background-color: #234677;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 2.125rem;
 }
 
 .navbar a {
   color: #ffffff;
   text-decoration: none;
-}
-
-.navbar-brand {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .navbar-links {

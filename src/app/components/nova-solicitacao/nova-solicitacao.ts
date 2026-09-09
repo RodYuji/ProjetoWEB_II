@@ -1,23 +1,16 @@
-import { Component } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-export type EstadoSolicitacao = 'ABERTA';
-
-export interface SolicitacaoManutencao {
-  descricaoEquipamento: string;
-  categoriaEquipamento: string;
-  descricaoDefeito: string;
-  dataHora: Date;
-  estado: EstadoSolicitacao;
-}
+import { SolicitacaoService } from '../../services/solicitacao.service';
+import { SolicitacaoManutencao } from '../../models/solicitacao.model';
 
 @Component({
   selector: 'app-nova-solicitacao',
-  imports: [DatePipe, FormsModule],
+  imports: [FormsModule],
   templateUrl: './nova-solicitacao.html',
 })
 export class NovaSolicitacao {
+  private solicitacaoService = inject(SolicitacaoService);
+
   descricaoEquipamento = '';
   categoriaEquipamento = '';
   descricaoDefeito = '';
@@ -40,14 +33,17 @@ export class NovaSolicitacao {
       return;
     }
 
-    this.solicitacaoRegistrada = {
+    const solicitacaoCriada = this.solicitacaoService.adicionarSolicitacao({
       descricaoEquipamento: this.descricaoEquipamento.trim(),
       categoriaEquipamento: this.categoriaEquipamento,
       descricaoDefeito: this.descricaoDefeito.trim(),
       dataHora: new Date(),
       estado: 'ABERTA',
-    };
+    });
+
+    this.solicitacaoRegistrada = solicitacaoCriada;
     this.mensagemErro = '';
+    console.log('Solicitação registrada:', solicitacaoCriada);
   }
 
   limparFormulario(): void {

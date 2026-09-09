@@ -1,0 +1,182 @@
+.pagar-servico-container {
+  min-height: 100vh;
+  background-color: #F5F7FA;
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.card-pagamento {
+  background-color: #FFFFFF;
+  border-left: 5px solid #1E3A5F;
+  padding: 30px 35px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.card-pagamento h1 {
+  color: #1E3A5F;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.dados-solicitacao {
+  margin-bottom: 40px;
+}
+
+.dados-solicitacao h2 {
+  color: #1E3A5F;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #E4E7EC;
+  padding-bottom: 12px;
+}
+
+.info-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F0F1F3;
+}
+
+.info-field label {
+  color: #475467;
+  font-weight: 600;
+  min-width: 140px;
+  font-size: 14px;
+}
+
+.info-field p {
+  color: #667085;
+  margin: 0;
+  text-align: right;
+  flex: 1;
+  font-size: 14px;
+}
+
+.valor-destaque {
+  background-color: #F0F4FF;
+  border: 2px solid #1E3A5F;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 25px;
+  text-align: center;
+}
+
+.valor-destaque label {
+  color: #475467;
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.valor-destaque .valor {
+  color: #1E3A5F;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.acoes-pagamento {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-pagar,
+.btn-cancelar {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-pagar {
+  background-color: #1E3A5F;
+  color: #FFFFFF;
+  flex: 1;
+}
+
+.btn-pagar:hover {
+  background-color: #162E4A;
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
+}
+
+.btn-cancelar {
+  background-color: #E4E7EC;
+  color: #344054;
+  flex: 1;
+}
+
+.btn-cancelar:hover {
+  background-color: #D0D5DD;
+}
+
+.sucesso-container {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.sucesso-icon {
+  width: 80px;
+  height: 80px;
+  background-color: #D1FADF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #12B26A;
+  margin: 0 auto 20px;
+}
+
+.sucesso-container h2 {
+  color: #1E3A5F;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.sucesso-container p {
+  color: #667085;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.info-sucesso {
+  background-color: #F0F4FF;
+  border: 1px solid #D0D9F1;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.info-sucesso p {
+  color: #475467;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.redirecionamento {
+  color: #667085;
+  font-size: 14px;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}

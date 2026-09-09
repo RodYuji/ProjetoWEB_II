@@ -1,0 +1,52 @@
+<div class="container pagar-servico-container">
+  <div class="card-pagamento">
+    <h1>Confirmação de Pagamento</h1>
+
+    @if (!pagamentoConfirmado) {
+      <section class="dados-solicitacao">
+        <h2>Detalhes da Solicitação</h2>
+        <div class="info-field">
+          <label>Descrição:</label>
+          <p>{{ solicitacao?.descricao }}</p>
+        </div>
+        <div class="info-field">
+          <label>Equipamento:</label>
+          <p>{{ solicitacao?.equipamento }}</p>
+        </div>
+        <div class="info-field">
+          <label>Categoria:</label>
+          <p>{{ solicitacao?.categoria }}</p>
+        </div>
+        <div class="info-field">
+          <label>Defeito:</label>
+          <p>{{ solicitacao?.defeito }}</p>
+        </div>
+        <div class="info-field">
+          <label>Data da Solicitação:</label>
+          <p>{{ solicitacao?.data }} às {{ solicitacao?.hora }}</p>
+        </div>
+        <div class="valor-destaque">
+          <label>Valor a Pagar:</label>
+          <p class="valor">R$ {{ solicitacao?.valor?.toFixed(2) }}</p> <!-- converte valor de pagamento -->
+        </div>
+      </section>
+      <section class="acoes-pagamento">
+        <button class="btn btn-primary btn-pagar" (click)="confirmarPagamento()"> Confirmar Pagamento </button>
+        <button class="btn btn-secondary btn-cancelar" (click)="redirecionarHome()"> Cancelar </button>
+      </section>
+
+    } @else {
+      <div class="sucesso-container">
+        <div class="sucesso-icon">✓</div>
+          <h2>Pagamento Confirmado.</h2>
+          <p>Pagamento registrado com sucesso.</p><br>
+          <p>Dados da transação: </p>
+        <div class="info-sucesso">
+          <p><strong>Data:</strong> {{ solicitacao?.dataPagamento }}</p>
+          <p><strong>Hora:</strong> {{ solicitacao?.horaPagamento }}</p>
+        </div>
+          <button class="btn btn-primary btn-home" (click)="redirecionarHome()"> Fechar </button>
+      </div>
+    }
+  </div>
+</div>

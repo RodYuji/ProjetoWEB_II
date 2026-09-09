@@ -53,14 +53,3 @@
     <button type="button" (click)="limparFormulario()">Limpar</button>
   </p>
 </form>
-
-@if (solicitacaoRegistrada; as solicitacao) {
-  <section aria-live="polite">
-    <h2>Solicitação registrada</h2>
-    <p><strong>Estado:</strong> {{ solicitacao.estado }}</p>
-    <p><strong>Data e hora:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
-    <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
-    <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
-    <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
-  </section>
-}

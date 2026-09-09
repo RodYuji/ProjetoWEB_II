@@ -1,6 +1,9 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+/*
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {faClock,faFileInvoiceDollar,faCircleCheck,faCircleXmark,faScrewdriverWrench,faMoneyCheckDollar} from '@fortawesome/free-solid-svg-icons';
+*/
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-solicitacao-card',
@@ -11,9 +14,12 @@ import {faClock,faFileInvoiceDollar,faCircleCheck,faCircleXmark,faScrewdriverWre
 export class SolicitacaoCard {
 
   @Input() equipamento = '';
+  @Input() descricaoEquipamento = ''; 
+  @Input() descricaoDefeito = '';
   @Input() data = '';
   @Input() status = '';
   @Input() hora = '';
+  @Input() solicitacaoId: number = 0;
 
   @Output() detalhes = new EventEmitter<void>();
   @Output() orcamento = new EventEmitter<void>();
@@ -32,14 +38,18 @@ verPagamento() {
   console.log('EVENTO PAGAMENTO EMITIDO');
 }
 
-  verOrcamento() {
+/*  verOrcamento() {
     // Lógica para exibir o orçamento da solicitação
     this.orcamento.emit();
   }
+ */
+  constructor(private router: Router) {}
+
   verDetalhes() {
     // Lógica para exibir os detalhes da solicitação
     this.detalhes.emit();
   }
+
   descricaoEquipamento(){
     if (this.equipamento.length > 30) {
       return this.equipamento.substring(0, 30) + '...';
@@ -51,5 +61,10 @@ verPagamento() {
       return 'Concluída - Aguardando Pagamento';
     }
     return this.status;
+  }
+}
+
+  pagarServico() {
+    this.router.navigate(['/pagar-servico', this.solicitacaoId]);
   }
 }
