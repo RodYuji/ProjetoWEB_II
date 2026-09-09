@@ -12,6 +12,14 @@ import { SolicitacaoManutencao } from '../../models/solicitacao.model';
   styleUrl: './home-cliente.component.css',
 })
 export class HomeClienteComponent {
+  /*filtroStatus = 'TODAS';
+  solicitacoes: any[] = [];
+  solicitacoesFiltradas: any[] = [];
+  constructor(private router: Router,private solicitacaoService: SolicitacaoService
+) {
+  this.solicitacoes = this.solicitacaoService.solicitacoes;
+  this.solicitacoesFiltradas = this.solicitacoes;
+  */
   private solicitacaoService = inject(SolicitacaoService);
   private router = inject(Router);
 
@@ -19,9 +27,31 @@ export class HomeClienteComponent {
 
   constructor() {
   console.log('Solicitações na Home:', this.solicitacoes);
+
 }
 
   verDetalhes(solicitacao: SolicitacaoManutencao): void {
     this.router.navigate(['/detalhes-solicitacao', solicitacao.id]);
+  }
+
+  verOrcamento(solicitacao: any) {
+    this.router.navigate(['/orcamento', solicitacao.id]);
+  }
+
+verPagamento(solicitacao: any) {
+  console.log('HOME RECEBEU O EVENTO');
+  console.log(solicitacao);
+
+  this.router.navigate(['/pagamento', solicitacao.id]);
+}
+
+  filtrarStatus(event: Event) {
+    const valorSelecionado = (event.target as HTMLSelectElement).value;
+
+    if(valorSelecionado === 'TODAS') {
+      this.solicitacoesFiltradas = this.solicitacoes;
+    } else {
+      this.solicitacoesFiltradas = this.solicitacoes.filter(solicitacao => solicitacao.status === valorSelecionado);
+    }
   }
 }

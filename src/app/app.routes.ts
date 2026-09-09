@@ -8,6 +8,8 @@ import { VisualizarSolicitacao } from './components/visualizar-solicitacao/visua
 import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
 import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manutencao';
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
+import { Orcamento } from './components/home-cliente/orcamento/orcamento';
+import { Pagamento } from './components/home-cliente/pagamento/pagamento';
 import { PagarServico } from './components/home-cliente/pagar-servico/pagar-servico';
 
 export const routes: Routes = [
@@ -21,6 +23,9 @@ export const routes: Routes = [
   { path: 'nova-solicitacao', component: NovaSolicitacao },
   { path: 'efetuar-manutencao/:id', component: EfetuarManutencao },
   { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
+  { path: 'orcamento/:id', component: Orcamento },
+  { path: 'pagamento/:id', component: Pagamento },
+  { path: '**', redirectTo: '' }
   { path: 'pagar-servico/:id', component: PagarServico },
   { path: '**', redirectTo: '' },
 ];

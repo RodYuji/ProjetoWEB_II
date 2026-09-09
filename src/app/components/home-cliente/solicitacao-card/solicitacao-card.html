@@ -1,3 +1,54 @@
+<!--              
+<div class="solicitacao">
+
+  <div class="icone-status">
+    @if (status === 'ABERTA') {
+      <fa-icon [icon]="faClock"></fa-icon>
+    }
+    @if (status === 'ORÇADA') {
+      <fa-icon [icon]="faFileInvoiceDollar"></fa-icon>
+    }
+    @if (status === 'APROVADA') {
+      <fa-icon [icon]="faCircleCheck"></fa-icon>
+    }
+    @if (status === 'REJEITADA') {
+      <fa-icon [icon]="faCircleXmark"></fa-icon>
+    }
+    @if (status === 'CONCLUÍDA') {
+      <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
+    }
+    @if (status === 'PAGA') {
+      <fa-icon [icon]="faMoneyCheckDollar"></fa-icon>
+    }
+  </div>
+  <h3>{{ descricaoEquipamento() }}</h3>
+  <p>Data: {{ data }}</p>
+  <p>Hora: {{ hora }}</p>
+  <span class="status">{{ textoStatus() }}</span>
+
+  @if (status === 'ORÇADA') {
+    <button class="btn-orcamento" (click)="verOrcamento()">
+      Ver orçamento
+    </button>
+
+  } @else {
+    <button class="btn-detalhes" (click)="verDetalhes()">
+      Ver detalhes
+    </button>
+  }
+
+  @if (status === 'REJEITADA') {
+    <button class="btn-resgatar">
+      Resgatar Serviço
+    </button>
+  }
+
+  @if (status === 'CONCLUÍDA') {
+  <button class="btn-pagar" (click)="verPagamento()">
+    Pagar Serviço
+  </button>
+}
+-->
 <div class="card mb-3 shadow-sm border-0" style="background-color: #1E3A5F; color: #F5F7FA;">
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-start mb-2">

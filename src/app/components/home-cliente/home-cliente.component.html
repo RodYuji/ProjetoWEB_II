@@ -12,13 +12,31 @@
         <h2>Minhas solicitações: </h2>
         <div class="filtro-solicitacoes">
             <label for="status">Filtrar por status:</label>
-            <select id="status">
-                <option value="todas">Todas</option>
-                <option value="aberta">Abertas</option>
-                <option value="andamento">Em andamento</option>
-                <option value="concluida">Concluídas</option>
+            <select id="status" (change)="filtrarStatus($event)">
+                <option value="TODAS">Todas</option>
+                <option value="ABERTA">Abertas</option>
+                <option value="ORÇADA">Orçadas</option>
+                <option value="APROVADA">Aprovadas</option>
+                <option value="REJEITADA">Rejeitadas</option>
+                <option value="CONCLUÍDA">Concluídas</option>
+                <option value="PAGA">Pagas</option>
             </select>
         </div>
+       <!--
+        <div class="solicitacoes-lista">
+        @for (solicitacao of solicitacoesFiltradas; track solicitacao) {
+            <app-solicitacao-card
+                [equipamento]="solicitacao.equipamento"
+                [data]="solicitacao.data"
+                [hora]="solicitacao.hora"
+                [status]="solicitacao.status"
+                (detalhes)="verDetalhes(solicitacao)"
+                (orcamento)="verOrcamento(solicitacao)"
+                (pagamento)="verPagamento(solicitacao)">
+            </app-solicitacao-card>
+        }
+        </div>
+      -->
             @for (solicitacao of solicitacoes; track solicitacao.id) {
             <app-solicitacao-card
                 [solicitacaoId]="solicitacao.id"
@@ -28,7 +46,9 @@
                 [data]="(solicitacao.dataHora | date:'dd/MM/yyyy') ?? 'N/A'"
                 [hora]="(solicitacao.dataHora | date:'HH:mm') ?? 'N/A'"
                 (detalhes)="verDetalhes(solicitacao)"
-            />
+                (orcamento)="verOrcamento(solicitacao)"
+                (pagamento)="verPagamento(solicitacao)">
+            /app-solicitacao-card>
             }
     </section>
 </main>

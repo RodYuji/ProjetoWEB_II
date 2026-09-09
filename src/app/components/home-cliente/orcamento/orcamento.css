@@ -1,0 +1,86 @@
+.pagina-orcamento {
+  min-height: 100vh;
+  background-color: #F5F7FA;
+  padding: 40px 20px;
+}
+
+.orcamento {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.orcamento h1 {
+  color: #040944;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.dados-solicitacao h2 {
+  color: #040944;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.dado {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #E4E7EC;
+}
+
+.dado strong {
+  color: #475467;
+}
+
+.dado span {
+  color: #101828;
+}
+
+.valor {
+  margin: 30px 0;
+  padding: 25px;
+  text-align: center;
+  background-color: #F5F7FA;
+  border-radius: 10px;
+}
+
+.valor p {
+  margin: 0 0 8px;
+  color: #667085;
+}
+
+.valor strong {
+  font-size: 32px;
+  color: #1E3A5F;
+}
+
+.acoes {
+  display: flex;
+  gap: 12px;
+}
+
+.acoes button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.btn-aprovar {
+  background-color: #198754;
+}
+
+.btn-rejeitar {
+  background-color: #dc3545;
+}
+
+.acoes button:hover {
+  opacity: 0.85;
+}

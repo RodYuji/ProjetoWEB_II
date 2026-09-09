@@ -1,0 +1,132 @@
+.solicitacao {
+  width: 300px;
+  min-height: 300px;
+  padding: 20px;
+
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.icone-status {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  background-color: #f1f1f1;
+
+  font-size: 30px;
+}
+
+.solicitacao h3 {
+  font-size: 25px;
+  margin: 4px 0 12px;
+}
+
+.solicitacao p {
+  margin: 3px 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.status {
+  margin: 14px 0;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btn-detalhes {
+  width: 100%;
+  padding: 10px;
+
+  border: none;
+  border-radius: 10px;
+
+  background-color: #040944;
+  color: white;
+
+  cursor: pointer;
+}
+
+.btn-detalhes:hover {
+  opacity: 0.8;
+}
+
+.btn-orcamento {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #040944;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-orcamento:hover {
+  opacity: 0.8;
+}
+.acoes {
+  display: flex;
+  gap: 8px;
+
+  width: 100%;
+  margin-top: 8px;
+}
+
+.acoes button {
+  flex: 1;
+  padding: 9px;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.btn-aprovar {
+  background-color: #198754;
+  color: white;
+}
+
+.btn-rejeitar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-resgatar,
+.btn-pagar {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.btn-resgatar {
+  background-color: #ce4d12;
+  color: white;
+}
+
+.btn-pagar {
+  background-color: #198754;
+  color: white;
+}
