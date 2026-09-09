@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
-import { SolicitacaoService } from '../../services/solicitacao.service';
+import { SolicitacaoService } from '../../shared/services/solicitacao-cliente.service';
 import { SolicitacaoManutencao } from '../../models/solicitacao.model';
 
 @Component({
@@ -49,9 +49,9 @@ verPagamento(solicitacao: any) {
     const valorSelecionado = (event.target as HTMLSelectElement).value;
 
     if(valorSelecionado === 'TODAS') {
-      this.solicitacoesFiltradas = this.solicitacoes;
+      this.solicitacoes = this.solicitacoes;
     } else {
-      this.solicitacoesFiltradas = this.solicitacoes.filter(solicitacao => solicitacao.status === valorSelecionado);
+      this.solicitacoes = this.solicitacoes.filter(solicitacao => solicitacao.estado === valorSelecionado);
     }
   }
 }

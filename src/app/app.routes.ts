@@ -25,7 +25,6 @@ export const routes: Routes = [
   { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
   { path: 'orcamento/:id', component: Orcamento },
   { path: 'pagamento/:id', component: Pagamento },
-  { path: '**', redirectTo: '' }
   { path: 'pagar-servico/:id', component: PagarServico },
   { path: '**', redirectTo: '' },
 ];

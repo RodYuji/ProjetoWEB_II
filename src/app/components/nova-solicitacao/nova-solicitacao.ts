@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SolicitacaoService } from '../../services/solicitacao.service';
+import { SolicitacaoService } from '../../shared/services/solicitacao-cliente.service';
 import { SolicitacaoManutencao } from '../../models/solicitacao.model';
 
 @Component({
@@ -11,6 +11,7 @@ import { SolicitacaoManutencao } from '../../models/solicitacao.model';
 export class NovaSolicitacao {
   private solicitacaoService = inject(SolicitacaoService);
 
+  equipamento = '';
   descricaoEquipamento = '';
   categoriaEquipamento = '';
   descricaoDefeito = '';
@@ -34,6 +35,7 @@ export class NovaSolicitacao {
     }
 
     const solicitacaoCriada = this.solicitacaoService.adicionarSolicitacao({
+      equipamento: this.equipamento.trim(),
       descricaoEquipamento: this.descricaoEquipamento.trim(),
       categoriaEquipamento: this.categoriaEquipamento,
       descricaoDefeito: this.descricaoDefeito.trim(),

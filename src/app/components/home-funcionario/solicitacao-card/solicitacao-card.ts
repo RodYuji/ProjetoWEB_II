@@ -3,8 +3,6 @@ import { SolicitacaoAberta } from '../../../shared/services/solicitacao';
 import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { RouterLink } from "@angular/router";
 
-type SolicitacaoAberta = any;
-
 @Component({
   selector: 'app-solicitacao-card',
   imports: [TruncarTextoPipe, RouterLink],

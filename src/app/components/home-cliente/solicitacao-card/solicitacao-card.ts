@@ -1,20 +1,20 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-/*
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {faClock,faFileInvoiceDollar,faCircleCheck,faCircleXmark,faScrewdriverWrench,faMoneyCheckDollar} from '@fortawesome/free-solid-svg-icons';
-*/
+/*import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {faClock,faFileInvoiceDollar,faCircleCheck,faCircleXmark,faScrewdriverWrench,faMoneyCheckDollar} from '@fortawesome/free-solid-svg-icons';*/
+
 import { Router } from '@angular/router';
+import { PagarServico } from '../pagar-servico/pagar-servico';
 
 @Component({
   selector: 'app-solicitacao-card',
-  imports: [FontAwesomeModule],
+  imports: [/*FontAwesomeModule*/],
   templateUrl: './solicitacao-card.html',
   styleUrl: './solicitacao-card.css',
 })
 export class SolicitacaoCard {
 
   @Input() equipamento = '';
-  @Input() descricaoEquipamento = ''; 
+  @Input() descricaoEquipamento = '';
   @Input() descricaoDefeito = '';
   @Input() data = '';
   @Input() status = '';
@@ -25,12 +25,14 @@ export class SolicitacaoCard {
   @Output() orcamento = new EventEmitter<void>();
   @Output() pagamento = new EventEmitter<void>();
 
+/*
   faClock = faClock;
   faFileInvoiceDollar = faFileInvoiceDollar;
   faCircleCheck = faCircleCheck;
   faCircleXmark = faCircleXmark;
   faScrewdriverWrench = faScrewdriverWrench;
   faMoneyCheckDollar = faMoneyCheckDollar;
+*/
 
 verPagamento() {
   console.log('CLIQUEI NO BOTÃO');
@@ -50,11 +52,11 @@ verPagamento() {
     this.detalhes.emit();
   }
 
-  descricaoEquipamento(){
-    if (this.equipamento.length > 30) {
-      return this.equipamento.substring(0, 30) + '...';
+  descricaoDoEquipamento(){
+    if (this.descricaoEquipamento.length > 30) {
+      return this.descricaoEquipamento.substring(0, 30) + '...';
     }
-    return this.equipamento;
+    return this.descricaoEquipamento;
   }
   textoStatus() {
     if(this.status === 'CONCLUÍDA') {
@@ -62,9 +64,7 @@ verPagamento() {
     }
     return this.status;
   }
-}
-
-  pagarServico() {
+  pagarServico(){
     this.router.navigate(['/pagar-servico', this.solicitacaoId]);
   }
 }
