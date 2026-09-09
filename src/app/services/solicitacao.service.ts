@@ -4,6 +4,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class SolicitacaoService {
+  // Status da solicitação:
+// ABERTA: solicitação criada e aguardando atendimento.
+// ORÇADA: orçamento foi criado e aguarda decisão do cliente.
+// APROVADA: cliente aceitou o orçamento e o serviço será realizado.
+// REJEITADA: cliente recusou o orçamento.
+// CONCLUÍDA: serviço foi realizado e aguarda pagamento.
+// PAGA: pagamento do serviço foi realizado.
+
 solicitacoes = [
     {
       id: 1,
@@ -23,7 +31,8 @@ solicitacoes = [
     defeito: 'problema',
     data: '19/08/2026',
     hora: '10:00',
-    status: 'ORÇADA'
+    status: 'ORÇADA',
+    valor: 150.00
   },
   {
     id: 3,
@@ -43,7 +52,28 @@ solicitacoes = [
     defeito: 'não inicia',
     data: '21/08/2026',
     hora: '16:45',
-    status: 'ARRUMADA'
+    status: 'CONCLUÍDA',
+    valor: 200.00
+  },
+  {
+    id: 5,
+    descricao: 'Problema com periférico',
+    equipamento: 'Teclado Logitech',
+    categoria: 'periférico',
+    defeito: 'não funciona',
+    data: '22/08/2026',
+    hora: '11:30',
+    status: 'APROVADA'
+  },
+  {
+    id: 6,
+    descricao: 'Outro problema',
+    equipamento: 'Outro equipamento',
+    categoria: 'outro',
+    defeito: 'problema desconhecido',
+    data: '23/08/2026',
+    hora: '14:00',
+    status: 'PAGA'
   }
   ];
 }

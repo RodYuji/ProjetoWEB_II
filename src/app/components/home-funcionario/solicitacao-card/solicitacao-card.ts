@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { SolicitacaoAberta } from '../home-funcionario';
 import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { RouterLink } from "@angular/router";
+
+type SolicitacaoAberta = any;
 
 @Component({
   selector: 'app-solicitacao-card',

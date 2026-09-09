@@ -1,0 +1,40 @@
+
+<div class="orcamento">
+
+  <h1>Orçamento do Serviço</h1>
+
+  <div class="dados-solicitacao">
+
+    <h2>Dados da solicitação</h2>
+
+    <p><strong>Equipamento:</strong> {{ solicitacao.equipamento }}</p>
+
+    <p><strong>Categoria:</strong> {{ solicitacao.categoria }}</p>
+
+    <p><strong>Defeito:</strong> {{ solicitacao.defeito }}</p>
+
+    <p><strong>Data:</strong> {{ solicitacao.data }}</p>
+
+    <p><strong>Hora:</strong> {{ solicitacao.hora }}</p>
+
+  </div>
+
+  <div class="valor">
+    <p>Valor do orçamento</p>
+
+    <strong>R$ {{ solicitacao.valor }}</strong>
+  </div>
+
+  <div class="acoes">
+
+    <button class="btn-aprovar" (click)="aprovarServico()">
+      Aprovar Serviço
+    </button>
+
+    <button class="btn-rejeitar" (click)="rejeitarServico()">
+      Rejeitar Serviço
+    </button>
+
+  </div>
+
+</div>

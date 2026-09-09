@@ -1,22 +1,50 @@
 <div class="solicitacao">
-    <h3>{{ titulo }}</h3>
-    <p>{{ equipamento }}</p>
-    <p>Data: {{ data }}</p>
-    <p>Hora: {{ hora }}</p>
-    <span>{{ status }}</span>
-    <button class="btn-detalhes" (click)="verDetalhes()">
-    -- Ver detalhes --
-    </button>
+
+  <div class="icone-status">
+    @if (status === 'ABERTA') {
+      <fa-icon [icon]="faClock"></fa-icon>
+    }
     @if (status === 'ORÇADA') {
-    <button>Aprovar</button>
-    <button>Rejeitar</button>
-}
+      <fa-icon [icon]="faFileInvoiceDollar"></fa-icon>
+    }
+    @if (status === 'APROVADA') {
+      <fa-icon [icon]="faCircleCheck"></fa-icon>
+    }
+    @if (status === 'REJEITADA') {
+      <fa-icon [icon]="faCircleXmark"></fa-icon>
+    }
+    @if (status === 'CONCLUÍDA') {
+      <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
+    }
+    @if (status === 'PAGA') {
+      <fa-icon [icon]="faMoneyCheckDollar"></fa-icon>
+    }
+  </div>
+  <h3>{{ descricaoEquipamento() }}</h3>
+  <p>Data: {{ data }}</p>
+  <p>Hora: {{ hora }}</p>
+  <span class="status">{{ textoStatus() }}</span>
 
-@if (status === 'REJEITADA') {
-    <button>Resgatar Serviço</button>
-}
+  @if (status === 'ORÇADA') {
+    <button class="btn-orcamento" (click)="verOrcamento()">
+      Ver orçamento
+    </button>
 
-@if (status === 'ARRUMADA') {
-    <button>Pagar Serviço</button>
+  } @else {
+    <button class="btn-detalhes" (click)="verDetalhes()">
+      Ver detalhes
+    </button>
+  }
+
+  @if (status === 'REJEITADA') {
+    <button class="btn-resgatar">
+      Resgatar Serviço
+    </button>
+  }
+
+  @if (status === 'CONCLUÍDA') {
+  <button class="btn-pagar" (click)="verPagamento()">
+    Pagar Serviço
+  </button>
 }
 </div>

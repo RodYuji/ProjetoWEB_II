@@ -32,19 +32,6 @@ main {
     margin-bottom: 35px;
 }
 
-.btn-primary {
-    background-color: #1E3A5F;
-    border-color: #1E3A5F;
-    padding: 10px 20px;
-    font-weight: 500;
-    border-radius: 6px;
-}
-
-.btn-primary:hover {
-    background-color: #162E4A;
-    border-color: #162E4A;
-}
-
 .minhas-solicitacoes h2 {
     color: #1E3A5F;
     font-size: 24px;
@@ -72,44 +59,8 @@ main {
     color: #344054;
 }
 
-.solicitacao {
-    background-color: #FFFFFF;
-    border: 1px solid #E4E7EC;
-    border-radius: 10px;
-    padding: 22px 25px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 6px rgba(16, 24, 40, 0.05);
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-
-.solicitacao:hover {
-    box-shadow: 0 5px 14px rgba(16, 24, 40, 0.10);
-    transform: translateY(-2px);
-}
-
-.solicitacao h3 {
-    color: #1E3A5F;
-    font-size: 19px;
-    margin-bottom: 12px;
-}
-
-.solicitacao p {
-    color: #667085;
-    margin-bottom: 6px;
-}
-
-.btn-detalhes {
-    background-color: transparent;
-    border: 1px solid #3A6EA5;
-    color: #3A6EA5;
-    padding: 7px 14px;
-    border-radius: 6px;
-    margin-left: 12px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-detalhes:hover {
-    background-color: #3A6EA5;
-    color: #FFFFFF;
+.solicitacoes-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
 }

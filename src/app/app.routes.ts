@@ -7,6 +7,8 @@ import { EfetuarOrcamento } from './components/efetuar-orcamento/efetuar-orcamen
 import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
 import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manutencao';
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
+import { Orcamento } from './components/home-cliente/orcamento/orcamento';
+import { Pagamento } from './components/home-cliente/pagamento/pagamento';
 
 export const routes: Routes = [
   { path: '', component: HomeClienteComponent },
@@ -17,5 +19,7 @@ export const routes: Routes = [
   { path: 'nova-solicitacao', component: NovaSolicitacao },
   { path: 'efetuar-manutencao/:id', component: EfetuarManutencao },
   { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
-  { path: '**', redirectTo: '' },
+  { path: 'orcamento/:id', component: Orcamento },
+  { path: 'pagamento/:id', component: Pagamento },
+  { path: '**', redirectTo: '' }
 ];
