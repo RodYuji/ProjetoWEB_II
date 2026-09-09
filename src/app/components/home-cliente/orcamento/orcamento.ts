@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SolicitacaoService } from '../../../services/solicitacao.service';
+import { SolicitacaoService } from '../../../shared/services/solicitacao-cliente.service';
 
 @Component({
   selector: 'app-orcamento',
