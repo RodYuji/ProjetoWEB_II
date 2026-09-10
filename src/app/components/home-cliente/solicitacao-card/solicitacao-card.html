@@ -1,22 +1,94 @@
+<!--              
 <div class="solicitacao">
-    <h3>{{ titulo }}</h3>
-    <p>{{ equipamento }}</p>
-    <p>Data: {{ data }}</p>
-    <p>Hora: {{ hora }}</p>
-    <span>{{ status }}</span>
-    <button class="btn-detalhes" (click)="verDetalhes()">
-    -- Ver detalhes --
-    </button>
+
+  <div class="icone-status">
+    @if (status === 'ABERTA') {
+      <fa-icon [icon]="faClock"></fa-icon>
+    }
     @if (status === 'ORÇADA') {
-    <button>Aprovar</button>
-    <button>Rejeitar</button>
-}
+      <fa-icon [icon]="faFileInvoiceDollar"></fa-icon>
+    }
+    @if (status === 'APROVADA') {
+      <fa-icon [icon]="faCircleCheck"></fa-icon>
+    }
+    @if (status === 'REJEITADA') {
+      <fa-icon [icon]="faCircleXmark"></fa-icon>
+    }
+    @if (status === 'CONCLUÍDA') {
+      <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
+    }
+    @if (status === 'PAGA') {
+      <fa-icon [icon]="faMoneyCheckDollar"></fa-icon>
+    }
+  </div>
+  <h3>{{ descricaoEquipamento() }}</h3>
+  <p>Data: {{ data }}</p>
+  <p>Hora: {{ hora }}</p>
+  <span class="status">{{ textoStatus() }}</span>
 
-@if (status === 'REJEITADA') {
-    <button>Resgatar Serviço</button>
-}
+  @if (status === 'ORÇADA') {
+    <button class="btn-orcamento" (click)="verOrcamento()">
+      Ver orçamento
+    </button>
 
-@if (status === 'ARRUMADA') {
-    <button (click)="pagarServico()">Pagar Serviço</button>
+  } @else {
+    <button class="btn-detalhes" (click)="verDetalhes()">
+      Ver detalhes
+    </button>
+  }
+
+  @if (status === 'REJEITADA') {
+    <button class="btn-resgatar">
+      Resgatar Serviço
+    </button>
+  }
+
+  @if (status === 'CONCLUÍDA') {
+  <button class="btn-pagar" (click)="verPagamento()">
+    Pagar Serviço
+  </button>
 }
+-->
+<div class="card mb-3 shadow-sm border-0" style="background-color: #1E3A5F; color: #F5F7FA;">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <div>
+        <h5 class="card-title mb-1">{{ descricaoEquipamento }}</h5>
+        <p class="card-text text-white-50 mb-0">{{ descricaoDefeito }}</p>
+      </div>
+
+      <span
+        class="badge rounded-pill px-3 py-2"
+        [class.bg-secondary]="status === 'ABERTA'"
+        [class.bg-warning]="status === 'ORÇADA'"
+        [class.text-dark]="status === 'ORÇADA'"
+        [class.bg-success]="status === 'APROVADA' || status === 'FINALIZADA'"
+        [class.bg-danger]="status === 'REJEITADA'"
+        [class.bg-info]="status === 'ARRUMADA'"
+      >
+        {{ status }}
+      </span>
+    </div>
+
+    <p class="small text-white-50 mb-3">{{ data }} às {{ hora }}</p>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn btn-outline-light btn-sm" (click)="verDetalhes()">
+        Ver detalhes
+      </button>
+
+      @if (status === 'ORÇADA') {
+        <button class="btn btn-success btn-sm">Aprovar</button>
+        <button class="btn btn-outline-danger btn-sm">Rejeitar</button>
+      }
+
+      @if (status === 'REJEITADA') {
+        <button class="btn btn-warning btn-sm text-dark">Resgatar Serviço</button>
+      }
+
+      @if (status === 'ARRUMADA') {
+        <button class="btn btn-primary btn-sm" (click)="pagarServico()">Pagar Serviço</button>
+      }
+    </div>
+  </div>
 </div>

@@ -1,0 +1,49 @@
+<div class="pagina-pagamento">
+
+  <div class="pagamento">
+
+    <h1>Pagamento do Serviço</h1>
+
+    <div class="dados-solicitacao">
+
+      <h2>Dados da solicitação</h2>
+
+      <div class="dado">
+        <strong>Equipamento</strong>
+        <span>{{ solicitacao.equipamento }}</span>
+      </div>
+
+      <div class="dado">
+        <strong>Categoria</strong>
+        <span>{{ solicitacao.categoria }}</span>
+      </div>
+
+      <div class="dado">
+        <strong>Defeito</strong>
+        <span>{{ solicitacao.defeito }}</span>
+      </div>
+
+      <div class="dado">
+        <strong>Data</strong>
+        <span>{{ solicitacao.data }}</span>
+      </div>
+
+      <div class="dado">
+        <strong>Hora</strong>
+        <span>{{ solicitacao.hora }}</span>
+      </div>
+
+    </div>
+
+    <div class="valor">
+      <p>Valor do serviço</p>
+      <strong>R$ {{ solicitacao.valor }}</strong>
+    </div>
+
+    <button class="btn-pagar" (click)="confirmarPagamento()">
+      Confirmar Pagamento
+    </button>
+
+  </div>
+
+</div>
