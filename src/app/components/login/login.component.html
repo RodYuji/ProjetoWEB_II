@@ -1,7 +1,13 @@
-<div class="mt-5 mb-3 container card" style="width: 30rem; background-color: #234677; color: white;">
-  <h1 class="mt-3 mb-3 align-self-center">Olá novamente!</h1>
-  <div class="d-flex align-items-center justify-content-center">
+<div class="container">
+  <div class="mt-5 mb-5 mx-auto card border-0 shadow-lg rounded-4 p-4 p-md-5" style="max-width: 30rem; background-color: #234677; color: white;">
+
+    <div class="text-center mb-4">
+      <h1 class="mb-1">Olá novamente!</h1>
+      <p class="mb-0 text-white-50">Entre com sua conta para continuar</p>
+    </div>
+
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
       <div class="mb-3 input-group">
         <span class="input-group-text">E-mail:</span>
         <input type="email" formControlName="email" placeholder="seu@email.com" class="form-control">
@@ -12,10 +18,11 @@
         <input type="password" formControlName="password" placeholder="Sua senha" class="form-control">
       </div>
 
-      <div class="mt-5 mb-3 d-flex flex-column align-items-center justify-content-center">
-        <input type="submit" class="btn btn-light mb-3" value="Entrar"/>
-        <a routerLink="/recuperar-senha" class="text-light">Esqueci minha senha</a>
+      <div class="mt-5 d-flex flex-column align-items-center">
+        <input type="submit" class="btn btn-light rounded-pill px-5 py-2 fw-semibold mb-3" value="Entrar"/>
+        <a routerLink="/recuperar-senha" class="text-light text-decoration-underline">Esqueci minha senha</a>
       </div>
+
     </form>
   </div>
 </div>
