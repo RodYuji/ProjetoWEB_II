@@ -8,24 +8,57 @@
     </div>
       <div class="mb-3 input-group">
         <span class="input-group-text">CPF:</span>
-        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" class="form-control">
+        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" class="form-control" required>
       </div>
       <div class="mb-3 input-group">
         <span class="input-group-text">E-mail:</span>
-        <input type="email" id="email" name="email" placeholder="seu@email.com" class="form-control">
+        <input type="email" id="email" name="email" placeholder="seu@email.com" class="form-control" required>
       </div>
 
       <div class="mb-3 input-group">
         <span class="input-group-text">Telefone:</span>
-        <input type="text" id="telefone" name="telefone" placeholder="(00) 0000-0000" class="form-control">
-      </div>
-      <div class="mb-3 input-group">
-        <span class="input-group-text">CEP:</span>
-        <input type="text" id="cep" name="cep" placeholder="00000-000" class="form-control">
+        <input type="text" id="telefone" name="telefone" placeholder="(00) 0000-0000" class="form-control" required>
       </div>
     
+      
+      <div class="mb-3 input-group">
+        <span class="input-group-text">CEP:</span>
+        <input type="text" id="cep" name="cep" placeholder="00000-000" class="form-control" [(ngModel)]="cep" (ngModelChange)="buscarEndereco()" required>
+      </div>
+      
+      <div class="mb-3 input-group">
+        <span class="input-group-text">Rua:</span>
+        <input type="text" id="logradouro" name="logradouro" class="form-control" [(ngModel)]="endereco.logradouro" required>
+      </div>
+      
+      <div class="mt-3 input-group mb-3">
+      <span class="input-group-text">Número</span>
+      <input type="text" class="form-control" placeholder="000" required>
+    </div>
+
+    <div class="mt-3 input-group mb-3">
+      <span class="input-group-text">Complemento</span>
+      <input type="text" class="form-control" placeholder="Apartamento 00" required>
+    </div>
+
+      <div class="mb-3 input-group">
+        <span class="input-group-text">Bairro:</span>
+        <input type="text" id="bairro" name="bairro" class="form-control" [(ngModel)]="endereco.bairro" required>
+      </div>
+      
+      <div class="mb-3 input-group">
+        <span class="input-group-text">Cidade:</span>
+        <input type="text" id="cidade" name="cidade" class="form-control" [(ngModel)]="endereco.cidade" required>
+      </div>
+      
+      <div class="mb-3 input-group">
+        <span class="input-group-text">UF:</span>
+        <input type="text" id="uf" name="uf" class="form-control" [(ngModel)]="endereco.uf" required>
+      </div>
+
+
       <div class="mt-5 mb-3 d-flex flex-column align-items-center justify-content-center">
-        <input type="button" class="btn btn-light mb-3" value="Gerar senha" routerLink="/login"/>
+        <button type="submit" class="btn btn-light mb-3" value="Gerar senha" routerLink="/login">Cadastrar</button>
         <a href="/login" class="text-light">Já tenho cadastro</a>
       </div>
 
