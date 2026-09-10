@@ -41,6 +41,7 @@ export class NovaSolicitacao {
       descricaoDefeito: this.descricaoDefeito.trim(),
       dataHora: new Date(),
       estado: 'ABERTA',
+      nomeCliente: 'Cliente Teste',
     });
 
     this.solicitacaoRegistrada = solicitacaoCriada;
