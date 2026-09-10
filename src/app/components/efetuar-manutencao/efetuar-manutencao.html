@@ -1,1 +1,32 @@
-<p>efetuar-manutencao works!</p>
+@if (solicitacao) {
+  <h1>Efetuar Manutenção</h1>
+
+  <p>Equipamento: {{ solicitacao.equipamento }}</p>
+  <p>Cliente: {{ solicitacao.nomeCliente }}</p>
+  <p>Defeito relatado: {{ solicitacao.descricaoDefeito }}</p>
+
+  @if (!mostrarFormularioManutencao) {
+    <button type="button" (click)="efetuarManutencao()">
+      Efetuar Manutenção
+    </button>
+    <button type="button">
+      Redirecionar Manutenção
+    </button>
+  } @else {
+    <form #formManutencao="ngForm">
+      <label for="descricaoManutencao">Descrição da Manutenção:</label>
+      <input type="text" id="descricaoManutencao" name="descricaoManutencao"
+        [(ngModel)]="descricaoManutencao" required>
+
+      <label for="orientacoesCliente">Orientações para o Cliente:</label>
+      <input type="text" id="orientacoesCliente" name="orientacoesCliente"
+        [(ngModel)]="orientacoesCliente" required>
+
+      <button type="button" (click)="confirmarManutencao()" [disabled]="!formManutencao.form.valid">
+        Confirmar
+      </button>
+    </form>
+  }
+} @else {
+  <p>Solicitação não encontrada.</p>
+}

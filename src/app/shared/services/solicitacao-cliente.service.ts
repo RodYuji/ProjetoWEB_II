@@ -100,15 +100,19 @@ solicitacoes = [
     return this.solicitacoes.find(s => s.id === id);
   }
 
+  atualizar(solicitacao: SolicitacaoManutencao): void {
+    this.solicitacoes.forEach((obj, index, objs) => {
+      if (solicitacao.id === obj.id) {
+        objs[index] = solicitacao;
+      }
+    });
+    this.salvarNoStorage();
+  }
+
   adicionarSolicitacao(dados: Omit<SolicitacaoManutencao, 'id'>): SolicitacaoManutencao {
     const novaSolicitacao: SolicitacaoManutencao = {
       id: this.proximoId++,
-      equipamento: dados.equipamento,
-      descricaoEquipamento: dados.descricaoEquipamento,
-      estado: dados.estado,
-      dataHora: dados.dataHora,
-      categoriaEquipamento: dados.categoriaEquipamento,
-      descricaoDefeito: dados.descricaoDefeito      
+      ...dados,
     };
     this.solicitacoes.push(novaSolicitacao);
     this.salvarNoStorage();
