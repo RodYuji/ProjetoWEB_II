@@ -1,4 +1,4 @@
-export type EstadoSolicitacao = 'ABERTA';
+export type EstadoSolicitacao = 'ABERTA' | 'ORÇADA' | 'REJEITADA' | 'APROVADA' | 'REDIRECIONADA' | 'ARRUMADA' | 'PAGA' | 'FINALIZADA';
 
 export interface SolicitacaoManutencao {
   id: number;
@@ -8,4 +8,11 @@ export interface SolicitacaoManutencao {
   descricaoDefeito: string;
   dataHora: Date;
   estado: EstadoSolicitacao;
+  nomeCliente: string;
+
+  // RF014 Efetuar Manutenção
+  descricaoManutencao?: string;
+  orientacoesCliente?: string;
+  funcionarioManutencao?: string;
+  dataHoraManutencao?: Date;
 }

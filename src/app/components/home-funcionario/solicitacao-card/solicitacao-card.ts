@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { SolicitacaoAberta } from '../../../shared/services/solicitacao';
 import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { RouterLink } from "@angular/router";
+import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-solicitacao-card',
@@ -10,5 +10,7 @@ import { RouterLink } from "@angular/router";
   styleUrl: './solicitacao-card.css',
 })
 export class SolicitacaoCard {
-  @Input() solicitacao!: SolicitacaoAberta;
+
+  @Input() solicitacao!: SolicitacaoManutencao;
+  
 }

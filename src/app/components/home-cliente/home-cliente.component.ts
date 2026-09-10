@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {SolicitacaoCard} from "./solicitacao-card/solicitacao-card";
 import { Router } from '@angular/router';
-import { SolicitacaoService } from '../../shared/services/solicitacao-cliente.service';
+import { SolicitacaoService } from '../../shared/services/solicitacao.service';
 
 @Component({
   selector: 'app-home-cliente',

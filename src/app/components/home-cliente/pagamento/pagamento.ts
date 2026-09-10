@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SolicitacaoService } from '../../../shared/services/solicitacao-cliente.service';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 
 @Component({
   selector: 'app-pagamento',

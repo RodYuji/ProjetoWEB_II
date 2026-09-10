@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
-import { Solicitacao } from '../../shared/services/solicitacao';
+import { SolicitacaoService } from '../../shared/services/solicitacao.service';
+import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-home-funcionario',
@@ -8,7 +9,12 @@ import { Solicitacao } from '../../shared/services/solicitacao';
   templateUrl: './home-funcionario.html',
   styleUrl: './home-funcionario.css',
 })
+
 export class HomeFuncionario {
-  private solicitacaoService = inject(Solicitacao);
-  solicitacoesAbertas = this.solicitacaoService.listarAbertas();
+/*
+  solicitacoesAbertas: SolicitacaoManutencao[];
+  constructor(private solicitacaoService: SolicitacaoService) {
+    this.solicitacoesAbertas = this.solicitacaoService.listar().filter((solicitacao) => solicitacao.estado === 'ABERTA');
+  }
+  */
 }
