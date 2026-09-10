@@ -1,8 +1,4 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { SolicitacaoManutencao } from '../../models/solicitacao.model';
-
-const STORAGE_KEY = 'solicitacoes';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -15,120 +11,69 @@ export class SolicitacaoService {
 // REJEITADA: cliente recusou o orçamento.
 // CONCLUÍDA: serviço foi realizado e aguarda pagamento.
 // PAGA: pagamento do serviço foi realizado.
-/*
+
 solicitacoes = [
     {
       id: 1,
-      descricaoEquipamento: 'notebook dell nao liga',
+      descricao: 'notebook dell nao liga',
       equipamento: 'notebook dell',
       categoria: 'notebook',
       defeito: 'nao liga',
       data: '2023-06-01',
       hora: '14:30',
-      estado: 'ABERTA',
+      status: 'ABERTA',
     },
      {
       id: 2,
-    descricaoEquipamento: 'Impressora com problema',
+    descricao: 'Impressora com problema',
     equipamento: 'Impressora HP',
     categoria: 'impressora',
     defeito: 'problema',
     data: '19/08/2026',
     hora: '10:00',
-    estado: 'ORÇADA',
+    status: 'ORÇADA',
     valor: 150.00
   },
   {
     id: 3,
-    descricaoEquipamento: 'Monitor com tela quebrada',
+    descricao: 'Monitor com tela quebrada',
     equipamento: 'Monitor Samsung',
     categoria: 'monitor',
     defeito: 'tela quebrada',
     data: '20/08/2026',
     hora: '09:15',
-    estado: 'REJEITADA'
+    status: 'REJEITADA'
   },
   {
     id: 4,
-    descricaoEquipamento: 'Computador não inicia',
+    descricao: 'Computador não inicia',
     equipamento: 'Desktop Dell',
     categoria: 'computador',
     defeito: 'não inicia',
     data: '21/08/2026',
     hora: '16:45',
-    estado: 'CONCLUÍDA',
+    status: 'CONCLUÍDA',
     valor: 200.00
   },
   {
     id: 5,
-    descricaoEquipamento: 'Problema com periférico',
+    descricao: 'Problema com periférico',
     equipamento: 'Teclado Logitech',
     categoria: 'periférico',
     defeito: 'não funciona',
     data: '22/08/2026',
     hora: '11:30',
-    estado: 'APROVADA'
+    status: 'APROVADA'
   },
   {
     id: 6,
-    descricaoEquipamento: 'Outro problema',
+    descricao: 'Outro problema',
     equipamento: 'Outro equipamento',
     categoria: 'outro',
     defeito: 'problema desconhecido',
     data: '23/08/2026',
     hora: '14:00',
-    estado: 'PAGA'
-}]
-*/
-
-  private proximoId = 1;
-  solicitacoes: SolicitacaoManutencao[] = [];
-  private isBrowser: boolean;
-
-  constructor(@Inject(PLATFORM_ID) platformId: Object) {
-    this.isBrowser = isPlatformBrowser(platformId);
-    if (this.isBrowser) {
-      this.carregarDoStorage();
-    }
+    status: 'PAGA'
   }
-
-  listar(): SolicitacaoManutencao[] {
-    return this.solicitacoes;
-  }
-
-  buscarPorId(id: number): SolicitacaoManutencao | undefined {
-    return this.solicitacoes.find(s => s.id === id);
-  }
-
-  adicionarSolicitacao(dados: Omit<SolicitacaoManutencao, 'id'>): SolicitacaoManutencao {
-    const novaSolicitacao: SolicitacaoManutencao = {
-      id: this.proximoId++,
-      equipamento: dados.equipamento,
-      descricaoEquipamento: dados.descricaoEquipamento,
-      estado: dados.estado,
-      dataHora: dados.dataHora,
-      categoriaEquipamento: dados.categoriaEquipamento,
-      descricaoDefeito: dados.descricaoDefeito      
-    };
-    this.solicitacoes.push(novaSolicitacao);
-    this.salvarNoStorage();
-    return novaSolicitacao;
-  }
-
-  private salvarNoStorage(): void {
-    if (!this.isBrowser) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.solicitacoes));
-  }
-
-  private carregarDoStorage(): void {
-    const dados = localStorage.getItem(STORAGE_KEY);
-    if (!dados) return;
-
-    this.solicitacoes = JSON.parse(dados).map((s: SolicitacaoManutencao) => ({
-      ...s,
-      dataHora: new Date(s.dataHora),
-    }));
-
-    this.proximoId = this.solicitacoes.reduce((max, s) => Math.max(max, s.id), 0) + 1;
-  }
+  ];
 }

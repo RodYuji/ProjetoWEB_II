@@ -4,13 +4,11 @@ import { LoginComponent } from './components/login/login.component';
 import { AutocadastroComponent } from './components/autocadastro/autocadastro.component';
 import { HomeFuncionario } from './components/home-funcionario/home-funcionario';
 import { EfetuarOrcamento } from './components/efetuar-orcamento/efetuar-orcamento';
-import { VisualizarSolicitacao } from './components/visualizar-solicitacao/visualizar-solicitacao';
 import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
 import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manutencao';
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
 import { Orcamento } from './components/home-cliente/orcamento/orcamento';
 import { Pagamento } from './components/home-cliente/pagamento/pagamento';
-import { PagarServico } from './components/home-cliente/pagar-servico/pagar-servico';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },
@@ -18,13 +16,11 @@ export const routes: Routes = [
   { path: '', component: AutocadastroComponent },
   { path: 'home-funcionario', component: HomeFuncionario },
   { path: 'efetuar-orcamento', component: EfetuarOrcamento },
-  { path: 'visualizar-solicitacao', component: VisualizarSolicitacao },
   { path: 'efetuar-orcamento/:id', component: EfetuarOrcamento },
   { path: 'nova-solicitacao', component: NovaSolicitacao },
   { path: 'efetuar-manutencao/:id', component: EfetuarManutencao },
   { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
   { path: 'orcamento/:id', component: Orcamento },
   { path: 'pagamento/:id', component: Pagamento },
-  { path: 'pagar-servico/:id', component: PagarServico },
   { path: '**', redirectTo: '' },
 ];

@@ -5,7 +5,7 @@
     </section>
 
     <section class="nova-solicitacao">
-        <input type="button" class="btn btn-secondary mt-2" routerLink="/nova-solicitacao" value="Nova Solicitação +"/>
+        <button class="btn btn-secondary mt-2">Nova Solicitação +</button>
     </section>
 
     <section class="minhas-solicitacoes">
@@ -22,7 +22,6 @@
                 <option value="PAGA">Pagas</option>
             </select>
         </div>
-       <!--
         <div class="solicitacoes-lista">
         @for (solicitacao of solicitacoesFiltradas; track solicitacao) {
             <app-solicitacao-card
@@ -36,19 +35,5 @@
             </app-solicitacao-card>
         }
         </div>
-      -->
-            @for (solicitacao of solicitacoes; track solicitacao.id) {
-            <app-solicitacao-card
-                [solicitacaoId]="solicitacao.id"
-                [descricaoEquipamento]="solicitacao.descricaoEquipamento"
-                [descricaoDefeito]="solicitacao.descricaoDefeito"
-                [status]="solicitacao.estado"
-                [data]="(solicitacao.dataHora | date:'dd/MM/yyyy') ?? 'N/A'"
-                [hora]="(solicitacao.dataHora | date:'HH:mm') ?? 'N/A'"
-                (detalhes)="verDetalhes(solicitacao)"
-                (orcamento)="verOrcamento(solicitacao)"
-                (pagamento)="verPagamento(solicitacao)">
-            </app-solicitacao-card>
-        }
     </section>
 </main>
