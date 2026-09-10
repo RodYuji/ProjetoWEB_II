@@ -1,9 +1,12 @@
 @if (solicitacao) {
   <h1>Efetuar Manutenção</h1>
+  <!--
 
   <p>Equipamento: {{ solicitacao.equipamento }}</p>
   <p>Cliente: {{ solicitacao.nomeCliente }}</p>
   <p>Defeito relatado: {{ solicitacao.descricaoDefeito }}</p>
+
+-->
 
   @if (!mostrarFormularioManutencao) {
     <button type="button" (click)="efetuarManutencao()">

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SolicitacaoManutencao } from '../../models/solicitacao.model';
+import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
 import { ActivatedRoute } from '@angular/router';
-import { SolicitacaoService } from '../../shared/services/solicitacao-cliente.service';
+import { SolicitacaoService } from '../../shared/services/solicitacao.service';
 
 @Component({
   selector: 'app-efetuar-manutencao',
@@ -17,6 +17,7 @@ export class EfetuarManutencao {
   descricaoManutencao = '';
   orientacoesCliente = '';
 
+  /*
   constructor(
     private route: ActivatedRoute,
     private solicitacaoService: SolicitacaoService
@@ -25,6 +26,7 @@ export class EfetuarManutencao {
     const idNumero = Number(id);
     this.solicitacao = this.solicitacaoService.buscarPorId(idNumero);
   }
+  */
 
   efetuarManutencao(): void {
     this.mostrarFormularioManutencao = true;
@@ -39,6 +41,9 @@ export class EfetuarManutencao {
     this.solicitacao.funcionarioManutencao = 'Funcionário Teste'; // TODO: login (RF002)
     this.solicitacao.estado = 'ARRUMADA';
 
+
+    /*
     this.solicitacaoService.atualizar(this.solicitacao);
+    */
   }
 }

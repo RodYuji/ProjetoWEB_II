@@ -1,36 +1,25 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
-import { SolicitacaoService } from '../../shared/services/solicitacao-cliente.service';
-import { SolicitacaoManutencao } from '../../models/solicitacao.model';
+import { Component } from '@angular/core';
+import {SolicitacaoCard} from "./solicitacao-card/solicitacao-card";
+import { Router } from '@angular/router';
+import { SolicitacaoService } from '../../shared/services/solicitacao.service';
 
 @Component({
   selector: 'app-home-cliente',
-  imports: [SolicitacaoCard, RouterLink, DatePipe],
+  imports: [SolicitacaoCard],
   templateUrl: './home-cliente.component.html',
   styleUrl: './home-cliente.component.css',
 })
 export class HomeClienteComponent {
-  /*filtroStatus = 'TODAS';
+  filtroStatus = 'TODAS';
   solicitacoes: any[] = [];
   solicitacoesFiltradas: any[] = [];
   constructor(private router: Router,private solicitacaoService: SolicitacaoService
 ) {
   this.solicitacoes = this.solicitacaoService.solicitacoes;
   this.solicitacoesFiltradas = this.solicitacoes;
-  */
-  private solicitacaoService = inject(SolicitacaoService);
-  private router = inject(Router);
-
-  solicitacoes: SolicitacaoManutencao[] = this.solicitacaoService.listar();
-
-  constructor() {
-  console.log('Solicitações na Home:', this.solicitacoes);
-
 }
 
-  verDetalhes(solicitacao: SolicitacaoManutencao): void {
+  verDetalhes(solicitacao: any) {
     this.router.navigate(['/detalhes-solicitacao', solicitacao.id]);
   }
 
@@ -49,9 +38,9 @@ verPagamento(solicitacao: any) {
     const valorSelecionado = (event.target as HTMLSelectElement).value;
 
     if(valorSelecionado === 'TODAS') {
-      this.solicitacoes = this.solicitacoes;
+      this.solicitacoesFiltradas = this.solicitacoes;
     } else {
-      this.solicitacoes = this.solicitacoes.filter(solicitacao => solicitacao.estado === valorSelecionado);
+      this.solicitacoesFiltradas = this.solicitacoes.filter(solicitacao => solicitacao.status === valorSelecionado);
     }
   }
 }
