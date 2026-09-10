@@ -1,0 +1,53 @@
+<main class="relatorio">
+  <header class="relatorio-cabecalho">
+    <div>
+      <p class="eyebrow">Painel Financeiro</p>
+      <h1>Relatório de receitas</h1>
+      <p>Consulte os pagamentos realizados anteriormente.</p>
+    </div>
+    <button class="botao botao-primario" type="button" (click)="gerarPdf()">Gerar PDF</button>
+  </header>
+
+  <section class="filtros" aria-labelledby="titulo-filtros">
+    <h2 id="titulo-filtros">Período do relatório</h2>
+    <div class="campos-filtro">
+      <label>
+        Data inicial
+        <input type="date" [(ngModel)]="dataInicial" (change)="aplicarFiltro()" />
+      </label>
+      <label>
+        Data final
+        <input type="date" [(ngModel)]="dataFinal" (change)="aplicarFiltro()" />
+      </label>
+      <button class="botao botao-secundario" type="button" (click)="aplicarFiltro()">Filtrar</button>
+    </div>
+    @if (mensagemErro) {
+      <p class="mensagem-erro" role="alert">{{ mensagemErro }}</p>
+    }
+  </section>
+
+  <section class="resumo" aria-label="Resumo financeiro">
+    <span>Receita encontrada.</span>
+    <strong>{{ formatarMoeda(totalReceitas) }}</strong>
+  </section>
+
+  <section class="resultado" aria-labelledby="titulo-resultado">
+    <h2 id="titulo-resultado">Receitas por dia</h2>
+    @for (receita of receitas; track receita.data) {
+      <article class="grupo-dia">
+        <div class="grupo-cabecalho">
+          <h3>{{ formatarData(receita.data) }}</h3>
+          <strong>{{ formatarMoeda(receita.total) }}</strong>
+        </div>
+        @for (item of receita.itens; track $index) {
+          <div class="linha-receita">
+            <span>{{ item.descricao }}</span>
+            <span>{{ formatarMoeda(item.valor) }}</span>
+          </div>
+        }
+      </article>
+    } @empty {
+      <p class="vazio">Nenhuma receita no período informado.</p>
+    }
+  </section>
+</main>

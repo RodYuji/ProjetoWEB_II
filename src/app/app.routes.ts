@@ -9,6 +9,7 @@ import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manut
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
 import { Orcamento } from './components/home-cliente/orcamento/orcamento';
 import { Pagamento } from './components/home-cliente/pagamento/pagamento';
+import { RelatorioReceitas } from './components/home-funcionario/relatorio-receitas/relatorio-receitas';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },
@@ -22,5 +23,6 @@ export const routes: Routes = [
   { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
   { path: 'orcamento/:id', component: Orcamento },
   { path: 'pagamento/:id', component: Pagamento },
+  { path: 'relatorio-receitas', component: RelatorioReceitas },
   { path: '**', redirectTo: '' },
 ];

@@ -3,3 +3,18 @@
     flex-direction: row;
     gap: 16px;
 }
+
+.botao-relatorio {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #a6532b;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+}
+
+.botao-relatorio:hover {
+    background-color: #8d4524;
+}

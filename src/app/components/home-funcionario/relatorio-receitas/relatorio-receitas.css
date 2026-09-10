@@ -1,0 +1,183 @@
+:host {
+  display: block;
+}
+
+.relatorio {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  color: #172026;
+}
+
+.relatorio-cabecalho,
+.grupo-cabecalho,
+.linha-receita {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.relatorio-cabecalho {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: #a6532b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.relatorio-cabecalho p:last-child {
+  margin-bottom: 0;
+  color: #59656b;
+}
+
+.filtros,
+.resumo,
+.grupo-dia {
+  border: 1px solid #d9dedb;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.filtros {
+  padding: 1.25rem;
+}
+
+.filtros h2,
+.resultado h2 {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.campos-filtro {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+label {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 190px;
+  color: #3e4a4f;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+input {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #aab5b2;
+  border-radius: 4px;
+  color: #172026;
+  font: inherit;
+}
+
+.botao {
+  min-height: 2.5rem;
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.botao-primario {
+  background: #a6532b;
+  color: #fff;
+}
+
+.botao-secundario {
+  border: 1px solid #a6532b;
+  background: transparent;
+  color: #8d4524;
+}
+
+.mensagem-erro {
+  margin: 0.9rem 0 0;
+  color: #a52d2d;
+}
+
+.resumo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1.5rem 0;
+  padding: 1.1rem 1.25rem;
+  background: #f3eee7;
+}
+
+.resumo span {
+  color: #59656b;
+}
+
+.resumo strong {
+  color: #8d4524;
+  font-size: 1.35rem;
+}
+
+.resultado h2 {
+  margin-bottom: 0.75rem;
+}
+
+.grupo-dia {
+  margin-bottom: 0.75rem;
+  padding: 1rem 1.25rem;
+}
+
+.grupo-cabecalho {
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #e5e8e6;
+}
+
+.grupo-cabecalho h3 {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.grupo-cabecalho strong {
+  color: #8d4524;
+}
+
+.linha-receita {
+  padding-top: 0.65rem;
+  color: #59656b;
+  font-size: 0.95rem;
+}
+
+.vazio {
+  padding: 1.25rem;
+  border: 1px dashed #aab5b2;
+  color: #59656b;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .relatorio-cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .botao-primario {
+    width: 100%;
+  }
+}
