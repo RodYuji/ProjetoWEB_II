@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
-import { SolicitacaoService } from '../../shared/services/solicitacao.service';
-import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
+import { RouterLink } from '@angular/router';
+//import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
+//import { SolicitacaoService } from '../../shared/services/solicitacao.service';
+//import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
+
 
 @Component({
   selector: 'app-home-funcionario',
-  imports: [SolicitacaoCard],
+  imports: [RouterLink],
   templateUrl: './home-funcionario.html',
   styleUrl: './home-funcionario.css',
 })
