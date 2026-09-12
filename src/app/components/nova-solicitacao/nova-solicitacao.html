@@ -1,55 +1,66 @@
-<h1>Nova Solicitação de Manutenção</h1>
+<div class="container">
+  <div class="mt-5 mb-5 mx-auto card border-0 shadow-lg rounded-4 p-4 p-md-5" style="max-width: 36rem; background-color: #234677; color: white;">
 
-<p>Registre o equipamento e o defeito para que a empresa possa apresentar um orçamento.</p>
+    <div class="text-center mb-4">
+      <h1 class="mb-1">Nova Solicitação de Manutenção</h1>
+      <p class="mb-0 text-white-50">Registre o equipamento e o defeito para que a empresa possa apresentar um orçamento.</p>
+    </div>
 
-<form (ngSubmit)="registrarSolicitacao()" #solicitacaoForm="ngForm">
-  <p>
-    <label for="descricaoEquipamento">Descrição do equipamento:</label><br>
-    <input
-      type="text"
-      id="descricaoEquipamento"
-      name="descricaoEquipamento"
-      [(ngModel)]="descricaoEquipamento"
-      required
-      maxlength="150"
-      placeholder="Ex: Notebook Dell Inspiron"
-    >
-  </p>
+    <form (ngSubmit)="registrarSolicitacao()" #solicitacaoForm="ngForm">
 
-  <p>
-    <label for="categoriaEquipamento">Categoria do equipamento:</label><br>
-    <select
-      id="categoriaEquipamento"
-      name="categoriaEquipamento"
-      [(ngModel)]="categoriaEquipamento"
-      required
-    >
-      <option value="" disabled>Selecione uma categoria</option>
-      @for (categoria of categorias; track categoria) {
-        <option [value]="categoria">{{ categoria }}</option>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Equipamento:</span>
+        <input
+          type="text"
+          id="descricaoEquipamento"
+          name="descricaoEquipamento"
+          [(ngModel)]="descricaoEquipamento"
+          required
+          maxlength="150"
+          placeholder="Ex: Notebook Dell Inspiron"
+          class="form-control"
+        >
+      </div>
+
+      <div class="input-group mb-3">
+        <span class="input-group-text">Categoria:</span>
+        <select
+          id="categoriaEquipamento"
+          name="categoriaEquipamento"
+          [(ngModel)]="categoriaEquipamento"
+          required
+          class="form-select"
+        >
+          <option value="" disabled>Selecione uma categoria</option>
+          @for (categoria of categorias; track categoria) {
+            <option [value]="categoria">{{ categoria }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="descricaoDefeito" class="form-label text-white-50 mb-1">Descrição do defeito:</label>
+        <textarea
+          id="descricaoDefeito"
+          name="descricaoDefeito"
+          [(ngModel)]="descricaoDefeito"
+          required
+          maxlength="500"
+          rows="6"
+          placeholder="Descreva o problema apresentado"
+          class="form-control"
+        ></textarea>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger py-2 mb-3" role="alert">{{ mensagemErro }}</div>
       }
-    </select>
-  </p>
 
-  <p>
-    <label for="descricaoDefeito">Descrição do defeito:</label><br>
-    <textarea
-      id="descricaoDefeito"
-      name="descricaoDefeito"
-      [(ngModel)]="descricaoDefeito"
-      required
-      maxlength="500"
-      rows="6"
-      placeholder="Descreva o problema apresentado"
-    ></textarea>
-  </p>
+      <div class="mt-4 d-flex justify-content-center gap-3">
+        <button type="submit" class="btn btn-light rounded-pill px-4 py-2 fw-semibold" [disabled]="solicitacaoForm.invalid">Registrar Solicitação</button>
+        <button type="button" class="btn btn-outline-light rounded-pill px-4 py-2" (click)="limparFormulario()">Limpar</button>
+      </div>
 
-  @if (mensagemErro) {
-    <p role="alert">{{ mensagemErro }}</p>
-  }
-
-  <p>
-    <button type="submit" [disabled]="solicitacaoForm.invalid">Registrar Solicitação</button>
-    <button type="button" (click)="limparFormulario()">Limpar</button>
-  </p>
-</form>
+    </form>
+  </div>
+</div>

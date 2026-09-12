@@ -43,4 +43,8 @@ verPagamento(solicitacao: any) {
       this.solicitacoesFiltradas = this.solicitacoes.filter(solicitacao => solicitacao.status === valorSelecionado);
     }
   }
+
+  abrirNovaSolicitacao(){
+    this.router.navigate(['/nova-solicitacao']);
+  }
 }

@@ -26,11 +26,13 @@ export class Orcamento {
 
   aprovarServico() {
     this.solicitacao.status = 'APROVADA';
+    alert('Serviço aprovado com sucesso!');
     this.router.navigate(['/home-cliente']);
   }
 
   rejeitarServico() {
     this.solicitacao.status = 'REJEITADA';
+  alert("Serviço recusado com sucesso!");
     this.router.navigate(['/home-cliente']);
   }
 }
