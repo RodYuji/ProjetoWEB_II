@@ -1,8 +1,15 @@
-<div class="card">
-    <p>CARD TESTES</p>
-    <h3>Detalhes da solicitação</h3>
-    <p>Data/Hora: {{ solicitacao.dataHora }}</p>
-    <p>Autor: {{ solicitacao.nomeCliente }}</p>
-    <p>Descrição: {{ solicitacao.descricaoEquipamento | truncarTexto }}</p>
-    <input type="button" class="btn btn-secondary mt-2" routerLink="/efetuar-orcamento/{{ solicitacao.id }}" value="Efetuar orçamento"/>
+<div class="solicitacao">
+  <div class="icone-status">
+    <i class="fa fa-clock" aria-hidden="true"></i>
+  </div>
+
+  <h3>{{ solicitacao.descricaoEquipamento | truncarTexto }}</h3>
+  <p>Solicitação Nº {{ solicitacao.id }}</p>
+  <p>Data/Hora: {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+  <p><i class="fa fa-user" aria-hidden="true"></i> {{ solicitacao.nomeCliente }}</p>
+  <span class="status">{{ solicitacao.estado }}</span>
+
+  <button class="btn-orcamento" [routerLink]="'/efetuar-orcamento/' + solicitacao.id">
+    <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i> Efetuar orçamento
+  </button>
 </div>

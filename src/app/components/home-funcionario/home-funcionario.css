@@ -1,7 +1,43 @@
-.container {
+main {
+    min-height: 100vh;
+    background-color: #F5F7FA;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+.titulo-funcionario {
+    background-color: #FFFFFF;
+    border-left: 5px solid #1E3A5F;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.titulo-funcionario h1 {
+    color: #1E3A5F;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.titulo-funcionario p {
+    color: #667085;
+    font-size: 16px;
+    margin: 0;
+}
+
+.minhas-solicitacoes h2 {
+    color: #1E3A5F;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.solicitacoes-lista {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 16px;
+    margin-bottom: 20px;
 }
 
 .botao-relatorio {
@@ -13,6 +49,7 @@
     cursor: pointer;
     font: inherit;
     font-weight: 600;
+    margin-right: 8px;
 }
 
 .botao-relatorio:hover {

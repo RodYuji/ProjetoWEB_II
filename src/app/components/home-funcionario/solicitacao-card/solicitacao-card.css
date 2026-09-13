@@ -1,13 +1,70 @@
-.card {
-    border: 1px solid black;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
+.solicitacao {
+  width: 300px;
+  min-height: 250px;
+  padding: 20px;
+
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.icone-status {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  background-color: #f1f1f1;
+  color: #040944;
+
+  font-size: 24px;
+}
+
+.solicitacao h3 {
+  font-size: 22px;
+  margin: 4px 0 12px;
+}
+
+.solicitacao p {
+  margin: 3px 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.status {
+  margin: 14px 0;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .btn-orcamento {
-    display: block;
-    margin: 16px auto 0;
-    padding: 8px;
-    border-radius: 5px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #040944;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-orcamento:hover {
+  opacity: 0.8;
 }

@@ -1,0 +1,20 @@
+main {
+    min-height: 100vh;
+    background-color: #F5F7FA;
+    padding-top: 40px;
+    padding-bottom: 60px;
+}
+
+main :is(button, a) {
+    margin-right: 8px;
+}
+
+button {
+    margin-top: 15px;
+}
+
+main a.btn {
+    display: inline-block;
+    line-height: 1.5;
+    vertical-align: middle;
+}
