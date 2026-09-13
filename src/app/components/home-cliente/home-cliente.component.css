@@ -32,6 +32,16 @@ main {
     margin-bottom: 35px;
 }
 
+.nova-solicitacao-btn {
+    background-color: #1E3A5F;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
 .minhas-solicitacoes h2 {
     color: #1E3A5F;
     font-size: 24px;

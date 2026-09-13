@@ -76,4 +76,7 @@ solicitacoes = [
     status: 'PAGA'
   }
   ];
+  buscarPorId(id: number) {           // ← essa parte precisa estar dentro da classe
+    return this.solicitacoes.find(s => s.id === id);
+  }
 }

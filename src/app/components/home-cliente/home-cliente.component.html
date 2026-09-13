@@ -5,7 +5,7 @@
     </section>
 
     <section class="nova-solicitacao">
-        <button class="btn btn-secondary mt-2">Nova Solicitação +</button>
+        <button class="btn btn-secondary mt-2 nova-solicitacao-btn" (click)="abrirNovaSolicitacao()">Nova Solicitação +</button>
     </section>
 
     <section class="minhas-solicitacoes">
@@ -23,8 +23,9 @@
             </select>
         </div>
         <div class="solicitacoes-lista">
-        @for (solicitacao of solicitacoesFiltradas; track solicitacao) {
+        @for (solicitacao of solicitacoesFiltradas; track solicitacao.id) {
             <app-solicitacao-card
+                [solicitacaoId]="solicitacao.id"
                 [equipamento]="solicitacao.equipamento"
                 [data]="solicitacao.data"
                 [hora]="solicitacao.hora"
