@@ -2,7 +2,6 @@ export type EstadoSolicitacao = 'ABERTA' | 'ORÇADA' | 'REJEITADA' | 'APROVADA' 
 
 export interface SolicitacaoManutencao {
   id: number;
-  equipamento: string;
   descricaoEquipamento: string;
   categoriaEquipamento: string;
   descricaoDefeito: string;
@@ -10,9 +9,19 @@ export interface SolicitacaoManutencao {
   estado: EstadoSolicitacao;
   nomeCliente: string;
 
+  // RF012 Efetuar Orçamento
+  valorOrcamento?: number;
+  funcionarioOrcamento?: string;
+  dataHoraOrcamento?: Date;
+
   // RF014 Efetuar Manutenção
   descricaoManutencao?: string;
   orientacoesCliente?: string;
   funcionarioManutencao?: string;
   dataHoraManutencao?: Date;
+
+  // RF015 Redirecionar Manutenção
+  funcionarioOrigemRedirecionamento?: string;
+  funcionarioDestinoRedirecionamento?: string;
+  dataHoraRedirecionamento?: Date;
 }

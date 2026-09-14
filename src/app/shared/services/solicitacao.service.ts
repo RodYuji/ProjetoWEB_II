@@ -1,82 +1,96 @@
 import { Injectable } from '@angular/core';
+import { SolicitacaoManutencao } from '../models/solicitacao.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SolicitacaoService {
-  // Status da solicitação:
-// ABERTA: solicitação criada e aguardando atendimento.
-// ORÇADA: orçamento foi criado e aguarda decisão do cliente.
-// APROVADA: cliente aceitou o orçamento e o serviço será realizado.
-// REJEITADA: cliente recusou o orçamento.
-// CONCLUÍDA: serviço foi realizado e aguarda pagamento.
-// PAGA: pagamento do serviço foi realizado.
+  private proximoId = 7;
 
-solicitacoes = [
+  solicitacoes: SolicitacaoManutencao[] = [
     {
       id: 1,
-      descricao: 'notebook dell nao liga',
-      equipamento: 'notebook dell',
-      categoria: 'notebook',
-      defeito: 'nao liga',
-      data: '2023-06-01',
-      hora: '14:30',
-      status: 'ABERTA',
+      descricaoEquipamento: 'Notebook não liga de jeito nenhum',
+      categoriaEquipamento: 'Notebook',
+      descricaoDefeito: 'não liga',
+      dataHora: new Date('2026-08-01T09:00:00'),
+      estado: 'ABERTA',
+      nomeCliente: 'Gabriel',
     },
-     {
+    {
       id: 2,
-    descricao: 'Impressora com problema',
-    equipamento: 'Impressora HP',
-    categoria: 'impressora',
-    defeito: 'problema',
-    data: '19/08/2026',
-    hora: '10:00',
-    status: 'ORÇADA',
-    valor: 150.00
-  },
-  {
-    id: 3,
-    descricao: 'Monitor com tela quebrada',
-    equipamento: 'Monitor Samsung',
-    categoria: 'monitor',
-    defeito: 'tela quebrada',
-    data: '20/08/2026',
-    hora: '09:15',
-    status: 'REJEITADA'
-  },
-  {
-    id: 4,
-    descricao: 'Computador não inicia',
-    equipamento: 'Desktop Dell',
-    categoria: 'computador',
-    defeito: 'não inicia',
-    data: '21/08/2026',
-    hora: '16:45',
-    status: 'CONCLUÍDA',
-    valor: 200.00
-  },
-  {
-    id: 5,
-    descricao: 'Problema com periférico',
-    equipamento: 'Teclado Logitech',
-    categoria: 'periférico',
-    defeito: 'não funciona',
-    data: '22/08/2026',
-    hora: '11:30',
-    status: 'APROVADA'
-  },
-  {
-    id: 6,
-    descricao: 'Outro problema',
-    equipamento: 'Outro equipamento',
-    categoria: 'outro',
-    defeito: 'problema desconhecido',
-    data: '23/08/2026',
-    hora: '14:00',
-    status: 'PAGA'
-  }
+      descricaoEquipamento: 'Impressora imprimindo com falhas',
+      categoriaEquipamento: 'Impressora',
+      descricaoDefeito: 'falhas de impressão',
+      dataHora: new Date('2026-08-02T10:30:00'),
+      estado: 'ORÇADA',
+      nomeCliente: 'Fernando',
+    },
+    {
+      id: 3,
+      descricaoEquipamento: 'Mouse com botão esquerdo travando',
+      categoriaEquipamento: 'Mouse',
+      descricaoDefeito: 'botão travando',
+      dataHora: new Date('2026-08-03T14:00:00'),
+      estado: 'ABERTA',
+      nomeCliente: 'Carlos',
+    },
+    {
+      id: 4,
+      descricaoEquipamento: 'Teclado com teclas não respondendo',
+      categoriaEquipamento: 'Teclado',
+      descricaoDefeito: 'teclas não respondem',
+      dataHora: new Date('2026-08-04T08:15:00'),
+      estado: 'APROVADA',
+      nomeCliente: 'Rodrigo',
+    },
+    {
+      id: 5,
+      descricaoEquipamento: 'Computador reiniciando sozinho',
+      categoriaEquipamento: 'Desktop',
+      descricaoDefeito: 'reinicia sozinho',
+      dataHora: new Date('2026-08-05T11:45:00'),
+      estado: 'REJEITADA',
+      nomeCliente: 'Gabriel',
+    },
+    {
+      id: 6,
+      descricaoEquipamento: 'Tela com listras coloridas',
+      categoriaEquipamento: 'Notebook',
+      descricaoDefeito: 'tela com defeito',
+      dataHora: new Date('2026-08-06T16:20:00'),
+      estado: 'PAGA',
+      nomeCliente: 'Fernando',
+    },
   ];
-  buscarPorId(id: number) {           // ← essa parte precisa estar dentro da classe
+
+  listar(): SolicitacaoManutencao[] {
+    return this.solicitacoes;
+  }
+
+  buscarPorId(id: number): SolicitacaoManutencao | undefined {
     return this.solicitacoes.find(s => s.id === id);
+  }
+
+  adicionarSolicitacao(dados: Omit<SolicitacaoManutencao, 'id'>): SolicitacaoManutencao {
+    const novaSolicitacao: SolicitacaoManutencao= {
+      id: this.proximoId++,
+      descricaoEquipamento:dados.descricaoEquipamento,
+      categoriaEquipamento:dados.categoriaEquipamento,
+      descricaoDefeito:dados.descricaoDefeito,
+      dataHora: dados.dataHora,
+      estado: dados.estado,
+      nomeCliente: dados.nomeCliente
+    };
+    this.solicitacoes.push(novaSolicitacao);
+    return novaSolicitacao;
+  }
+
+  atualizar(solicitacao: SolicitacaoManutencao): void {
+    this.solicitacoes.forEach((obj, index, objs) => {
+      if (solicitacao.id === obj.id) {
+        objs[index] = solicitacao;
+      }
+    });
   }
 }
