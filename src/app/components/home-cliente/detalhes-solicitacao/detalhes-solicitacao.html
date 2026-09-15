@@ -1,29 +1,34 @@
-<div class="container">
-
+@if (solicitacao) {
+<a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+  </a>
+  <main class="pagina-detalhes-solicitacao">
     <h1>Detalhes da Solicitação</h1>
 
-    <section>
-        <h2>Informações da solicitação</h2>
+    <div class="card mb-3">
+      <div class="card-body">
+        <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
+        <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+        <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
+        <p><strong>Data:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>
+        <p><strong>Status:</strong> {{ solicitacao.estado }}</p>
+      </div>
+    </div>
 
-      <p>Descrição: {{ solicitacao.descricaoEquipamento }}</p>
-      <p>Equipamento: {{ solicitacao.descricaoEquipamento }}</p>
-      <p>Categoria: {{ solicitacao.categoriaEquipamento }}</p>
-      <p>Defeito: {{ solicitacao.descricaoDefeito }}</p>
-      <p>Data: {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
-      <p>Hora: {{ solicitacao.dataHora | date:'HH:mm' }}</p>
-      <p>Status: {{ solicitacao.estado }}</p>
-    </section>
-
-    <section>
+    <div class="card mb-3">
+      <div class="card-body">
         <h2>Histórico</h2>
 
         @for (item of solicitacao.historico; track $index) {
-    <div class="historico-item">
-        <strong>{{ item.estado }}</strong>
-        <span>{{ item.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+          <div class="historico-item">
+            <strong>{{ item.estado }}</strong>
+            <span>{{ item.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        }
+      </div>
     </div>
+  </main>
+} @else {
+  <p>Solicitação não encontrada.</p>
 }
-
-    </section>
-
-</div>

@@ -51,6 +51,8 @@
                         <button class="btn-manutencao" [routerLink]="'/efetuar-manutencao/' + solicitacao.id">
                             <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i> Efetuar manutenção
                         </button>
+                    } @else if (solicitacao.estado == "PAGA") {
+                        <button class="btn-finalizar" (click)="finalizarSolicitacao(solicitacao)">Finalizar</button>
                     }
                 </div>
             } @empty {

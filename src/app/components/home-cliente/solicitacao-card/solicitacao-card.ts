@@ -33,7 +33,6 @@ export class SolicitacaoCard {
   faCircleXmark = faCircleXmark;
   faScrewdriverWrench = faScrewdriverWrench;
   faMoneyCheckDollar = faMoneyCheckDollar;
-
   constructor(private solicitacaoService: SolicitacaoService) {}
 
   verPagamento() {
@@ -58,7 +57,7 @@ export class SolicitacaoCard {
 
   textoEstado() {
     if (this.estado === 'ARRUMADA') {
-      return 'Arrumada - Aguardando Pagamento';
+      return 'ARRUMADA - Aguardando Pagamento';
     }
 
     return this.estado;

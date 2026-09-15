@@ -1,4 +1,7 @@
 @if (solicitacao) {
+  <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+  </a>
   <main class="container">
     <h1>Efetuar Manutenção</h1>
 
@@ -11,9 +14,6 @@
     </div>
 
     @if (!mostrarFormularioManutencao && !mostrarFormularioRedirecionamento) {
-      <button type="button" class="btn btn-secondary" (click)="voltarParaLista()">
-        <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
-      </button>
       <button type="button" class="btn btn-primary" (click)="efetuarManutencao()">
         Efetuar Manutenção
       </button>
@@ -51,9 +51,6 @@
             <p><strong>Orientações para o Cliente:</strong> {{ solicitacao.orientacoesCliente }}</p>
             <p><strong>Funcionário responsável:</strong> {{ solicitacao.funcionarioManutencao }}</p>
             <p><strong>Data e hora:</strong> {{ solicitacao.dataHoraManutencao | date:'dd/MM/yyyy HH:mm' }}</p>
-            <a class="btn btn-secondary" [routerLink]="['/visualizar-solicitacao']">
-              <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar para a lista
-            </a>
           }
         </div>
       </div>

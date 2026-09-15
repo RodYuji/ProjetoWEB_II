@@ -1,4 +1,7 @@
 <div class="pagina-pagamento">
+<a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+  </a>
 
   <div class="pagamento">
 
@@ -33,6 +36,15 @@
         <span>{{ solicitacao.dataHora | date:'HH:mm' }}</span>
       </div>
 
+      <div class="dado">
+        <strong>Descrição da Manutenção</strong>
+        <span>{{ solicitacao.descricaoManutencao }}</span>
+      </div>
+
+      <div class="dado">
+        <strong>Orientações para o cliente</strong>
+        <span>{{ solicitacao.orientacoesCliente }}</span>
+      </div>
     </div>
 
     <div class="valor">
@@ -43,7 +55,7 @@
     <button class="btn-pagar" (click)="confirmarPagamento()">
       Confirmar Pagamento
     </button>
-
   </div>
+  
 
 </div>

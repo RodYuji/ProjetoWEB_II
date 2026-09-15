@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { SolicitacaoService } from '../../shared/services/solicitacao.service';
-import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { TruncarTextoPipe } from '../../shared/pipes/truncar-texto-pipe';
+import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { FormsModule } from '@angular/forms';
 
 
@@ -63,6 +63,15 @@ export class VisualizarSolicitacao {
     } else {
       this.solicitacoesFiltradas = this.todasSolicitacoes;
     }
+  }
+  finalizarSolicitacao(solicitacao: SolicitacaoManutencao): void {
+    solicitacao.estado = 'FINALIZADA';
+    this.solicitacaoService.atualizar(solicitacao);
+    solicitacao.historico.push({
+      dataHora: new Date(),
+      estado: 'FINALIZADA',
+    });
+    this.solicitacaoService.atualizar(solicitacao);
   }
 
 }

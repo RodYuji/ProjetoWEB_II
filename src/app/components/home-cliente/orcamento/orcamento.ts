@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-orcamento',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './orcamento.html',
   styleUrl: './orcamento.css',
 })

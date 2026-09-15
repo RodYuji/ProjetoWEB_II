@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-detalhes-solicitacao',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './detalhes-solicitacao.html',
   styleUrl: './detalhes-solicitacao.css',
 })

@@ -19,6 +19,11 @@
     @if (estado === 'PAGA') {
       <fa-icon [icon]="faMoneyCheckDollar"></fa-icon>
     }
+    @if (estado === 'REDIRECIONADA') {
+      <i class="fa-solid fa-arrow-right"></i>
+    }
+    @if (estado === 'FINALIZADA') {
+<i class="fa-solid fa-square-check"></i>    }  
   </div>
   <h3>{{ descricaoEquipamento() }}</h3>
  <p>Data: {{ dataHora | date:'dd/MM/yyyy' }} às {{ dataHora | date:'HH:mm' }}</p> 

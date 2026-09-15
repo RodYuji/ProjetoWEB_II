@@ -1,4 +1,7 @@
 @if (solicitacao) {
+  <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+  </a>
   <main class="container">
     <h1>Efetuar Orçamento</h1>
     <p><strong>Estado atual:</strong> {{ solicitacao.estado }}</p>
@@ -43,9 +46,6 @@
             </button>
           }
         </form>
-        <a class="btn btn-secondary" [routerLink]="['/home-funcionario']">
-          <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
-        </a>
       </div>
     </div>
 
