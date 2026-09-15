@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
+import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SolicitacaoService } from '../../shared/services/solicitacao.service';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -24,7 +24,7 @@ export class EfetuarManutencao {
   mostrarFormularioRedirecionamento = false;
   funcionarioDestino = '';
   private funcionarioLogado = 'Arthur';
-  funcionariosDisponiveis = ['Arthur', 'Yumi', this.funcionarioLogado].filter((funcionario) => funcionario !== this.funcionarioLogado);
+  funcionariosDisponiveis = ['Arthur', 'Rodrigo', this.funcionarioLogado].filter((funcionario) => funcionario !== this.funcionarioLogado);
   manutencaoConfirmada = false;
   redirecionamentoConfirmado = false;
 

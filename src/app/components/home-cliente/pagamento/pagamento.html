@@ -33,6 +33,15 @@
         <span>{{ solicitacao.dataHora | date:'HH:mm' }}</span>
       </div>
 
+      <div class="dado">
+        <strong>Descrição da Manutenção</strong>
+        <span>{{ solicitacao.descricaoManutencao }}</span>
+      </div>
+
+      <div class="dado">
+        <strong>Orientações para o cliente</strong>
+        <span>{{ solicitacao.orientacoesCliente }}</span>
+      </div>
     </div>
 
     <div class="valor">

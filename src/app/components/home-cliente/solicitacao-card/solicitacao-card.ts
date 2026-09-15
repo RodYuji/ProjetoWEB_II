@@ -33,7 +33,6 @@ export class SolicitacaoCard {
   faCircleXmark = faCircleXmark;
   faScrewdriverWrench = faScrewdriverWrench;
   faMoneyCheckDollar = faMoneyCheckDollar;
-
   constructor(private solicitacaoService: SolicitacaoService) {}
 
   verPagamento() {

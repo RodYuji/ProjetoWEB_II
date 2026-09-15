@@ -3,14 +3,14 @@ import { HomeClienteComponent } from './components/home-cliente/home-cliente.com
 import { LoginComponent } from './components/login/login.component';
 import { AutocadastroComponent } from './components/autocadastro/autocadastro.component';
 import { HomeFuncionario } from './components/home-funcionario/home-funcionario';
-import { EfetuarOrcamento } from './components/efetuar-orcamento/efetuar-orcamento';
-import { NovaSolicitacao } from './components/nova-solicitacao/nova-solicitacao';
-import { EfetuarManutencao } from './components/efetuar-manutencao/efetuar-manutencao';
+import { EfetuarOrcamento } from './components/home-funcionario/efetuar-orcamento/efetuar-orcamento';
+import { NovaSolicitacao } from './components/home-cliente/nova-solicitacao/nova-solicitacao';
+import { EfetuarManutencao } from './components/home-funcionario/efetuar-manutencao/efetuar-manutencao';
 import { DetalhesSolicitacao } from './components/home-cliente/detalhes-solicitacao/detalhes-solicitacao';
 import { Orcamento } from './components/home-cliente/orcamento/orcamento';
 import { Pagamento } from './components/home-cliente/pagamento/pagamento';
 import { RelatorioReceitas } from './components/home-funcionario/relatorio-receitas/relatorio-receitas';
-import { VisualizarSolicitacao } from './components/visualizar-solicitacao/visualizar-solicitacao';
+import { VisualizarSolicitacao } from './components/home-funcionario/visualizar-solicitacao/visualizar-solicitacao';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SolicitacaoService } from '../../shared/services/solicitacao.service';
-import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
