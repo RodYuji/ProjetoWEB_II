@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pagamento',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterLink],
   templateUrl: './pagamento.html',
   styleUrl: './pagamento.css',
 })

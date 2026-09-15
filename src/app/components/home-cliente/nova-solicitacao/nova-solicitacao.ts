@@ -2,11 +2,12 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-nova-solicitacao',
-  imports: [ FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './nova-solicitacao.html',
 })
 

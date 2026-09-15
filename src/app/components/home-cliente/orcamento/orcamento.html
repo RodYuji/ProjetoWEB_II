@@ -1,40 +1,29 @@
-
-<div class="orcamento">
-
-  <h1>Orçamento do Serviço</h1>
-
-  <div class="dados-solicitacao">
-
-    <h2>Dados da solicitação</h2>
-
-    <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
-
-    <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
-
-    <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
-
-    <p><strong>Data:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
-
-    <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>   
-
+  <div class="pagina-orcamento">
+<a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+  </a>
+    <div class="orcamento">
+    <h1>Orçamento do Serviço</h1>
+    <div class="dados-solicitacao">
+      <h2>Dados da solicitação</h2>
+      <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
+      <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+      <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
+      <p><strong>Data:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
+      <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>
+    </div>
+    <div class="valor">
+      <p>Valor do orçamento</p>
+      <strong>R$ {{ solicitacao.valorOrcamento }}</strong>
+    </div>
+    <div class="acoes">
+      <button class="btn-aprovar" (click)="aprovarServico()">
+        Aprovar Serviço
+      </button>
+      <button class="btn-rejeitar" (click)="rejeitarServico()">
+        Rejeitar Serviço
+      </button>
+    </div>
+    
+    </div>
   </div>
-
-  <div class="valor">
-    <p>Valor do orçamento</p>
-
-    <strong>R$ {{ solicitacao.valorOrcamento }}</strong>
-  </div>
-
-  <div class="acoes">
-
-    <button class="btn-aprovar" (click)="aprovarServico()">
-      Aprovar Serviço
-    </button>
-
-    <button class="btn-rejeitar" (click)="rejeitarServico()">
-      Rejeitar Serviço
-    </button>
-
-  </div>
-
-</div>

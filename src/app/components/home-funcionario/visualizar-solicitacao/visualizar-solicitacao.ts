@@ -64,5 +64,14 @@ export class VisualizarSolicitacao {
       this.solicitacoesFiltradas = this.todasSolicitacoes;
     }
   }
+  finalizarSolicitacao(solicitacao: SolicitacaoManutencao): void {
+    solicitacao.estado = 'FINALIZADA';
+    this.solicitacaoService.atualizar(solicitacao);
+    solicitacao.historico.push({
+      dataHora: new Date(),
+      estado: 'FINALIZADA',
+    });
+    this.solicitacaoService.atualizar(solicitacao);
+  }
 
 }

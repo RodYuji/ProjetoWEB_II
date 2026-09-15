@@ -72,7 +72,7 @@ main {
 }
 
 .btn-orcamento,
-.btn-manutencao {
+.btn-manutencao, .btn-finalizar {
     width: 100%;
     margin-top: 8px;
     padding: 10px;
@@ -90,8 +90,12 @@ main {
     background-color: #0f6d5c;
 }
 
+.btn-finalizar {
+    background-color: #a6532b;
+}
+
 .btn-orcamento:hover,
-.btn-manutencao:hover {
+.btn-manutencao:hover, .btn-finalizar:hover {
     opacity: 0.8;
 }
 

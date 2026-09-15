@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { jsPDF } from 'jspdf'; //import the serviço nativo do JS para exportar PDF
+import { RouterLink } from '@angular/router';
 
 interface ReceitaDiaria {
   data: string;
@@ -11,7 +12,7 @@ interface ReceitaDiaria {
 
 @Component({
   selector: 'app-relatorio-receitas',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './relatorio-receitas.html',
   styleUrl: './relatorio-receitas.css',
 })

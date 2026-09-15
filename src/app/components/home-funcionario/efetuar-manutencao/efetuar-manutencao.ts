@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -28,14 +28,10 @@ export class EfetuarManutencao {
   manutencaoConfirmada = false;
   redirecionamentoConfirmado = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, private solicitacaoService: SolicitacaoService) {
+  constructor(private route: ActivatedRoute, private solicitacaoService: SolicitacaoService) {
     const id = this.route.snapshot.paramMap.get('id');
     const idNumero = Number(id);
     this.solicitacao = this.solicitacaoService.buscarPorId(idNumero);
-  }
-
-  voltarParaLista(): void {
-    this.router.navigate(['/visualizar-solicitacao']);
   }
 
   efetuarManutencao(): void {
@@ -52,10 +48,18 @@ export class EfetuarManutencao {
     this.solicitacao.estado = 'ARRUMADA';
     this.solicitacaoService.atualizar(this.solicitacao);
     this.manutencaoConfirmada = true;
+    this.solicitacao.historico.push({
+      dataHora: new Date(),
+      estado: 'ARRUMADA',
+    });
   }
 
   redirecionarManutencao(): void {
     this.mostrarFormularioRedirecionamento = true;
+    this.solicitacao?.historico.push({
+      dataHora: new Date(),
+      estado: 'REDIRECIONADA',
+    });
   }
 
   confirmarRedirecionamento(): void {

@@ -57,7 +57,7 @@ export class SolicitacaoCard {
 
   textoEstado() {
     if (this.estado === 'ARRUMADA') {
-      return 'Arrumada - Aguardando Pagamento';
+      return 'ARRUMADA - Aguardando Pagamento';
     }
 
     return this.estado;

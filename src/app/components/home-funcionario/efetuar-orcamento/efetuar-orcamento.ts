@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 
 export class EfetuarOrcamento {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private solicitacaoService = inject(SolicitacaoService);
   solicitacao: SolicitacaoManutencao | undefined;
   valorOrcamento: number | undefined;
@@ -36,7 +37,13 @@ export class EfetuarOrcamento {
   this.orcamentoConfirmado = true;
 
   this.solicitacaoService.atualizar(this.solicitacao);
-  }
+  this.solicitacao.historico.push({ 
+    dataHora: new Date(),
+    estado: 'ORÇADA',
+  });
+  alert('Orçamento confirmado com sucesso!');
+  this.router.navigate(['/home-funcionario']);
+}
 
   editarOrcamento():void {
     this.orcamentoConfirmado = false;
