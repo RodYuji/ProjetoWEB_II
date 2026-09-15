@@ -1,31 +1,30 @@
 <div class="solicitacao">
 
   <div class="icone-status">
-    @if (status === 'ABERTA') {
+    @if (estado === 'ABERTA') {
       <fa-icon [icon]="faClock"></fa-icon>
     }
-    @if (status === 'ORÇADA') {
+    @if (estado === 'ORÇADA') {
       <fa-icon [icon]="faFileInvoiceDollar"></fa-icon>
     }
-    @if (status === 'APROVADA') {
+    @if (estado === 'APROVADA') {
       <fa-icon [icon]="faCircleCheck"></fa-icon>
     }
-    @if (status === 'REJEITADA') {
+    @if (estado === 'REJEITADA') {
       <fa-icon [icon]="faCircleXmark"></fa-icon>
     }
-    @if (status === 'CONCLUÍDA') {
+    @if (estado === 'ARRUMADA') {
       <fa-icon [icon]="faScrewdriverWrench"></fa-icon>
     }
-    @if (status === 'PAGA') {
+    @if (estado === 'PAGA') {
       <fa-icon [icon]="faMoneyCheckDollar"></fa-icon>
     }
   </div>
   <h3>{{ descricaoEquipamento() }}</h3>
-  <p>Data: {{ data }}</p>
-  <p>Hora: {{ hora }}</p>
-  <span class="status">{{ textoStatus() }}</span>
+ <p>Data: {{ dataHora | date:'dd/MM/yyyy' }} às {{ dataHora | date:'HH:mm' }}</p> 
+  <span class="status">{{ textoEstado() }}</span>
 
-  @if (status === 'ORÇADA') {
+  @if (estado === 'ORÇADA') {
     <button class="btn-orcamento" (click)="verOrcamento()">
       Ver orçamento
     </button>
@@ -36,13 +35,13 @@
     </button>
   }
 
-  @if (status === 'REJEITADA') {
+  @if (estado === 'REJEITADA') {
     <button class="btn-resgatar" (click)="resgatarServico()">
       Resgatar Serviço
     </button>
   }
 
-  @if (status === 'CONCLUÍDA') {
+  @if (estado === 'ARRUMADA') {
   <button class="btn-pagar" (click)="verPagamento()">
     Pagar Serviço
   </button>

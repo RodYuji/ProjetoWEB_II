@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-pagamento',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './pagamento.html',
   styleUrl: './pagamento.css',
 })
@@ -25,9 +26,9 @@ export class Pagamento {
   }
 
   confirmarPagamento() {
-    this.solicitacao.status = 'PAGA';
+    this.solicitacao.estado = 'PAGA';
     this.solicitacao.dataPagamento = new Date();
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/home-cliente']);
   }
 }

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-orcamento',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './orcamento.html',
   styleUrl: './orcamento.css',
 })
@@ -25,13 +26,13 @@ export class Orcamento {
   }
 
   aprovarServico() {
-    this.solicitacao.status = 'APROVADA';
+    this.solicitacao.estado = 'APROVADA';
     alert('Serviço aprovado com sucesso!');
     this.router.navigate(['/home-cliente']);
   }
 
   rejeitarServico() {
-    this.solicitacao.status = 'REJEITADA';
+    this.solicitacao.estado = 'REJEITADA';
   alert("Serviço recusado com sucesso!");
     this.router.navigate(['/home-cliente']);
   }
