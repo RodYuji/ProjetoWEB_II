@@ -10,34 +10,34 @@
 
       <div class="dado">
         <strong>Equipamento</strong>
-        <span>{{ solicitacao.equipamento }}</span>
+        <span>{{ solicitacao.descricaoEquipamento }}</span>
       </div>
 
       <div class="dado">
         <strong>Categoria</strong>
-        <span>{{ solicitacao.categoria }}</span>
+        <span>{{ solicitacao.categoriaEquipamento }}</span>
       </div>
 
       <div class="dado">
         <strong>Defeito</strong>
-        <span>{{ solicitacao.defeito }}</span>
+        <span>{{ solicitacao.descricaoDefeito }}</span>
       </div>
 
       <div class="dado">
         <strong>Data</strong>
-        <span>{{ solicitacao.data }}</span>
+        <span>{{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</span>
       </div>
 
       <div class="dado">
         <strong>Hora</strong>
-        <span>{{ solicitacao.hora }}</span>
+        <span>{{ solicitacao.dataHora | date:'HH:mm' }}</span>
       </div>
 
     </div>
 
     <div class="valor">
       <p>Valor do serviço</p>
-      <strong>R$ {{ solicitacao.valor }}</strong>
+      <strong>R$ {{ solicitacao.valorOrcamento}}</strong>
     </div>
 
     <button class="btn-pagar" (click)="confirmarPagamento()">

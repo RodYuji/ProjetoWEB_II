@@ -5,19 +5,24 @@
     <section>
         <h2>Informações da solicitação</h2>
 
-        <p>Descrição: {{ solicitacao.descricao }}</p>
-        <p>Equipamento: {{ solicitacao.equipamento }}</p>
-        <p>Categoria: {{ solicitacao.categoria }}</p>
-        <p>Defeito: {{ solicitacao.defeito }}</p>
-        <p>Data: {{ solicitacao.data }}</p>
-        <p>Hora: {{ solicitacao.hora }}</p>
-        <p>Status: {{ solicitacao.status }}</p>
+      <p>Descrição: {{ solicitacao.descricaoEquipamento }}</p>
+      <p>Equipamento: {{ solicitacao.descricaoEquipamento }}</p>
+      <p>Categoria: {{ solicitacao.categoriaEquipamento }}</p>
+      <p>Defeito: {{ solicitacao.descricaoDefeito }}</p>
+      <p>Data: {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
+      <p>Hora: {{ solicitacao.dataHora | date:'HH:mm' }}</p>
+      <p>Status: {{ solicitacao.estado }}</p>
     </section>
 
     <section>
         <h2>Histórico</h2>
 
-        <!-- histórico será colocado aqui depois -->
+        @for (item of solicitacao.historico; track $index) {
+    <div class="historico-item">
+        <strong>{{ item.estado }}</strong>
+        <span>{{ item.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+}
 
     </section>
 

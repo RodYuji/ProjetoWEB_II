@@ -1,6 +1,14 @@
 export type EstadoSolicitacao = 'ABERTA' | 'ORÇADA' | 'REJEITADA' | 'APROVADA' | 'REDIRECIONADA' | 'ARRUMADA' | 'PAGA' | 'FINALIZADA';
 
+export interface HistoricoSolicitacao {
+  dataHora: Date;
+  estado: EstadoSolicitacao;
+}
+
 export interface SolicitacaoManutencao {
+
+  historico: HistoricoSolicitacao[];
+  
   id: number;
   descricaoEquipamento: string;
   categoriaEquipamento: string;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {SolicitacaoCard} from "./solicitacao-card/solicitacao-card";
+import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
 import { Router } from '@angular/router';
 import { SolicitacaoService } from '../../shared/services/solicitacao.service';
 
@@ -11,11 +11,15 @@ import { SolicitacaoService } from '../../shared/services/solicitacao.service';
 })
 export class HomeClienteComponent {
   filtroStatus = 'TODAS';
-  solicitacoes: any[] = [];
-  solicitacoesFiltradas: any[] = [];
-  constructor(private router: Router,private solicitacaoService: SolicitacaoService
+
+ solicitacoes: any[] = [];
+solicitacoesFiltradas: any[] = [];
+
+ constructor(
+  private router: Router,
+  private solicitacaoService: SolicitacaoService
 ) {
-  this.solicitacoes = this.solicitacaoService.solicitacoes;
+  this.solicitacoes = this.solicitacaoService.listar();
   this.solicitacoesFiltradas = this.solicitacoes;
 }
 
@@ -27,24 +31,23 @@ export class HomeClienteComponent {
     this.router.navigate(['/orcamento', solicitacao.id]);
   }
 
-verPagamento(solicitacao: any) {
-  console.log('HOME RECEBEU O EVENTO');
-  console.log(solicitacao);
+  verPagamento(solicitacao: any) {
+    this.router.navigate(['/pagamento', solicitacao.id]);
+  }
 
-  this.router.navigate(['/pagamento', solicitacao.id]);
-}
-
-  filtrarStatus(event: Event) {
+  filtrarEstado(event: Event) {
     const valorSelecionado = (event.target as HTMLSelectElement).value;
 
-    if(valorSelecionado === 'TODAS') {
+    if (valorSelecionado === 'TODAS') {
       this.solicitacoesFiltradas = this.solicitacoes;
     } else {
-      this.solicitacoesFiltradas = this.solicitacoes.filter(solicitacao => solicitacao.status === valorSelecionado);
+      this.solicitacoesFiltradas = this.solicitacoes.filter(
+        solicitacao => solicitacao.estado === valorSelecionado
+      );
     }
   }
 
-  abrirNovaSolicitacao(){
+  abrirNovaSolicitacao() {
     this.router.navigate(['/nova-solicitacao']);
   }
 }

@@ -16,6 +16,9 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-01T09:00:00'),
       estado: 'ABERTA',
       nomeCliente: 'Gabriel',
+      historico: [
+        { dataHora: new Date('2026-08-01T09:00:00'), estado: 'ABERTA' }
+      ]
     },
     {
       id: 2,
@@ -25,6 +28,11 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-02T10:30:00'),
       estado: 'ORÇADA',
       nomeCliente: 'Fernando',
+      valorOrcamento: 150.00,
+      historico: [
+        { dataHora: new Date('2026-08-02T10:30:00'), estado: 'ABERTA' },
+        { dataHora: new Date('2026-08-02T12:00:00'), estado: 'ORÇADA' }
+      ]
     },
     {
       id: 3,
@@ -34,6 +42,9 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-03T14:00:00'),
       estado: 'ABERTA',
       nomeCliente: 'Carlos',
+      historico: [
+        { dataHora: new Date('2026-08-03T14:00:00'), estado: 'ABERTA' }
+      ]
     },
     {
       id: 4,
@@ -41,8 +52,13 @@ export class SolicitacaoService {
       categoriaEquipamento: 'Teclado',
       descricaoDefeito: 'teclas não respondem',
       dataHora: new Date('2026-08-04T08:15:00'),
-      estado: 'APROVADA',
+      estado: 'ARRUMADA',
       nomeCliente: 'Rodrigo',
+      valorOrcamento: 80.00,
+      historico: [
+        { dataHora: new Date('2026-08-04T08:15:00'), estado: 'ABERTA' },
+        { dataHora: new Date('2026-08-04T10:00:00'), estado: 'ARRUMADA' }
+      ]
     },
     {
       id: 5,
@@ -52,6 +68,10 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-05T11:45:00'),
       estado: 'REJEITADA',
       nomeCliente: 'Gabriel',
+      historico: [
+        { dataHora: new Date('2026-08-05T11:45:00'), estado: 'ABERTA' },
+        { dataHora: new Date('2026-08-05T12:00:00'), estado: 'REJEITADA' }
+      ]
     },
     {
       id: 6,
@@ -61,6 +81,10 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-06T16:20:00'),
       estado: 'PAGA',
       nomeCliente: 'Fernando',
+      historico: [
+        { dataHora: new Date('2026-08-06T16:20:00'), estado: 'ABERTA' },
+        { dataHora: new Date('2026-08-06T17:00:00'), estado: 'PAGA' }
+      ]
     },
   ];
 
@@ -72,7 +96,7 @@ export class SolicitacaoService {
     return this.solicitacoes.find(s => s.id === id);
   }
 
-  adicionarSolicitacao(dados: Omit<SolicitacaoManutencao, 'id'>): SolicitacaoManutencao {
+ adicionarSolicitacao(dados: Omit<SolicitacaoManutencao, 'id' | 'historico'>): SolicitacaoManutencao {
     const novaSolicitacao: SolicitacaoManutencao= {
       id: this.proximoId++,
       descricaoEquipamento:dados.descricaoEquipamento,
@@ -80,17 +104,31 @@ export class SolicitacaoService {
       descricaoDefeito:dados.descricaoDefeito,
       dataHora: dados.dataHora,
       estado: dados.estado,
-      nomeCliente: dados.nomeCliente
+      nomeCliente: dados.nomeCliente,
+      historico: [
+  {
+    estado: dados.estado,
+    dataHora: dados.dataHora
+  }
+]
     };
     this.solicitacoes.push(novaSolicitacao);
     return novaSolicitacao;
   }
 
   atualizar(solicitacao: SolicitacaoManutencao): void {
-    this.solicitacoes.forEach((obj, index, objs) => {
-      if (solicitacao.id === obj.id) {
-        objs[index] = solicitacao;
+  this.solicitacoes.forEach((obj, index, objs) => {
+    if (solicitacao.id === obj.id) {
+
+      if (obj.estado !== solicitacao.estado) {
+        solicitacao.historico.push({
+          estado: solicitacao.estado,
+          dataHora: new Date()
+        });
       }
-    });
-  }
+
+      objs[index] = solicitacao;
+    }
+  });
+}
 }

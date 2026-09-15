@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faClock,
@@ -12,15 +13,14 @@ import { SolicitacaoService } from '../../../shared/services/solicitacao.service
 
 @Component({
   selector: 'app-solicitacao-card',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, DatePipe],
   templateUrl: './solicitacao-card.html',
   styleUrl: './solicitacao-card.css',
 })
 export class SolicitacaoCard {
   @Input() equipamento = '';
-  @Input() data = '';
-  @Input() status = '';
-  @Input() hora = '';
+  @Input() dataHora!: Date;
+  @Input() estado = '';
   @Input() solicitacaoId: number = 0;
 
   @Output() detalhes = new EventEmitter<void>();
@@ -37,18 +37,14 @@ export class SolicitacaoCard {
   constructor(private solicitacaoService: SolicitacaoService) {}
 
   verPagamento() {
-    console.log('CLIQUEI NO BOTÃO');
     this.pagamento.emit();
-    console.log('EVENTO PAGAMENTO EMITIDO');
   }
 
   verOrcamento() {
-    // Lógica para exibir o orçamento da solicitação
     this.orcamento.emit();
   }
 
   verDetalhes() {
-    // Lógica para exibir os detalhes da solicitação
     this.detalhes.emit();
   }
 
@@ -56,20 +52,23 @@ export class SolicitacaoCard {
     if (this.equipamento.length > 30) {
       return this.equipamento.substring(0, 30) + '...';
     }
+
     return this.equipamento;
   }
 
-  textoStatus() {
-    if (this.status === 'CONCLUÍDA') {
-      return 'Concluída - Aguardando Pagamento';
+  textoEstado() {
+    if (this.estado === 'ARRUMADA') {
+      return 'Arrumada - Aguardando Pagamento';
     }
-    return this.status;
+
+    return this.estado;
   }
 
   resgatarServico(): void {
-  const solicitacao = this.solicitacaoService.buscarPorId(this.solicitacaoId);
-  if (solicitacao) {
-    solicitacao.status = 'APROVADA';
+    const solicitacao = this.solicitacaoService.buscarPorId(this.solicitacaoId);
+
+    if (solicitacao) {
+      solicitacao.estado = 'ABERTA';
+    }
   }
-} 
 }

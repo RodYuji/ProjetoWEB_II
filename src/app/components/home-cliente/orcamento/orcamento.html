@@ -7,22 +7,22 @@
 
     <h2>Dados da solicitação</h2>
 
-    <p><strong>Equipamento:</strong> {{ solicitacao.equipamento }}</p>
+    <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
 
-    <p><strong>Categoria:</strong> {{ solicitacao.categoria }}</p>
+    <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
 
-    <p><strong>Defeito:</strong> {{ solicitacao.defeito }}</p>
+    <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
 
-    <p><strong>Data:</strong> {{ solicitacao.data }}</p>
+    <p><strong>Data:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
 
-    <p><strong>Hora:</strong> {{ solicitacao.hora }}</p>
+    <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>   
 
   </div>
 
   <div class="valor">
     <p>Valor do orçamento</p>
 
-    <strong>R$ {{ solicitacao.valor }}</strong>
+    <strong>R$ {{ solicitacao.valorOrcamento }}</strong>
   </div>
 
   <div class="acoes">
