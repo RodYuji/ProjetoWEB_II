@@ -1,8 +1,8 @@
-  <div class="pagina-orcamento">
-<a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
+<div class="pagina-orcamento">
+  <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
     <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
   </a>
-    <div class="orcamento">
+  <div class="orcamento">
     <h1>Orçamento do Serviço</h1>
     <div class="dados-solicitacao">
       <h2>Dados da solicitação</h2>
@@ -20,10 +20,42 @@
       <button class="btn-aprovar" (click)="aprovarServico()">
         Aprovar Serviço
       </button>
-      <button class="btn-rejeitar" (click)="rejeitarServico()">
+      <button class="btn-rejeitar" (click)="abrirModalRejeicao()">
         Rejeitar Serviço
       </button>
     </div>
-    
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="mostrarModalRejeicao" (click)="fecharModalRejeicao()">
+  <div class="modal-conteudo" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Motivo da Rejeição</h2>
+      <button class="btn-fechar" (click)="fecharModalRejeicao()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <p>Por favor, descreva o motivo da rejeição do serviço:</p>
+      <textarea
+        [(ngModel)]="motivoRejeicao"
+        placeholder="Digite o motivo da rejeição..."
+        class="textarea-motivo"
+        rows="6">
+      </textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="fecharModalRejeicao()">
+        Cancelar
+      </button>
+      <button 
+        class="btn-confirmar" 
+        (click)="confirmarRejeicao()"
+        [disabled]="!motivoRejeicao.trim()">
+        Confirmar Rejeição
+      </button>
     </div>
   </div>
+</div>

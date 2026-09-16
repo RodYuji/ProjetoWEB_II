@@ -1,5 +1,3 @@
-
-
 .orcamento {
   max-width: 700px;
   margin: 0 auto;
@@ -79,4 +77,142 @@
 
 .acoes button:hover {
   opacity: 0.85;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-conteudo {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #E4E7EC;
+}
+
+.modal-header h2 {
+  color: #040944;
+  font-size: 20px;
+  margin: 0;
+}
+
+.btn-fechar {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #667085;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-fechar:hover {
+  color: #040944;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body p {
+  color: #475467;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.textarea-motivo {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #D0D5DD;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #101828;
+  resize: vertical;
+}
+
+.textarea-motivo:focus {
+  outline: none;
+  border-color: #dc3545;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+.textarea-motivo::placeholder {
+  color: #A3ACB9;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  border-top: 1px solid #E4E7EC;
+  justify-content: flex-end;
+}
+
+.btn-cancelar,
+.btn-confirmar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-cancelar {
+  background-color: #F3F4F6;
+  color: #475467;
+}
+
+.btn-cancelar:hover {
+  background-color: #E5E7EB;
+}
+
+.btn-confirmar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-confirmar:hover:not(:disabled) {
+  background-color: #c82333;
+}
+
+.btn-confirmar:disabled {
+  background-color: #D0D5DD;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
