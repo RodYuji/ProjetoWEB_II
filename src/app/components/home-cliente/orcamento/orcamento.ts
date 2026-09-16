@@ -1,17 +1,20 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-orcamento',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, NgIf, FormsModule],
   templateUrl: './orcamento.html',
   styleUrl: './orcamento.css',
 })
 export class Orcamento {
 
   solicitacao: any;
+  mostrarModalRejeicao = false;
+  motivoRejeicao = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -31,9 +34,27 @@ export class Orcamento {
     this.router.navigate(['/home-cliente']);
   }
 
-  rejeitarServico() {
+  abrirModalRejeicao() {
+    this.mostrarModalRejeicao = true;
+    this.motivoRejeicao = '';
+  }
+
+  fecharModalRejeicao() {
+    this.mostrarModalRejeicao = false;
+    this.motivoRejeicao = '';
+  }
+
+  confirmarRejeicao() {
+    if (!this.motivoRejeicao.trim()) {
+      alert('Por favor, descreva o motivo da rejeição.');
+      return;
+    }
+
     this.solicitacao.estado = 'REJEITADA';
-  alert("Serviço recusado com sucesso!");
+    this.solicitacao.motivoRejeicao = this.motivoRejeicao;
+    
+    alert('Serviço rejeitado com sucesso!');
+    this.fecharModalRejeicao();
     this.router.navigate(['/home-cliente']);
   }
 }
