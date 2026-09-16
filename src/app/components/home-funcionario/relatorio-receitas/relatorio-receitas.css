@@ -101,12 +101,12 @@ input {
   font-weight: 700;
 }
 
-.botao-primario {
+.btn_gerarpdf {
   background: #a6532b;
   color: #fff;
 }
 
-.botao-secundario {
+.btn_filtrar {
   border: 1px solid #a6532b;
   background: transparent;
   color: #8d4524;
@@ -177,7 +177,7 @@ input {
     flex-direction: column;
   }
 
-  .botao-primario {
+  .btn_gerarpdf {
     width: 100%;
   }
 }

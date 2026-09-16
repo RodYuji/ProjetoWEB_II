@@ -81,9 +81,24 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-06T16:20:00'),
       estado: 'PAGA',
       nomeCliente: 'Fernando',
+      valorOrcamento: 420.00,
       historico: [
         { dataHora: new Date('2026-08-06T16:20:00'), estado: 'ABERTA' },
         { dataHora: new Date('2026-08-06T17:00:00'), estado: 'PAGA' }
+      ]
+    },
+    {
+      id: 7,
+      descricaoEquipamento: 'Desktop com falha no processador',
+      categoriaEquipamento: 'Desktop',
+      descricaoDefeito: 'processador falhando',
+      dataHora: new Date('2026-08-09T09:15:00'),
+      estado: 'PAGA',
+      nomeCliente: 'Clara',
+      valorOrcamento: 680.00,
+      historico: [
+        { dataHora: new Date('2026-08-09T09:15:00'), estado: 'ABERTA' },
+        { dataHora: new Date('2026-08-09T11:00:00'), estado: 'PAGA' }
       ]
     },
   ];

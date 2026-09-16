@@ -9,7 +9,7 @@
         <h1>Relatório de receitas</h1>
         <p>Consulte os pagamentos realizados anteriormente.</p>
       </div>
-      <button class="botao botao-primario" type="button" (click)="gerarPdf()">Gerar PDF</button>
+      <button class="botao btn_gerarpdf" type="button" (click)="gerarPdf()">Gerar PDF</button>
     </header>
   
     <section class="filtros" aria-labelledby="titulo-filtros">
@@ -23,7 +23,7 @@
           Data final
           <input type="date" [(ngModel)]="dataFinal" (change)="aplicarFiltro()" />
         </label>
-        <button class="botao botao-secundario" type="button" (click)="aplicarFiltro()">Filtrar</button>
+        <button class="botao btn_filtrar" type="button" (click)="aplicarFiltro()">Filtrar</button>
       </div>
       @if (mensagemErro) {
         <p class="mensagem-erro" role="alert">{{ mensagemErro }}</p>
