@@ -1,0 +1,53 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gerenciamento de Funcionários</h2>
+
+    <button class="novo-funcionario-btn">
+      + Novo Funcionário
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Cargo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (funcionario of funcionarios; track funcionario) {
+            <tr>
+              <td>{{ funcionario.nome }}</td>
+              <td>{{ funcionario.cpf }}</td>
+              <td>{{ funcionario.cargo }}</td>
+
+              <td>
+                <button
+                  class="btn btn-sm btn-warning me-2"
+                  (click)="editarFuncionario(funcionario)">
+                  Editar
+                </button>
+
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="excluirFuncionario(funcionario)">
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>

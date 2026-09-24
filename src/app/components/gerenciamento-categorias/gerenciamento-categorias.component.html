@@ -1,0 +1,49 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gerenciamento de Categorias</h2>
+
+    <button class="nova-categoria-btn">
+      + Nova Categoria
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (categoria of categorias; track categoria) {
+            <tr>
+              <td>{{ categoria.nome }}</td>
+
+              <td>
+                <button
+                  class="btn btn-sm btn-warning me-2"
+                  (click)="editarCategoria(categoria)">
+                  Editar
+                </button>
+
+                <button
+                  class="btn btn-sm btn-danger"
+                  (click)="excluirCategoria(categoria)">
+                  Excluir
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>

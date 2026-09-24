@@ -12,6 +12,8 @@ import { Pagamento } from './components/home-cliente/pagamento/pagamento';
 import { RelatorioReceitas } from './components/home-funcionario/relatorio-receitas/relatorio-receitas';
 import { RelatorioCategoria } from './components/home-funcionario/relatorio-categoria/relatorio-categoria';
 import { VisualizarSolicitacao } from './components/home-funcionario/visualizar-solicitacao/visualizar-solicitacao';
+import { GerenciamentoFuncionariosComponent } from './components/gerenciamento-funcionarios/gerenciamento-funcionarios.component';
+import { GerenciamentoCategoriasComponent } from './components/gerenciamento-categorias/gerenciamento-categorias.component';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },
@@ -28,5 +30,7 @@ export const routes: Routes = [
   { path: 'relatorio-receitas', component: RelatorioReceitas },
   { path: 'relatorio-categoria', component: RelatorioCategoria },
   { path: 'visualizar-solicitacao', component: VisualizarSolicitacao }, 
+  { path: 'gerenciamento-funcionarios', component: GerenciamentoFuncionariosComponent },
+  { path: 'gerenciamento-categorias', component: GerenciamentoCategoriasComponent }, 
   { path: '**', redirectTo: '' },
 ];

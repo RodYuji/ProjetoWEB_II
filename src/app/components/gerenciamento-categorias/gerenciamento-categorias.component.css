@@ -1,0 +1,13 @@
+.nova-categoria-btn {
+    background-color: #1E3A5F;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.nova-categoria-btn:hover {
+    background-color: #162D4A;
+}
