@@ -1,0 +1,31 @@
+<main class="relatorio-categoria">
+  <a class="btn btn-secondary voltar-relatorio" [routerLink]="['/home-funcionario']">
+    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+  </a>
+  <div class="cabecalho">
+    <div>
+      <p class="eyebrow">Resumo financeiro</p>
+      <h1>Receita por categoria</h1>
+    </div>
+    <button class="botao-pdf" type="button" (click)="gerarPdf()">Gerar PDF</button>
+  </div>
+
+  <section class="resumo-total">
+    <span>Total geral</span>
+    <strong>{{ formatarMoeda(totalReceitas) }}</strong>
+  </section>
+
+  <section class="lista-categorias">
+    @for (categoria of categorias; track categoria.categoria) {
+      <article class="item-categoria">
+        <div class="linha-principal">
+          <h2>{{ categoria.categoria }}</h2>
+          <strong>{{ formatarMoeda(categoria.total) }}</strong>
+        </div>
+        <p>Quantidade de serviços: {{ categoria.quantidade }}</p>
+      </article>
+    } @empty {
+      <p class="vazio">Nenhuma receita registrada para as categorias de equipamento.</p>
+    }
+  </section>
+</main>

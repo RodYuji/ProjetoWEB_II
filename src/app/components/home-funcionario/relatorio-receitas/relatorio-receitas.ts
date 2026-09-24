@@ -44,15 +44,23 @@ export class RelatorioReceitas {
 
     const receitasPorDia = new Map<string, { descricao: string; valor: number }[]>();
 
-    this.solicitacoes.filter((solicitacao) => solicitacao.status === 'PAGA').forEach((solicitacao) => {
-        const data = this.obterData(solicitacao.dataPagamento ?? solicitacao.data);
+    this.solicitacoes
+      .filter((solicitacao) => solicitacao.estado === 'PAGA' || solicitacao.status === 'PAGA')
+      .forEach((solicitacao) => {
+        const dataRaw = solicitacao.dataPagamento ?? solicitacao.data ?? solicitacao.dataHora;
+        const data = this.obterData(dataRaw);
         if (!data || !this.noIntervalo(data)) {
           return;
         }
 
         const chave = this.formatarDataISO(data);
         const itens = receitasPorDia.get(chave) ?? [];
-        itens.push({ descricao: solicitacao.equipamento ?? solicitacao.descricao ?? 'Serviço de manutenção', valor: Number(solicitacao.valor) || 0,});
+        const valor = Number(solicitacao.valor ?? solicitacao.valorOrcamento ?? 0);
+
+        itens.push({
+          descricao: solicitacao.equipamento ?? solicitacao.descricaoEquipamento ?? solicitacao.descricao ?? 'Serviço de manutenção',
+          valor,
+        });
         receitasPorDia.set(chave, itens);
       });
 
