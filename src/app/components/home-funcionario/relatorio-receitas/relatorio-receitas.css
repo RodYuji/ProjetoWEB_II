@@ -24,7 +24,7 @@
 
 .eyebrow {
   margin: 0 0 0.35rem;
-  color: #a6532b;
+  color: #040944;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -102,14 +102,14 @@ input {
 }
 
 .botao-primario {
-  background: #a6532b;
+  background: #040944;
   color: #fff;
 }
 
 .botao-secundario {
-  border: 1px solid #a6532b;
+  border: 1px solid #040944;
   background: transparent;
-  color: #8d4524;
+  color: #040944;
 }
 
 .mensagem-erro {
@@ -123,7 +123,7 @@ input {
   justify-content: space-between;
   margin: 1.5rem 0;
   padding: 1.1rem 1.25rem;
-  background: #f3eee7;
+  background: #e7edf3;
 }
 
 .resumo span {
@@ -131,7 +131,7 @@ input {
 }
 
 .resumo strong {
-  color: #8d4524;
+  color: #040944;
   font-size: 1.35rem;
 }
 
@@ -155,7 +155,7 @@ input {
 }
 
 .grupo-cabecalho strong {
-  color: #8d4524;
+  color: #040944;
 }
 
 .linha-receita {
@@ -166,7 +166,7 @@ input {
 
 .vazio {
   padding: 1.25rem;
-  border: 1px dashed #aab5b2;
+  border: 1px dashed #abaab5;
   color: #59656b;
   text-align: center;
 }
