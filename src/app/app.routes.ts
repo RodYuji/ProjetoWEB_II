@@ -12,9 +12,9 @@ import { Pagamento } from './components/home-cliente/pagamento/pagamento';
 import { RelatorioReceitas } from './components/home-funcionario/relatorio-receitas/relatorio-receitas';
 import { RelatorioCategoria } from './components/home-funcionario/relatorio-categoria/relatorio-categoria';
 import { VisualizarSolicitacao } from './components/home-funcionario/visualizar-solicitacao/visualizar-solicitacao';
-import { GerenciamentoFuncionariosComponent } from './components/gerenciamento-funcionarios/gerenciamento-funcionarios.component';
-import { GerenciamentoCategoriasComponent } from './components/gerenciamento-categorias/gerenciamento-categorias.component';
-import { NovoFuncionarioComponent } from './components/gerenciamento-funcionarios/novo-funcionario/novo-funcionario.component';
+import { GerenciamentoFuncionariosComponent } from './components/home-funcionario/gerenciamento-funcionarios/gerenciamento-funcionarios.component';
+import { GerenciamentoCategoriasComponent } from './components/home-funcionario/gerenciamento-categorias/gerenciamento-categorias.component';
+import { NovoFuncionarioComponent } from './components/home-funcionario/gerenciamento-funcionarios/novo-funcionario/novo-funcionario.component';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },

@@ -8,7 +8,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './gerenciamento-funcionarios.component.css',
 })
 export class GerenciamentoFuncionariosComponent {
-
   funcionarios = [
     {
       nome: 'Gabriel Formanek',
