@@ -3,6 +3,11 @@ export type EstadoSolicitacao = 'ABERTA' | 'ORÇADA' | 'REJEITADA' | 'APROVADA' 
 export interface HistoricoSolicitacao {
   dataHora: Date;
   estado: EstadoSolicitacao;
+  
+  // Historico manutenção
+  funcionarioDestinoManutencao?: string;
+  funcionarioOrigemManutencao?: string;
+  dataHoraHistoricoManutencao?: Date;
 }
 
 export interface SolicitacaoManutencao {
@@ -32,4 +37,5 @@ export interface SolicitacaoManutencao {
   funcionarioOrigemRedirecionamento?: string;
   funcionarioDestinoRedirecionamento?: string;
   dataHoraRedirecionamento?: Date;
+
 }
