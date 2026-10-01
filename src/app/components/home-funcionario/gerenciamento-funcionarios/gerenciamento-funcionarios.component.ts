@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gerenciamento-funcionarios',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './gerenciamento-funcionarios.component.css',
 })
 export class GerenciamentoFuncionariosComponent {
+  private readonly router = inject(Router);
 
   funcionarios = [
     {
@@ -37,5 +39,9 @@ export class GerenciamentoFuncionariosComponent {
         f => f !== funcionario
       );
     }
+  }
+
+  novoFuncionario() {
+    this.router.navigate(['/novo-funcionario']);
   }
 }
