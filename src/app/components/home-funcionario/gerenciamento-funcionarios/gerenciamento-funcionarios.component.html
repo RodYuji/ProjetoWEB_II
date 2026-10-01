@@ -58,22 +58,24 @@
       <div class="modal-content">
 
         <div class="modal-header">
-          <h5 class="modal-title">Novo Funcionário</h5>
+          <h5 class="modal-title">
+            {{ modoEdicao ? 'Editar Funcionário' : 'Novo Funcionário' }}
+          </h5>
           <button type="button" class="btn-close" (click)="cancelarModal()"></button>
         </div>
 
         <div class="modal-body">
           <input type="text" class="form-control mb-3" name="nome"
                  placeholder="Digite o nome do funcionário"
-                 [(ngModel)]="novoFuncionario.nome">
+                 [(ngModel)]="funcionarioForm.nome">
 
           <input type="text" class="form-control mb-3" name="cpf"
                  placeholder="000.000.000-00"
                  maxlength="14"
-                 [(ngModel)]="novoFuncionario.cpf">
+                 [(ngModel)]="funcionarioForm.cpf">
 
           <select class="form-select" name="cargo"
-                  [(ngModel)]="novoFuncionario.cargo">
+                  [(ngModel)]="funcionarioForm.cargo">
             <option value="" disabled>Selecione um cargo</option>
             @for (cargo of cargos; track cargo) {
               <option [value]="cargo">{{ cargo }}</option>
@@ -88,7 +90,7 @@
           <button type="button" class="btn btn-primary"
                   [disabled]="!formularioValido()"
                   (click)="salvarFuncionario()">
-            Salvar
+            {{ modoEdicao ? 'Salvar Alterações' : 'Salvar' }}
           </button>
         </div>
 
