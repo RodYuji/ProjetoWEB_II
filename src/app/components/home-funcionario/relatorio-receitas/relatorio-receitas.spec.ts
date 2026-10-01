@@ -31,4 +31,12 @@ describe('RelatorioReceitas', () => {
     expect(component.receitas.length).toBeGreaterThan(0);
     expect(component.mensagemErro).toBe('');
   });
+
+  it('gera o PDF do relatório sem lançar erros', () => {
+    component.dataInicial = '2026-08-01';
+    component.dataFinal = '2026-08-12';
+    component.aplicarFiltro();
+
+    expect(() => component.gerarPdf()).not.toThrow();
+  });
 });
