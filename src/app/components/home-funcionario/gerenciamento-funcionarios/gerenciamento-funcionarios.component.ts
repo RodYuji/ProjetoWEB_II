@@ -16,36 +16,49 @@ export class GerenciamentoFuncionariosComponent {
   cargos = ['Técnico', 'Atendente', 'Gerente'];
 
   modalAberto = false;
-  novoFuncionario = { nome: '', cpf: '', cargo: '' };
+  modoEdicao = false;
+  indiceEditando = -1;
+  funcionarioForm = { nome: '', cpf: '', cargo: '' };
 
   abrirModal() {
-    this.novoFuncionario = { nome: '', cpf: '', cargo: '' };
+    this.funcionarioForm = { nome: '', cpf: '', cargo: '' };
+    this.modoEdicao = false;
+    this.modalAberto = true;
+  }
+
+  editarFuncionario(funcionario: any) {
+    this.indiceEditando = this.funcionarios.indexOf(funcionario);
+    this.funcionarioForm = {
+      nome: funcionario.nome,
+      cpf: funcionario.cpf,
+      cargo: funcionario.cargo
+    };
+    this.modoEdicao = true;
     this.modalAberto = true;
   }
 
   formularioValido(): boolean {
-    return this.novoFuncionario.nome.trim() !== '' &&
-           this.novoFuncionario.cpf.trim() !== '' &&
-           this.novoFuncionario.cargo !== '';
+    return this.funcionarioForm.nome.trim() !== '' &&
+           this.funcionarioForm.cpf.trim() !== '' &&
+           this.funcionarioForm.cargo !== '';
   }
 
   salvarFuncionario() {
-    if (this.formularioValido()) {
-      this.funcionarios.push({ ...this.novoFuncionario });
-      this.modalAberto = false;
+    if (!this.formularioValido()) {
+      return;
     }
+
+    if (this.modoEdicao) {
+      this.funcionarios[this.indiceEditando] = { ...this.funcionarioForm };
+    } else {
+      this.funcionarios.push({ ...this.funcionarioForm });
+    }
+
+    this.modalAberto = false;
   }
 
   cancelarModal() {
     this.modalAberto = false;
-  }
-
-  editarFuncionario(funcionario: any) {
-    const novoNome = prompt('Digite o novo nome:', funcionario.nome);
-
-    if (novoNome) {
-      funcionario.nome = novoNome;
-    }
   }
 
   excluirFuncionario(funcionario: any) {

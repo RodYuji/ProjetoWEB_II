@@ -54,14 +54,16 @@
       <div class="modal-content">
 
         <div class="modal-header">
-          <h5 class="modal-title">Nova Categoria</h5>
+          <h5 class="modal-title">
+            {{ modoEdicao ? 'Editar Categoria' : 'Nova Categoria' }}
+          </h5>
           <button type="button" class="btn-close" (click)="cancelarModal()"></button>
         </div>
 
         <div class="modal-body">
           <input type="text" class="form-control" name="nome"
                  placeholder="Digite o nome da categoria"
-                 [(ngModel)]="novaCategoria.nome"
+                 [(ngModel)]="categoriaForm.nome"
                  (keyup.enter)="salvarCategoria()">
         </div>
 
@@ -70,9 +72,9 @@
             Cancelar
           </button>
           <button type="button" class="btn btn-primary"
-                  [disabled]="!novaCategoria.nome.trim()"
+                  [disabled]="!categoriaForm.nome.trim()"
                   (click)="salvarCategoria()">
-            Salvar
+            {{ modoEdicao ? 'Salvar Alterações' : 'Salvar' }}
           </button>
         </div>
 

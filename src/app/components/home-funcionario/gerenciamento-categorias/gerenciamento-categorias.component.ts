@@ -15,30 +15,41 @@ export class GerenciamentoCategoriasComponent {
   ];
 
   modalAberto = false;
-  novaCategoria = { nome: '' };
+  modoEdicao = false;
+  indiceEditando = -1;
+  categoriaForm = { nome: '' };
 
   abrirModal() {
-    this.novaCategoria = { nome: '' };
+    this.categoriaForm = { nome: '' };
+    this.modoEdicao = false;
+    this.modalAberto = true;
+  }
+
+  editarCategoria(categoria: any) {
+    this.indiceEditando = this.categorias.indexOf(categoria);
+    this.categoriaForm = { nome: categoria.nome };
+    this.modoEdicao = true;
     this.modalAberto = true;
   }
 
   salvarCategoria() {
-    if (this.novaCategoria.nome.trim() !== '') {
-      this.categorias.push({ ...this.novaCategoria });
-      this.modalAberto = false;
+    const nome = this.categoriaForm.nome.trim();
+
+    if (nome === '') {
+      return;
     }
+
+    if (this.modoEdicao) {
+      this.categorias[this.indiceEditando].nome = nome;
+    } else {
+      this.categorias.push({ nome });
+    }
+
+    this.modalAberto = false;
   }
 
   cancelarModal() {
     this.modalAberto = false;
-  }
-
-  editarCategoria(categoria: any) {
-    const novoNome = prompt('Digite o novo nome:', categoria.nome);
-
-    if (novoNome) {
-      categoria.nome = novoNome;
-    }
   }
 
   excluirCategoria(categoria: any) {
