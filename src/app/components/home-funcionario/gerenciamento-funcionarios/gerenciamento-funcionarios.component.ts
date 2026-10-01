@@ -1,15 +1,13 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-gerenciamento-funcionarios',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './gerenciamento-funcionarios.component.html',
   styleUrl: './gerenciamento-funcionarios.component.css',
 })
 export class GerenciamentoFuncionariosComponent {
-  private readonly router = inject(Router);
-
   funcionarios = [
     {
       nome: 'Gabriel Formanek',
@@ -39,9 +37,5 @@ export class GerenciamentoFuncionariosComponent {
         f => f !== funcionario
       );
     }
-  }
-
-  novoFuncionario() {
-    this.router.navigate(['/novo-funcionario']);
   }
 }
