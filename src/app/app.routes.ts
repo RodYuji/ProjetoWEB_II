@@ -14,7 +14,6 @@ import { RelatorioCategoria } from './components/home-funcionario/relatorio-cate
 import { VisualizarSolicitacao } from './components/home-funcionario/visualizar-solicitacao/visualizar-solicitacao';
 import { GerenciamentoFuncionariosComponent } from './components/home-funcionario/gerenciamento-funcionarios/gerenciamento-funcionarios.component';
 import { GerenciamentoCategoriasComponent } from './components/home-funcionario/gerenciamento-categorias/gerenciamento-categorias.component';
-import { NovoFuncionarioComponent } from './components/home-funcionario/gerenciamento-funcionarios/novo-funcionario/novo-funcionario.component';
 
 export const routes: Routes = [
   { path: 'home-cliente', component: HomeClienteComponent },
@@ -33,6 +32,5 @@ export const routes: Routes = [
   { path: 'visualizar-solicitacao', component: VisualizarSolicitacao }, 
   { path: 'gerenciamento-funcionarios', component: GerenciamentoFuncionariosComponent },
   { path: 'gerenciamento-categorias', component: GerenciamentoCategoriasComponent }, 
-  { path: 'novo-funcionario', component: NovoFuncionarioComponent },
   { path: '**', redirectTo: '' },
 ];
