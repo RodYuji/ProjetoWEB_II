@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-gerenciamento-funcionarios',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './gerenciamento-funcionarios.component.html',
   styleUrl: './gerenciamento-funcionarios.component.css',
 })

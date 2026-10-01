@@ -1,0 +1,64 @@
+.titulo {
+    background-color: #FFFFFF;
+    border-left: 5px solid #1E3A5F;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.titulo h2 {
+    color: #1E3A5F;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.titulo p {
+    color: #667085;
+    font-size: 16px;
+    margin: 0;
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.form-label {
+    color: #344054;
+    font-weight: 500;
+}
+
+.acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn-cadastrar {
+    background-color: #1E3A5F;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-cadastrar:hover {
+    background-color: #162D4A;
+}
+
+.btn-cancelar {
+    background-color: #FFFFFF;
+    color: #1E3A5F;
+    border: 1px solid #1E3A5F;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-cancelar:hover {
+    background-color: #F5F7FA;
+}
