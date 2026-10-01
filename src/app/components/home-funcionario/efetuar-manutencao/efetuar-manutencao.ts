@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { ActivatedRoute } from '@angular/router';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { FuncionarioService } from '../../../shared/services/funcionario.service';
+import { Funcionario } from '../../../shared/models/funcionario.model';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -12,7 +14,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './efetuar-manutencao.html',
   styleUrl: './efetuar-manutencao.css',
 })
-export class EfetuarManutencao {
+export class EfetuarManutencao implements OnInit {
   solicitacao: SolicitacaoManutencao | undefined;
 
   // RF014
@@ -24,14 +26,18 @@ export class EfetuarManutencao {
   mostrarFormularioRedirecionamento = false;
   funcionarioDestino = '';
   private funcionarioLogado = 'Arthur';
-  funcionariosDisponiveis = ['Arthur', 'Rodrigo', this.funcionarioLogado].filter((funcionario) => funcionario !== this.funcionarioLogado);
+  funcionariosDisponiveis: Funcionario[] = [];
   manutencaoConfirmada = false;
   redirecionamentoConfirmado = false;
 
-  constructor(private route: ActivatedRoute, private solicitacaoService: SolicitacaoService) {
+  constructor(private route: ActivatedRoute, private solicitacaoService: SolicitacaoService, private funcionarioService: FuncionarioService) {
     const id = this.route.snapshot.paramMap.get('id');
     const idNumero = Number(id);
     this.solicitacao = this.solicitacaoService.buscarPorId(idNumero);
+  }
+
+  ngOnInit(): void {
+    this.funcionariosDisponiveis = this.funcionarioService.listar().filter((funcionario) => funcionario.nome !== this.funcionarioLogado);
   }
 
   efetuarManutencao(): void {
@@ -41,6 +47,12 @@ export class EfetuarManutencao {
   confirmarManutencao(): void {
     if (!this.solicitacao) return;
 
+    this.solicitacao.historico.push({
+      dataHora: new Date(),
+      estado: 'ARRUMADA',
+      funcionarioOrigemManutencao: this.funcionarioLogado,
+    });
+
     this.solicitacao.descricaoManutencao = this.descricaoManutencao;
     this.solicitacao.orientacoesCliente = this.orientacoesCliente;
     this.solicitacao.dataHoraManutencao = new Date();
@@ -48,29 +60,28 @@ export class EfetuarManutencao {
     this.solicitacao.estado = 'ARRUMADA';
     this.solicitacaoService.atualizar(this.solicitacao);
     this.manutencaoConfirmada = true;
-    this.solicitacao.historico.push({
-      dataHora: new Date(),
-      estado: 'ARRUMADA',
-    });
   }
 
   redirecionarManutencao(): void {
     this.mostrarFormularioRedirecionamento = true;
-    this.solicitacao?.historico.push({
-      dataHora: new Date(),
-      estado: 'REDIRECIONADA',
-    });
   }
 
   confirmarRedirecionamento(): void {
     if (!this.solicitacao) return;
+
+    this.solicitacao.historico.push({
+      dataHora: new Date(),
+      estado: 'REDIRECIONADA',
+      funcionarioOrigemManutencao: this.funcionarioLogado,
+      funcionarioDestinoManutencao: this.funcionarioDestino,
+    });
 
     this.solicitacao.funcionarioOrigemRedirecionamento = this.funcionarioLogado;
     this.solicitacao.funcionarioDestinoRedirecionamento = this.funcionarioDestino;
     this.solicitacao.dataHoraRedirecionamento = new Date();
     this.solicitacao.estado = 'REDIRECIONADA';
     this.solicitacaoService.atualizar(this.solicitacao);
-    this.redirecionamentoConfirmado = true;
+    this.redirecionamentoConfirmado = true; 
   }
 
   cancelarManutencao(): void {

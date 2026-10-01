@@ -7,9 +7,35 @@
 
     <div class="card mb-3">
       <div class="card-body">
-        <p>Equipamento: {{ solicitacao.descricaoEquipamento }}</p>
-        <p>Cliente: {{ solicitacao.nomeCliente }}</p>
-        <p>Defeito relatado: {{ solicitacao.descricaoDefeito }}</p>
+        <h2>Dados da Solicitação</h2>
+        <p><strong>Nº da Solicitação:</strong> {{ solicitacao.id }}</p>
+        <p><strong>Estado atual:</strong> {{ solicitacao.estado }}</p>
+        <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+        <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
+        <p><strong>Defeito relatado:</strong> {{ solicitacao.descricaoDefeito }}</p>
+        <p><strong>Data da solicitação:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Cliente:</strong> {{ solicitacao.nomeCliente }}</p>
+      </div>
+    </div>
+
+        <div class="card mb-3">
+      <div class="card-body">
+        <h2>Histórico</h2>
+        @for (item of solicitacao.historico; track $index) {
+          <div class="historico-item">
+            <p>
+              <strong>{{ item.estado }}</strong>
+              - {{ item.dataHora | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+            @if (item.funcionarioDestinoManutencao) {
+              <p>Redirecionado de {{ item.funcionarioOrigemManutencao }} para {{ item.funcionarioDestinoManutencao }}</p>
+            } @else if (item.funcionarioOrigemManutencao) {
+              <p>Funcionário: {{ item.funcionarioOrigemManutencao }}</p>
+            }
+          </div>
+        } @empty {
+          <p>Nenhum registro no histórico.</p>
+        }
       </div>
     </div>
 
@@ -64,8 +90,8 @@
                 <select id="funcionarioDestino" class="form-control" name="funcionarioDestino"
                   [(ngModel)]="funcionarioDestino" required>
                   <option value="" disabled selected>Selecione um funcionário</option>
-                  @for (funcionario of funcionariosDisponiveis; track funcionario) {
-                    <option [value]="funcionario">{{ funcionario }}</option>
+                  @for (funcionario of funcionariosDisponiveis; track funcionario.cpf) {
+                    <option [value]="funcionario.nome">{{ funcionario.nome }}</option>
                   }
                 </select>
               </div>
