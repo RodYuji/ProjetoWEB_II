@@ -38,6 +38,8 @@ yarn-error.log
 testem.log
 /typings
 __screenshots__/
+relatorio-receitas.pdf
+relatorio-categoria.pdf
 
 # System files
 .DS_Store

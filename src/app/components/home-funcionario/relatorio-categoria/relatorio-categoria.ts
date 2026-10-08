@@ -55,101 +55,151 @@ export class RelatorioCategoria {
   gerarPdf(): void {
     const documento = new jsPDF({ unit: 'pt', format: 'a4' });
     const margem = 42;
+    const espacamentoPx = 40;
+    const espacamentoInformacoes = espacamentoPx * 0.75;
+    const distanciaLinhaCategoriaPx = 10;
+    const distanciaLinhaCategoria = distanciaLinhaCategoriaPx * 0.75;
     const larguraPagina = documento.internal.pageSize.getWidth();
     const alturaPagina = documento.internal.pageSize.getHeight();
-    let posicaoY = 78;
+    const limiteInferior = alturaPagina - 48;
+    const dataEmissao = obterDataHoraAtual();
+    let posicaoY = 0;
 
-    documento.setFillColor(18, 80, 113);
-    documento.rect(0, 0, larguraPagina, 76, 'F');
-    documento.setTextColor(255, 255, 255);
-    documento.setFontSize(18);
-    documento.text(this.nomeEmpresa, margem, 30);
-    documento.setFontSize(10);
-    documento.text('Resumo financeiro por categoria', margem, 48);
-    documento.text(`Emitido em ${new Date().toLocaleString('pt-BR')}`, margem, 62);
-    documento.setTextColor(27, 27, 27);
+    const desenharCabecalho = (): void => {
+      documento.setFillColor(18, 80, 113);
+      documento.rect(0, 0, larguraPagina, 76, 'F');
+      documento.setTextColor(255, 255, 255);
+      documento.setFontSize(18);
+      documento.text(this.nomeEmpresa, margem, 30);
+      documento.setFontSize(10);
+      documento.text('Resumo financeiro por categoria', margem, 48);
+      documento.text(`Emitido em ${dataEmissao}`, margem, 62);
+      documento.setTextColor(27, 27, 27);
+      posicaoY = 96;
+    };
+
+    const garantirEspaco = (alturaNecessaria: number): void => {
+      if (posicaoY + alturaNecessaria > limiteInferior) {
+        documento.addPage();
+        desenharCabecalho();
+      }
+    };
+
+    desenharCabecalho();
 
     const totalProdutos = this.categorias.reduce((total, categoria) => total + categoria.quantidade, 0);
     const categoriaDestaque = this.categorias[0] ?? null;
     const mediaCategoria = this.categorias.length > 0 ? this.totalReceitas / this.categorias.length : 0;
 
     documento.setFillColor(245, 248, 251);
-    documento.rect(margem, 92, larguraPagina - margem * 2, 70, 'F');
+    documento.rect(margem, posicaoY, larguraPagina - margem * 2, 96, 'F');
     documento.setDrawColor(203, 213, 225);
-    documento.rect(margem, 92, larguraPagina - margem * 2, 70);
+    documento.rect(margem, posicaoY, larguraPagina - margem * 2, 96);
 
     documento.setFontSize(10);
     documento.setTextColor(86, 96, 108);
-    documento.text('Receita total', margem + 18, 116);
+    documento.text('Receita total', margem + 18, posicaoY + 20);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.formatarMoeda(this.totalReceitas), margem + 18, 134);
+    documento.text(this.formatarMoeda(this.totalReceitas), margem + 18, posicaoY + 38);
 
     documento.setFontSize(10);
     documento.setTextColor(86, 96, 108);
-    documento.text('Média por categoria', margem + 190, 116);
+    documento.text('Média por categoria', margem + 270, posicaoY + 20);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.formatarMoeda(mediaCategoria), margem + 190, 134);
+    documento.text(this.formatarMoeda(mediaCategoria), margem + 270, posicaoY + 38);
 
     documento.setFontSize(10);
     documento.setTextColor(86, 96, 108);
-    documento.text('Serviços pagos', margem + 350, 116);
+    documento.text('Serviços pagos', margem + 18, posicaoY + 62);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(String(totalProdutos), margem + 350, 134);
+    documento.text(String(totalProdutos), margem + 18, posicaoY + 80);
 
     documento.setFontSize(10);
     documento.setTextColor(86, 96, 108);
-    documento.text('Categoria principal', margem + 440, 116);
+    documento.text('Categoria principal', margem + 270, posicaoY + 62);
     documento.setFontSize(11);
     documento.setTextColor(17, 24, 39);
-    documento.text(categoriaDestaque ? categoriaDestaque.categoria : 'Sem registros', margem + 440, 134);
+    const nomeCategoriaDestaque = categoriaDestaque ? categoriaDestaque.categoria : 'Sem registros';
+    const linhasCategoriaDestaque = documento.splitTextToSize(nomeCategoriaDestaque, 220);
+    documento.text(linhasCategoriaDestaque[0], margem + 270, posicaoY + 80);
 
-    posicaoY = 188;
+    posicaoY += 122;
 
     if (this.categorias.length === 0) {
+      garantirEspaco(24);
       documento.setFontSize(12);
-      documento.text('Nenhuma receita paga registrada para categorias.', margem, posicaoY);
+      documento.text('Nenhuma receita paga registrada para categorias.', margem, posicaoY + 12);
+      posicaoY += 24;
     } else {
-      documento.setFontSize(12);
-      documento.text('Detalhamento por categoria', margem, posicaoY);
-      posicaoY += 18;
+      garantirEspaco(24);
+      documento.setFont('helvetica', 'bold');
+      documento.setFontSize(16);
+      documento.text('DETALHAMENTO POR CATEGORIA', margem, posicaoY + 12);
+      posicaoY += espacamentoInformacoes;
 
       this.categorias.forEach((categoria) => {
-        if (posicaoY > 720) {
-          documento.addPage();
-          posicaoY = 60;
-        }
-
         const percentual = this.totalReceitas > 0 ? (categoria.total / this.totalReceitas) * 100 : 0;
-
-        documento.setDrawColor(220, 228, 235);
-        documento.line(margem, posicaoY - 8, larguraPagina - margem, posicaoY - 8);
+        const linhasNome = documento.splitTextToSize(categoria.categoria, larguraPagina - margem * 2 - 18);
+        garantirEspaco(28);
 
         documento.setFontSize(12);
         documento.setTextColor(9, 97, 145);
-        documento.text(categoria.categoria, margem, posicaoY);
+        linhasNome.forEach((linha: string) => {
+          garantirEspaco(espacamentoInformacoes);
+          documento.text(linha, margem, posicaoY);
+          posicaoY += espacamentoInformacoes;
+        });
+
+        garantirEspaco(espacamentoInformacoes);
         documento.setFontSize(10);
         documento.setTextColor(76, 85, 95);
-        documento.text(`${categoria.quantidade} serviços`, margem + 300, posicaoY);
-        documento.text(`${percentual.toFixed(1)}% do total`, margem + 420, posicaoY);
+        documento.text(`${categoria.quantidade} serviços`, margem + 8, posicaoY);
+        documento.text(`${percentual.toFixed(1)}% do total`, margem + 180, posicaoY);
         documento.setTextColor(17, 24, 39);
-        documento.text(this.formatarMoeda(categoria.total), margem + 500, posicaoY);
-        posicaoY += 22;
+        documento.text(this.formatarMoeda(categoria.total), larguraPagina - margem, posicaoY, { align: 'right' });
+
+        documento.setDrawColor(220, 228, 235);
+        documento.line(
+          margem,
+          posicaoY + distanciaLinhaCategoria,
+          larguraPagina - margem,
+          posicaoY + distanciaLinhaCategoria,
+        );
+        posicaoY += espacamentoInformacoes;
       });
 
+      const linhasDestaque = categoriaDestaque
+        ? documento.splitTextToSize(
+          `Categoria principal: ${categoriaDestaque.categoria} (${this.formatarMoeda(categoriaDestaque.total)})`,
+          larguraPagina - margem * 2,
+        )
+        : [];
+      garantirEspaco(categoriaDestaque ? 18 + linhasDestaque.length * 16 : 24);
       documento.setFontSize(12);
       documento.setTextColor(17, 24, 39);
-      documento.text(`Total geral: ${this.formatarMoeda(this.totalReceitas)}`, margem, posicaoY + 16);
+      documento.text(`Total geral: ${this.formatarMoeda(this.totalReceitas)}`, margem, posicaoY + 12);
+      posicaoY += 18;
       if (categoriaDestaque) {
-        documento.text(`Categoria principal: ${categoriaDestaque.categoria} (${this.formatarMoeda(categoriaDestaque.total)})`, margem + 250, posicaoY + 16);
+        linhasDestaque.forEach((linha: string) => {
+          garantirEspaco(16);
+          documento.text(linha, margem, posicaoY + 12);
+          posicaoY += 16;
+        });
       }
     }
 
-    documento.setFontSize(9);
-    documento.setTextColor(100, 116, 139);
-    documento.text('Documento gerado ' + obterDataHoraAtual() + '.', margem, alturaPagina - 22);
+    const totalPaginas = documento.getNumberOfPages();
+    for (let pagina = 1; pagina <= totalPaginas; pagina += 1) {
+      documento.setPage(pagina);
+      documento.setFontSize(9);
+      documento.setTextColor(100, 116, 139);
+      documento.text(`Documento gerado em ${dataEmissao}.`, margem, alturaPagina - 22);
+      documento.text(`Página ${pagina} de ${totalPaginas}`, larguraPagina - margem, alturaPagina - 22, { align: 'right' });
+    }
+
     documento.save('receita-por-categoria.pdf');
   }
 }

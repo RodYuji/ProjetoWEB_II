@@ -19,4 +19,15 @@ describe('VisualizarSolicitacaoComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render category report button', () => {
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const categoryButton = Array.from(compiled.querySelectorAll('button')).find(
+      (button) => button.textContent?.includes('Receita por categoria')
+    );
+
+    expect(categoryButton).toBeTruthy();
+  });
 });

@@ -101,9 +101,13 @@ input {
   font-weight: 700;
 }
 
-.botao-primario {
-  background: #040944;
+.btn_gerarpdf {
+  background: #a6532b;
   color: #fff;
+}
+
+.btn_gerarpdf:hover {
+  background: #8d4524;
 }
 
 .botao-secundario {
