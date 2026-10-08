@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CategoriaService } from '../../../shared/services/categoria.service';
 
 @Component({
   selector: 'app-gerenciamento-categorias',
@@ -8,16 +9,16 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './gerenciamento-categorias.component.css',
 })
 export class GerenciamentoCategoriasComponent {
-  categorias = [
-    { nome: 'Eletrônicos' },
-    { nome: 'Informática' },
-    { nome: 'Eletrodomésticos' }
-  ];
+  categorias: { nome: string }[] = [];
 
   modalAberto = false;
   modoEdicao = false;
   indiceEditando = -1;
   categoriaForm = { nome: '' };
+
+  constructor(private categoriaService: CategoriaService) {
+  this.categorias = this.categoriaService.categorias;
+}
 
   abrirModal() {
     this.categoriaForm = { nome: '' };
