@@ -71,6 +71,10 @@ main {
     font-weight: 700;
 }
 
+.voltar-relatorio {
+    margin-bottom: 15px;
+}
+
 .btn-orcamento,
 .btn-manutencao, .btn-finalizar {
     width: 100%;

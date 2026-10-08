@@ -2,10 +2,12 @@
   display: block;
 }
 
-.voltar-relatorio {
-  margin: 0.75rem 0 0 1rem;
-  display: inline-block;
-}
+
+
+
+
+
+
 
 .relatorio-categoria {
   max-width: 900px;
@@ -13,6 +15,8 @@
   padding: 2rem 1.25rem 3rem;
   color: #172026;
 }
+
+
 
 .cabecalho {
   display: flex;
@@ -127,3 +131,8 @@ h1 {
     width: 100%;
   }
 }
+
+
+
+
+
