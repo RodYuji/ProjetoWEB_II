@@ -57,9 +57,13 @@ export class VisualizarSolicitacao {
       const hoje = new Date();
       this.solicitacoesFiltradas = this.todasSolicitacoes.filter((s) => s.dataHora.toDateString() === hoje.toDateString());
     } else if (this.filtro === 'PERIODO') {
-      const inicio = new Date(this.dataInicio);
-      const fim = new Date(this.dataFim);
-      this.solicitacoesFiltradas = this.todasSolicitacoes.filter((s) => s.dataHora.getTime() >= inicio.getTime() && s.dataHora.getTime() <= fim.getTime());
+      if (this.dataInicio === '' || this.dataFim === '') {
+        this.solicitacoesFiltradas = this.todasSolicitacoes;
+      } else {
+        const inicio = new Date(this.dataInicio + 'T00:00:00');
+        const fim = new Date(this.dataFim + 'T23:59:59');
+        this.solicitacoesFiltradas = this.todasSolicitacoes.filter((s) => s.dataHora.getTime() >= inicio.getTime() && s.dataHora.getTime() <= fim.getTime());
+      }
     } else {
       this.solicitacoesFiltradas = this.todasSolicitacoes;
     }
