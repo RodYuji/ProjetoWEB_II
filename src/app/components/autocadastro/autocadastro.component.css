@@ -1,0 +1,28 @@
+/* Card de cadastro (substitui o style inline) */
+.card-cadastro {
+  max-width: 42rem;
+  background-color: #234677;
+  color: #fff;
+}
+
+/* Títulos de seção (Dados pessoais / Endereço) */
+.card-cadastro h6 {
+  font-weight: 600;
+}
+
+/* Rótulos dos campos: mantém o padrão do Bootstrap */
+.card-cadastro .input-group-text {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+/* Campos: mantém o padrão do Bootstrap */
+.card-cadastro .form-control {
+  background-color: #fff;
+  color: #212529;
+}
+
+/* Link "Já tenho cadastro" */
+.card-cadastro a {
+  color: #f8f9fa;
+}
