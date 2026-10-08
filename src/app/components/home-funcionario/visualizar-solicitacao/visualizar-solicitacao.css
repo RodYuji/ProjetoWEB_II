@@ -103,6 +103,13 @@ main {
     opacity: 0.8;
 }
 
+.botoes-relatorio {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+
 .botao-relatorio {
     padding: 10px 16px;
     border: 0;
@@ -112,7 +119,7 @@ main {
     cursor: pointer;
     font: inherit;
     font-weight: 600;
-    margin-top: 12px;
+    margin-top: 0;
 }
 
 .botao-relatorio:hover {

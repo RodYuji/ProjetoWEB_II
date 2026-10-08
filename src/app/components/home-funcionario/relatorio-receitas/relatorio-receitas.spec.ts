@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { RelatorioReceitas } from './relatorio-receitas';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 
@@ -8,7 +9,7 @@ describe('RelatorioReceitas', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RelatorioReceitas],
-      providers: [SolicitacaoService],
+      providers: [SolicitacaoService, provideRouter([])],
     }).compileComponents();
 
     const fixture: ComponentFixture<RelatorioReceitas> = TestBed.createComponent(RelatorioReceitas);
@@ -36,6 +37,20 @@ describe('RelatorioReceitas', () => {
     component.dataInicial = '2026-08-01';
     component.dataFinal = '2026-08-12';
     component.aplicarFiltro();
+
+    expect(() => component.gerarPdf()).not.toThrow();
+  });
+
+  it('gera relatórios extensos sem erros', () => {
+    component.receitas = Array.from({ length: 24 }, () => ({
+      data: '2026-08-01',
+      total: 500,
+      itens: Array.from({ length: 5 }, (_, indice) => ({
+        descricao: `Serviço detalhado ${indice} ${'com descrição complementar '.repeat(5)}`,
+        valor: 100,
+      })),
+    }));
+    component.totalReceitas = 12000;
 
     expect(() => component.gerarPdf()).not.toThrow();
   });

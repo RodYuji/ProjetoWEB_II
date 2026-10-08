@@ -88,19 +88,37 @@ export class RelatorioReceitas {
   gerarPdf(): void {
     const documento = new jsPDF({ unit: 'pt', format: 'a4' });
     const margem = 42;
+    const espacamentoPx = 50;
+    const espacamentoInformacoes = espacamentoPx * 0.75;
+    const distanciaLinhaDataPx = 10;
+    const distanciaLinhaData = distanciaLinhaDataPx * 0.75;
     const larguraPagina = documento.internal.pageSize.getWidth();
     const alturaPagina = documento.internal.pageSize.getHeight();
-    let posicaoY = 78;
+    const limiteInferior = alturaPagina - 48;
+    const dataEmissao = this.obterDataHoraAtual();
+    let posicaoY = 0;
 
-    documento.setFillColor(8, 77, 115);
-    documento.rect(0, 0, larguraPagina, 76, 'F');
-    documento.setTextColor(255, 255, 255);
-    documento.setFontSize(18);
-    documento.text(this.nomeEmpresa, margem, 28);
-    documento.setFontSize(10);
-    documento.text('Relatório financeiro de receitas', margem, 48);
-    documento.text(`Emitido em ${this.obterDataHoraAtual()}`, margem, 62);
-    documento.setTextColor(30, 30, 30);
+    const desenharCabecalho = (): void => {
+      documento.setFillColor(8, 77, 115);
+      documento.rect(0, 0, larguraPagina, 76, 'F');
+      documento.setTextColor(255, 255, 255);
+      documento.setFontSize(18);
+      documento.text(this.nomeEmpresa, margem, 28);
+      documento.setFontSize(10);
+      documento.text('Relatório financeiro de receitas', margem, 48);
+      documento.text(`Emitido em ${dataEmissao}`, margem, 62);
+      documento.setTextColor(30, 30, 30);
+      posicaoY = 96;
+    };
+
+    const garantirEspaco = (alturaNecessaria: number): void => {
+      if (posicaoY + alturaNecessaria > limiteInferior) {
+        documento.addPage();
+        desenharCabecalho();
+      }
+    };
+
+    desenharCabecalho();
 
     const totalServicos = this.receitas.reduce((total, receita) => total + receita.itens.length, 0);
     const mediaDiaria = this.receitas.length > 0 ? this.totalReceitas / this.receitas.length : 0;
@@ -112,57 +130,54 @@ export class RelatorioReceitas {
     }, null);
 
     documento.setFillColor(244, 247, 250);
-    documento.rect(margem, 92, larguraPagina - margem * 2, 70, 'F');
+    documento.rect(margem, posicaoY, larguraPagina - margem * 2, 96, 'F');
     documento.setDrawColor(202, 214, 224);
-    documento.rect(margem, 92, larguraPagina - margem * 2, 70);
+    documento.rect(margem, posicaoY, larguraPagina - margem * 2, 96);
 
     documento.setFontSize(10);
     documento.setTextColor(80, 90, 105);
-    documento.text('Período', margem + 16, 116);
+    documento.text('Período', margem + 16, posicaoY + 20);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.descricaoPeriodo(), margem + 16, 134);
+    documento.text(this.descricaoPeriodo(), margem + 16, posicaoY + 38);
 
     documento.setFontSize(10);
     documento.setTextColor(80, 90, 105);
-    documento.text('Receita total', margem + 210, 116);
+    documento.text('Receita total', margem + 270, posicaoY + 20);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.formatarMoeda(this.totalReceitas), margem + 210, 134);
+    documento.text(this.formatarMoeda(this.totalReceitas), margem + 270, posicaoY + 38);
 
     documento.setFontSize(10);
     documento.setTextColor(80, 90, 105);
-    documento.text('Média por dia', margem + 330, 116);
+    documento.text('Média por dia', margem + 16, posicaoY + 62);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.formatarMoeda(mediaDiaria), margem + 330, 134);
+    documento.text(this.formatarMoeda(mediaDiaria), margem + 16, posicaoY + 80);
 
     documento.setFontSize(10);
     documento.setTextColor(80, 90, 105);
-    documento.text('Serviços pagos', margem + 430, 116);
+    documento.text('Serviços pagos', margem + 270, posicaoY + 62);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(String(totalServicos), margem + 430, 134);
+    documento.text(String(totalServicos), margem + 270, posicaoY + 80);
 
-    posicaoY = 188;
+    posicaoY += 122;
 
     if (this.receitas.length === 0) {
+      garantirEspaco(24);
       documento.setFontSize(12);
-      documento.text('Nenhuma receita encontrada no período informado.', margem, posicaoY);
+      documento.text('Nenhuma receita encontrada no período informado.', margem, posicaoY + 12);
+      posicaoY += 24;
     } else {
+      garantirEspaco(24);
       documento.setFontSize(12);
       documento.setTextColor(17, 24, 39);
-      documento.text('Detalhamento por dia', margem, posicaoY);
-      posicaoY += 18;
+      documento.text('Detalhamento por dia', margem, posicaoY + 12);
+      posicaoY += espacamentoInformacoes;
 
       this.receitas.forEach((receita) => {
-        if (posicaoY > 720) {
-          documento.addPage();
-          posicaoY = 60;
-        }
-
-        documento.setDrawColor(218, 226, 234);
-        documento.line(margem, posicaoY - 6, larguraPagina - margem, posicaoY - 6);
+        garantirEspaco(38);
 
         documento.setFontSize(12);
         documento.setTextColor(8, 77, 115);
@@ -170,37 +185,50 @@ export class RelatorioReceitas {
         documento.setFontSize(10);
         documento.setTextColor(75, 85, 99);
         documento.text(`Total do dia: ${this.formatarMoeda(receita.total)}`, margem + 300, posicaoY);
-        posicaoY += 18;
+
+        documento.setDrawColor(218, 226, 234);
+        documento.line(
+          margem,
+          posicaoY + distanciaLinhaData,
+          larguraPagina - margem,
+          posicaoY + distanciaLinhaData,
+        );
+        posicaoY += espacamentoInformacoes;
 
         documento.setTextColor(20, 20, 20);
         receita.itens.forEach((item) => {
           const descricao = `• ${item.descricao} — ${this.formatarMoeda(item.valor)}`;
-          const linhas = documento.splitTextToSize(descricao, 500);
+          const linhas = documento.splitTextToSize(descricao, larguraPagina - margem * 2 - 18);
 
           linhas.forEach((linha: string) => {
-            if (posicaoY > 760) {
-              documento.addPage();
-              posicaoY = 60;
-            }
+            garantirEspaco(espacamentoInformacoes);
             documento.text(linha, margem + 18, posicaoY);
-            posicaoY += 14;
+            posicaoY += espacamentoInformacoes;
           });
         });
 
-        posicaoY += 12;
+        posicaoY += espacamentoInformacoes;
       });
 
+      garantirEspaco(melhorDia ? 38 : 20);
       documento.setFontSize(12);
       documento.setTextColor(17, 24, 39);
       documento.text(`Receita total do período: ${this.formatarMoeda(this.totalReceitas)}`, margem, posicaoY + 12);
+      posicaoY += 18;
       if (melhorDia) {
-        documento.text(`Maior faturamento: ${this.formatarData(melhorDia.data)} (${this.formatarMoeda(melhorDia.total)})`, margem + 250, posicaoY + 12);
+        documento.text(`Maior faturamento: ${this.formatarData(melhorDia.data)} (${this.formatarMoeda(melhorDia.total)})`, margem, posicaoY + 12);
+        posicaoY += 18;
       }
     }
 
-    documento.setFontSize(9);
-    documento.setTextColor(100, 116, 139);
-    documento.text('Documento gerado pelo sistema de gestão da oficina.', margem, alturaPagina - 22);
+    const totalPaginas = documento.getNumberOfPages();
+    for (let pagina = 1; pagina <= totalPaginas; pagina += 1) {
+      documento.setPage(pagina);
+      documento.setFontSize(9);
+      documento.setTextColor(100, 116, 139);
+      documento.text(`Página ${pagina} de ${totalPaginas}`, larguraPagina - margem, alturaPagina - 22, { align: 'right' });
+    }
+
     documento.save('relatorio-receitas.pdf');
   }
 
