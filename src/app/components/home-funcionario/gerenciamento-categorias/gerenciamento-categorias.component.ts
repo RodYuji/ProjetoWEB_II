@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CategoriaService } from '../../../shared/services/categoria.service';
 
 @Component({
   selector: 'app-gerenciamento-categorias',
@@ -9,16 +8,19 @@ import { CategoriaService } from '../../../shared/services/categoria.service';
   styleUrl: './gerenciamento-categorias.component.css',
 })
 export class GerenciamentoCategoriasComponent {
-  categorias: { nome: string }[] = [];
+  categorias = [
+    { nome: 'Eletrônicos' },
+    { nome: 'Informática' },
+    { nome: 'Eletrodomésticos' }
+  ];
 
   modalAberto = false;
   modoEdicao = false;
   indiceEditando = -1;
   categoriaForm = { nome: '' };
 
-  constructor(private categoriaService: CategoriaService) {
-  this.categorias = this.categoriaService.categorias;
-}
+  modalExclusaoAberto = false;
+  categoriaParaExcluir: any = null;
 
   abrirModal() {
     this.categoriaForm = { nome: '' };
@@ -53,13 +55,21 @@ export class GerenciamentoCategoriasComponent {
     this.modalAberto = false;
   }
 
-  excluirCategoria(categoria: any) {
-    const confirmar = confirm(`Deseja excluir ${categoria.nome}?`);
+  abrirModalExclusao(categoria: any) {
+    this.categoriaParaExcluir = categoria;
+    this.modalExclusaoAberto = true;
+  }
 
-    if (confirmar) {
+  confirmarExclusao() {
+    if (this.categoriaParaExcluir) {
       this.categorias = this.categorias.filter(
-        c => c !== categoria
+        c => c !== this.categoriaParaExcluir
       );
     }
+    this.modalExclusaoAberto = false;
+  }
+
+  cancelarExclusao() {
+    this.modalExclusaoAberto = false;
   }
 }

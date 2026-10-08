@@ -1,0 +1,54 @@
+<div class="container">
+
+  <div class="mt-5 mb-5 mx-auto card border-0 shadow-lg rounded-4 p-4 p-md-5" style="max-width: 30rem; background-color: #234677; color: white;">
+
+    <div class="text-center mb-4">
+      <h1 class="mb-1">Recuperar Senha</h1>
+      <p class="mb-0 text-white-50">Informe seu e-mail para receber o link de recuperação</p>
+    </div>
+
+    @if (!emailEnviado) {
+
+      <form [formGroup]="recuperarForm" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3 input-group">
+          <span class="input-group-text">E-mail:</span>
+          <input type="email" formControlName="email" placeholder="seu@email.com" class="form-control">
+        </div>
+
+        @if (email.invalid && (email.dirty || email.touched)) {
+          <div class="text-warning mb-3">
+            @if (email.errors?.['required']) {
+              Informe o e-mail.
+            } @else {
+              Informe um e-mail válido.
+            }
+          </div>
+        }
+
+        <div class="mt-5 d-flex flex-column align-items-center">
+          <input type="submit" class="btn btn-light rounded-pill px-5 py-2 fw-semibold mb-3" value="Enviar"
+                 [disabled]="recuperarForm.invalid"/>
+          <a routerLink="/login" class="text-light text-decoration-underline">Voltar para o login</a>
+        </div>
+
+      </form>
+
+    } @else {
+
+      <div class="text-center">
+        <p>
+          Se um cadastro existir para <strong>{{ recuperarForm.value.email }}</strong>,
+          você receberá em instantes um e-mail com as instruções para redefinir a senha.
+        </p>
+
+        <a routerLink="/login" class="btn btn-light rounded-pill px-5 py-2 fw-semibold mt-3">
+          Voltar para o login
+        </a>
+      </div>
+
+    }
+
+  </div>
+
+</div>

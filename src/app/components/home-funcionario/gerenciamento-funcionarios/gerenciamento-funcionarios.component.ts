@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { FuncionarioService } from '../../../shared/services/funcionario.service';
-import { Funcionario } from '../../../shared/models/funcionario.model';
 
 @Component({
   selector: 'app-gerenciamento-funcionarios',
@@ -10,54 +8,42 @@ import { Funcionario } from '../../../shared/models/funcionario.model';
   styleUrl: './gerenciamento-funcionarios.component.css',
 })
 export class GerenciamentoFuncionariosComponent {
-  funcionarios: Funcionario[] = [];
+  funcionarios = [
+    { nome: 'Gabriel Formanek', cpf: '123.456.789-00', cargo: 'Técnico' },
+    { nome: 'Arthur Yuji', cpf: '987.654.321-00', cargo: 'Atendente' }
+  ];
 
   cargos = ['Técnico', 'Atendente', 'Gerente'];
 
   modalAberto = false;
   modoEdicao = false;
   indiceEditando = -1;
+  funcionarioForm = { nome: '', cpf: '', cargo: '' };
 
-  funcionarioForm = {
-    nome: '',
-    cpf: '',
-    cargo: ''
-  };
-
-  constructor(private funcionarioService: FuncionarioService) {
-    this.funcionarios = this.funcionarioService.funcionarios;
-  }
+  modalExclusaoAberto = false;
+  funcionarioParaExcluir: any = null;
 
   abrirModal() {
-    this.funcionarioForm = {
-      nome: '',
-      cpf: '',
-      cargo: ''
-    };
-
+    this.funcionarioForm = { nome: '', cpf: '', cargo: '' };
     this.modoEdicao = false;
     this.modalAberto = true;
   }
 
-  editarFuncionario(funcionario: Funcionario) {
+  editarFuncionario(funcionario: any) {
     this.indiceEditando = this.funcionarios.indexOf(funcionario);
-
     this.funcionarioForm = {
       nome: funcionario.nome,
       cpf: funcionario.cpf,
       cargo: funcionario.cargo
     };
-
     this.modoEdicao = true;
     this.modalAberto = true;
   }
 
   formularioValido(): boolean {
-    return (
-      this.funcionarioForm.nome.trim() !== '' &&
-      this.funcionarioForm.cpf.trim() !== '' &&
-      this.funcionarioForm.cargo !== ''
-    );
+    return this.funcionarioForm.nome.trim() !== '' &&
+           this.funcionarioForm.cpf.trim() !== '' &&
+           this.funcionarioForm.cargo !== '';
   }
 
   salvarFuncionario() {
@@ -66,13 +52,9 @@ export class GerenciamentoFuncionariosComponent {
     }
 
     if (this.modoEdicao) {
-      this.funcionarios[this.indiceEditando] = {
-        ...this.funcionarioForm
-      };
+      this.funcionarios[this.indiceEditando] = { ...this.funcionarioForm };
     } else {
-      this.funcionarios.push({
-        ...this.funcionarioForm
-      });
+      this.funcionarios.push({ ...this.funcionarioForm });
     }
 
     this.modalAberto = false;
@@ -82,17 +64,21 @@ export class GerenciamentoFuncionariosComponent {
     this.modalAberto = false;
   }
 
-  excluirFuncionario(funcionario: Funcionario) {
-    const confirmar = confirm(
-      `Deseja excluir ${funcionario.nome}?`
-    );
+  abrirModalExclusao(funcionario: any) {
+    this.funcionarioParaExcluir = funcionario;
+    this.modalExclusaoAberto = true;
+  }
 
-    if (confirmar) {
+  confirmarExclusao() {
+    if (this.funcionarioParaExcluir) {
       this.funcionarios = this.funcionarios.filter(
-        f => f !== funcionario
+        f => f !== this.funcionarioParaExcluir
       );
-
-      this.funcionarioService.funcionarios = this.funcionarios;
     }
+    this.modalExclusaoAberto = false;
+  }
+
+  cancelarExclusao() {
+    this.modalExclusaoAberto = false;
   }
 }
