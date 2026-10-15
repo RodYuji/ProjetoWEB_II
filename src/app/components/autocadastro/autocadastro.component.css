@@ -1,28 +1,114 @@
-/* Card de cadastro (substitui o style inline) */
-.card-cadastro {
-  max-width: 42rem;
-  background-color: #234677;
-  color: #fff;
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px 14px;
+  background: #f5f7fa;
 }
 
-/* Títulos de seção (Dados pessoais / Endereço) */
-.card-cadastro h6 {
+.card {
+  width: 100%;
+  max-width: 30rem;
+  margin: 0 !important;
+  padding: 32px !important;
+  color: #25364a !important;
+  background: #fff !important;
+  border: 1px solid #e3e9f0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 30px rgba(30, 58, 95, 0.12) !important;
+}
+
+.card h1 {
+  color: #1e3a5f;
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.card .text-white-50 {
+  color: #718096 !important;
+  font-size: 14px;
+}
+
+.card form {
+  margin-top: 26px;
+}
+
+.card .input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  gap: 7px;
+  margin-bottom: 20px !important;
+}
+
+.card .input-group-text {
+  padding: 0;
+  color: #34445a;
+  background: transparent;
+  border: 0;
+  font-size: 14px;
   font-weight: 600;
 }
 
-/* Rótulos dos campos: mantém o padrão do Bootstrap */
-.card-cadastro .input-group-text {
-  background-color: #f8f9fa;
-  color: #212529;
+.card .form-control {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 10px 13px;
+  background: #fbfcfe;
+  border: 1px solid #dce3ec;
+  border-radius: 9px !important;
+  box-sizing: border-box;
+  box-shadow: none;
 }
 
-/* Campos: mantém o padrão do Bootstrap */
-.card-cadastro .form-control {
-  background-color: #fff;
-  color: #212529;
+.card .form-control:focus {
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.12);
 }
 
-/* Link "Já tenho cadastro" */
-.card-cadastro a {
-  color: #f8f9fa;
+.card form .mt-5 {
+  gap: 15px;
+  margin-top: 26px !important;
+}
+
+.card .btn {
+  width: 100%;
+  min-height: 45px;
+  margin-bottom: 0 !important;
+  color: #fff;
+  background: #1e3a5f;
+  border: 1px solid #1e3a5f;
+  border-radius: 9px !important;
+  transition: background 0.2s;
+}
+
+.card .btn:hover {
+  background: #162d4a;
+  border-color: #162d4a;
+}
+
+.card a {
+  color: #1e3a5f !important;
+  font-size: 13px;
+  text-decoration: none !important;
+}
+
+.card a:hover {
+  color: #426b9d !important;
+  text-decoration: underline !important;
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 26px 20px !important;
+  }
+
+  .card h1 {
+    font-size: 24px;
+  }
 }
