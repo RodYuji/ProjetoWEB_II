@@ -1,5 +1,7 @@
 :host {
   display: block;
+  min-height: 100vh;
+  background-color: #f5f7fa;
 }
 
 .relatorio {
@@ -89,6 +91,13 @@ input {
   border-radius: 4px;
   color: #172026;
   font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus-visible {
+  border-color: #040944;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(4, 9, 68, 0.15);
 }
 
 .botao {
@@ -99,6 +108,30 @@ input {
   cursor: pointer;
   font: inherit;
   font-weight: 700;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.botao:hover {
+  background-color: #8d4524;
+}
+
+.botao:active {
+  transform: translateY(1px);
+}
+
+.botao:focus-visible,
+.voltar-relatorio:focus-visible {
+  outline: 3px solid rgba(4, 9, 68, 0.35);
+  outline-offset: 2px;
+}
+
+.voltar-relatorio {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.voltar-relatorio:hover {
+  background-color: #5c636a;
+  border-color: #565e64;
 }
 
 .btn_gerarpdf {
@@ -106,8 +139,9 @@ input {
   color: #fff;
 }
 
-.btn_gerarpdf:hover {
-  background: #8d4524;
+.btn_filtrar {
+  background: #a6532b;
+  color: #fff;
 }
 
 .botao-secundario {

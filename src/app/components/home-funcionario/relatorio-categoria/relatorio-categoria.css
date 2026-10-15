@@ -1,13 +1,8 @@
 :host {
   display: block;
+  min-height: 100vh;
+  background-color: #f5f7fa;
 }
-
-
-
-
-
-
-
 
 .relatorio-categoria {
   max-width: 900px;
@@ -15,8 +10,6 @@
   padding: 2rem 1.25rem 3rem;
   color: #172026;
 }
-
-
 
 .cabecalho {
   display: flex;
@@ -55,10 +48,30 @@ h1 {
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .botao-pdf:hover {
   background: #8d4524;
+}
+
+.botao-pdf:active {
+  transform: translateY(1px);
+}
+
+.botao-pdf:focus-visible,
+.voltar-relatorio:focus-visible {
+  outline: 3px solid rgba(4, 9, 68, 0.35);
+  outline-offset: 2px;
+}
+
+.voltar-relatorio {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.voltar-relatorio:hover {
+  background-color: #5c636a;
+  border-color: #565e64;
 }
 
 .resumo-total {
@@ -135,7 +148,3 @@ h1 {
     width: 100%;
   }
 }
-
-
-
-
