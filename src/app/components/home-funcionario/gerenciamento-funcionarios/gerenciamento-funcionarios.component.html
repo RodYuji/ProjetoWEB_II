@@ -37,7 +37,7 @@
 
                 <button
                   class="btn btn-sm btn-danger"
-                  (click)="excluirFuncionario(funcionario)">
+                  (click)="abrirModalExclusao(funcionario)">
                   Excluir
                 </button>
               </td>
@@ -91,6 +91,35 @@
                   [disabled]="!formularioValido()"
                   (click)="salvarFuncionario()">
             {{ modoEdicao ? 'Salvar Alterações' : 'Salvar' }}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
+
+@if (modalExclusaoAberto) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Confirmar Exclusão</h5>
+          <button type="button" class="btn-close" (click)="cancelarExclusao()"></button>
+        </div>
+
+        <div class="modal-body">
+          Deseja realmente excluir o funcionário
+          <strong>{{ funcionarioParaExcluir?.nome }}</strong>?
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelarExclusao()">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-danger" (click)="confirmarExclusao()">
+            Excluir
           </button>
         </div>
 

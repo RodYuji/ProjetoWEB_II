@@ -29,9 +29,11 @@ export class SolicitacaoService {
       estado: 'ORÇADA',
       nomeCliente: 'Fernando',
       valorOrcamento: 150.00,
+      funcionarioOrcamento: 'Arthur',
+      dataHoraOrcamento: new Date('2026-08-02T12:00:00'),
       historico: [
         { dataHora: new Date('2026-08-02T10:30:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-02T12:00:00'), estado: 'ORÇADA' }
+        { dataHora: new Date('2026-08-02T12:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Arthur' }
       ]
     },
     {
@@ -55,9 +57,13 @@ export class SolicitacaoService {
       estado: 'ARRUMADA',
       nomeCliente: 'Rodrigo',
       valorOrcamento: 80.00,
+      descricaoManutencao: 'Limpeza interna e troca das membranas das teclas',
+      orientacoesCliente: 'Evite comer ou beber perto do teclado',
+      funcionarioManutencao: 'Yumi',
+      dataHoraManutencao: new Date('2026-08-04T10:00:00'),
       historico: [
         { dataHora: new Date('2026-08-04T08:15:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-04T10:00:00'), estado: 'ARRUMADA' }
+        { dataHora: new Date('2026-08-04T10:00:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Yumi' }
       ]
     },
     {
@@ -82,9 +88,18 @@ export class SolicitacaoService {
       estado: 'PAGA',
       nomeCliente: 'Fernando',
       valorOrcamento: 420.00,
+      funcionarioOrcamento: 'Arthur',
+      dataHoraOrcamento: new Date('2026-08-07T09:00:00'),
+      descricaoManutencao: 'Troca do cabo flat da tela',
+      orientacoesCliente: 'Evite abrir e fechar a tampa com força',
+      funcionarioManutencao: 'Arthur',
+      dataHoraManutencao: new Date('2026-08-10T11:00:00'),
       historico: [
         { dataHora: new Date('2026-08-06T16:20:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-06T17:00:00'), estado: 'PAGA' }
+        { dataHora: new Date('2026-08-07T09:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Arthur' },
+        { dataHora: new Date('2026-08-07T14:00:00'), estado: 'APROVADA' },
+        { dataHora: new Date('2026-08-10T11:00:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Arthur' },
+        { dataHora: new Date('2026-08-11T15:00:00'), estado: 'PAGA' }
       ]
     },
     {
@@ -96,12 +111,21 @@ export class SolicitacaoService {
       estado: 'PAGA',
       nomeCliente: 'Clara',
       valorOrcamento: 680.00,
+      funcionarioOrcamento: 'Yumi',
+      dataHoraOrcamento: new Date('2026-08-10T10:00:00'),
+      descricaoManutencao: 'Troca do processador e da pasta térmica',
+      orientacoesCliente: 'Mantenha as entradas de ar do gabinete livres',
+      funcionarioManutencao: 'Yumi',
+      dataHoraManutencao: new Date('2026-08-12T14:30:00'),
       historico: [
         { dataHora: new Date('2026-08-09T09:15:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-09T11:00:00'), estado: 'PAGA' }
+        { dataHora: new Date('2026-08-10T10:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Yumi' },
+        { dataHora: new Date('2026-08-10T16:00:00'), estado: 'APROVADA' },
+        { dataHora: new Date('2026-08-12T14:30:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Yumi' },
+        { dataHora: new Date('2026-08-13T09:30:00'), estado: 'PAGA' }
       ]
     },
-        {
+    {
       id: 8,
       descricaoEquipamento: 'impressora sem tinta',
       categoriaEquipamento: 'Impressora',
@@ -133,9 +157,12 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-08T13:00:00'),
       estado: 'ORÇADA',
       nomeCliente: 'Fernando',
+      valorOrcamento: 200.00,
+      funcionarioOrcamento: 'Arthur',
+      dataHoraOrcamento: new Date('2026-08-08T15:00:00'),
       historico: [
         { dataHora: new Date('2026-08-08T13:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-08T15:00:00'), estado: 'ORÇADA' }
+        { dataHora: new Date('2026-08-08T15:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Arthur' }
       ]
     },
     {
@@ -146,9 +173,12 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-09T14:00:00'),
       estado: 'ORÇADA',
       nomeCliente: 'Rodrigo',
+      valorOrcamento: 120.00,
+      funcionarioOrcamento: 'Yumi',
+      dataHoraOrcamento: new Date('2026-08-09T16:00:00'),
       historico: [
         { dataHora: new Date('2026-08-09T14:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-09T16:00:00'), estado: 'ORÇADA' }
+        { dataHora: new Date('2026-08-09T16:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Yumi' }
       ]
     },
     {
@@ -203,7 +233,7 @@ export class SolicitacaoService {
       dataHoraRedirecionamento: new Date('2026-08-11T16:00:00'),
       historico: [
         { dataHora: new Date('2026-08-11T10:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-11T16:00:00'), estado: 'REDIRECIONADA' }
+        { dataHora: new Date('2026-08-11T16:00:00'), estado: 'REDIRECIONADA', funcionarioOrigemManutencao: 'Arthur', funcionarioDestinoManutencao: 'Yumi' }
       ]
     },
     {
@@ -219,7 +249,7 @@ export class SolicitacaoService {
       dataHoraRedirecionamento: new Date('2026-08-12T17:00:00'),
       historico: [
         { dataHora: new Date('2026-08-12T11:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-12T17:00:00'), estado: 'REDIRECIONADA' }
+        { dataHora: new Date('2026-08-12T17:00:00'), estado: 'REDIRECIONADA', funcionarioOrigemManutencao: 'Yumi', funcionarioDestinoManutencao: 'Arthur' }
       ]
     },
     {
@@ -230,9 +260,14 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-13T08:30:00'),
       estado: 'ARRUMADA',
       nomeCliente: 'Gabriel',
+      valorOrcamento: 90.00,
+      descricaoManutencao: 'Troca do rolete de alimentação de papel',
+      orientacoesCliente: 'Use papel seco e não sobrecarregue a bandeja',
+      funcionarioManutencao: 'Arthur',
+      dataHoraManutencao: new Date('2026-08-13T12:00:00'),
       historico: [
         { dataHora: new Date('2026-08-13T08:30:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-13T12:00:00'), estado: 'ARRUMADA' }
+        { dataHora: new Date('2026-08-13T12:00:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Arthur' }
       ]
     },
     {
@@ -243,9 +278,14 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-13T14:00:00'),
       estado: 'ARRUMADA',
       nomeCliente: 'Fernando',
+      valorOrcamento: 160.00,
+      descricaoManutencao: 'Limpeza do cooler e troca da pasta térmica',
+      orientacoesCliente: 'Use o notebook sobre superfícies rígidas para não tampar a ventilação',
+      funcionarioManutencao: 'Yumi',
+      dataHoraManutencao: new Date('2026-08-13T17:00:00'),
       historico: [
         { dataHora: new Date('2026-08-13T14:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-13T17:00:00'), estado: 'ARRUMADA' }
+        { dataHora: new Date('2026-08-13T17:00:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Yumi' }
       ]
     },
     {
@@ -256,9 +296,19 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-14T09:00:00'),
       estado: 'PAGA',
       nomeCliente: 'Rodrigo',
+      valorOrcamento: 250.00,
+      funcionarioOrcamento: 'Arthur',
+      dataHoraOrcamento: new Date('2026-08-14T11:00:00'),
+      descricaoManutencao: 'Troca do cabo de vídeo e limpeza da memória RAM',
+      orientacoesCliente: 'Verifique se o cabo do monitor está bem encaixado',
+      funcionarioManutencao: 'Arthur',
+      dataHoraManutencao: new Date('2026-08-16T10:00:00'),
       historico: [
         { dataHora: new Date('2026-08-14T09:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-14T13:00:00'), estado: 'PAGA' }
+        { dataHora: new Date('2026-08-14T11:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Arthur' },
+        { dataHora: new Date('2026-08-14T15:00:00'), estado: 'APROVADA' },
+        { dataHora: new Date('2026-08-16T10:00:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Arthur' },
+        { dataHora: new Date('2026-08-17T13:00:00'), estado: 'PAGA' }
       ]
     },
     {
@@ -269,9 +319,22 @@ export class SolicitacaoService {
       dataHora: new Date('2026-08-15T10:00:00'),
       estado: 'FINALIZADA',
       nomeCliente: 'Carlos',
+      valorOrcamento: 190.00,
+      funcionarioOrcamento: 'Yumi',
+      dataHoraOrcamento: new Date('2026-08-15T14:00:00'),
+      descricaoManutencao: 'Atualização da BIOS e reinstalação do driver de energia',
+      orientacoesCliente: 'Desligue sempre pelo menu Iniciar',
+      funcionarioManutencao: 'Yumi',
+      dataHoraManutencao: new Date('2026-08-17T16:00:00'),
+      funcionarioFinalizouManutencao: 'Arthur',
+      dataHoraFinalizouManutencao: new Date('2026-08-19T11:00:00'),
       historico: [
         { dataHora: new Date('2026-08-15T10:00:00'), estado: 'ABERTA' },
-        { dataHora: new Date('2026-08-15T15:00:00'), estado: 'FINALIZADA' }
+        { dataHora: new Date('2026-08-15T14:00:00'), estado: 'ORÇADA', funcionarioOrigemManutencao: 'Yumi' },
+        { dataHora: new Date('2026-08-16T09:00:00'), estado: 'APROVADA' },
+        { dataHora: new Date('2026-08-17T16:00:00'), estado: 'ARRUMADA', funcionarioOrigemManutencao: 'Yumi' },
+        { dataHora: new Date('2026-08-18T10:00:00'), estado: 'PAGA' },
+        { dataHora: new Date('2026-08-19T11:00:00'), estado: 'FINALIZADA', funcionarioOrigemManutencao: 'Arthur' }
       ]
     },
   ];

@@ -17,6 +17,7 @@ export class EfetuarOrcamento {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private solicitacaoService = inject(SolicitacaoService);
+  private funcionarioLogado = 'Arthur';
   solicitacao: SolicitacaoManutencao | undefined;
   valorOrcamento: number | undefined;
   orcamentoConfirmado = false;
@@ -31,16 +32,18 @@ export class EfetuarOrcamento {
   if (!this.solicitacao) return;
 
   this.solicitacao.dataHoraOrcamento = new Date();
-  this.solicitacao.funcionarioOrcamento = 'Arthur';
+  this.solicitacao.funcionarioOrcamento = this.funcionarioLogado;
   this.solicitacao.valorOrcamento = this.valorOrcamento;
   this.solicitacao.estado = 'ORÇADA';
   this.orcamentoConfirmado = true;
 
-  this.solicitacaoService.atualizar(this.solicitacao);
   this.solicitacao.historico.push({ 
     dataHora: new Date(),
     estado: 'ORÇADA',
+    funcionarioOrigemManutencao: this.funcionarioLogado,
   });
+  this.solicitacaoService.atualizar(this.solicitacao);
+  
   alert('Orçamento confirmado com sucesso!');
   this.router.navigate(['/home-funcionario']);
 }

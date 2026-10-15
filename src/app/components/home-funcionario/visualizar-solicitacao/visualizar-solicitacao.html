@@ -31,6 +31,10 @@
                 <input type="date" class="form-control" id="dataFim" name="dataFim"
                     [(ngModel)]="dataFim" (change)="aplicarFiltro()">
             </div>
+
+            @if (dataInicio === '' || dataFim === '') {
+                <p class="text-muted">Selecione a data de início e a data de fim.</p>
+            }
         }
 
         <div class="solicitacoes-lista">
