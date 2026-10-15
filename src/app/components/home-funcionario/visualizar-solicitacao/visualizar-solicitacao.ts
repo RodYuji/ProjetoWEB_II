@@ -69,12 +69,16 @@ export class VisualizarSolicitacao {
     }
   }
   finalizarSolicitacao(solicitacao: SolicitacaoManutencao): void {
-    solicitacao.estado = 'FINALIZADA';
-    this.solicitacaoService.atualizar(solicitacao);
+
     solicitacao.historico.push({
       dataHora: new Date(),
       estado: 'FINALIZADA',
+      funcionarioOrigemManutencao: this.funcionarioLogado,
     });
+    
+    solicitacao.funcionarioFinalizouManutencao = this.funcionarioLogado;
+    solicitacao.dataHoraFinalizouManutencao = new Date();
+    solicitacao.estado = 'FINALIZADA';
     this.solicitacaoService.atualizar(solicitacao);
   }
 

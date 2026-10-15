@@ -38,4 +38,8 @@ export interface SolicitacaoManutencao {
   funcionarioDestinoRedirecionamento?: string;
   dataHoraRedirecionamento?: Date;
 
+  // RF016 Finalizar Manutenção
+  funcionarioFinalizouManutencao?: string;
+  dataHoraFinalizouManutencao?: Date;
+
 }
