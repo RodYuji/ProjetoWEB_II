@@ -41,7 +41,16 @@ export class GerenciamentoCategoriasComponent {
     if (nome === '') {
       return;
     }
+const nomeExiste = this.categorias.some(
+  (categoria, index) =>
+    categoria.nome.trim().toLowerCase() === nome.toLowerCase() &&
+    (!this.modoEdicao || index !== this.indiceEditando)
+);
 
+if (nomeExiste) {
+  alert('Já existe uma categoria com esse nome.');
+  return;
+}
     if (this.modoEdicao) {
       this.categorias[this.indiceEditando].nome = nome;
     } else {
