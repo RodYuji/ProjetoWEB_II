@@ -1,5 +1,5 @@
 <main>
-    <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
+    <a class="btn btn-secondary ms-3 mt-3 voltar-relatorio" [routerLink]="['/home-funcionario']">
       <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
     </a>
   <div class="relatorio">
@@ -17,11 +17,11 @@
       <div class="campos-filtro">
         <label>
           Data inicial
-          <input type="date" [(ngModel)]="dataInicial" (change)="aplicarFiltro()" />
+          <input type="date" placeholder="dd/mm/aaaa" [(ngModel)]="dataInicial" (change)="aplicarFiltro()" />
         </label>
         <label>
           Data final
-          <input type="date" [(ngModel)]="dataFinal" (change)="aplicarFiltro()" />
+          <input type="date" placeholder="dd/mm/aaaa" [(ngModel)]="dataFinal" (change)="aplicarFiltro()" />
         </label>
         <button class="botao btn_filtrar" type="button" (click)="aplicarFiltro()">Filtrar</button>
       </div>
