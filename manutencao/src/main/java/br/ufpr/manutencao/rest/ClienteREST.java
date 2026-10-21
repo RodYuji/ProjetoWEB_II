@@ -20,6 +20,10 @@ public class ClienteREST {
     // Lista temporária para simular a base de dados (seguindo o razer
     private static List<Cliente> listaClientes = new ArrayList<>();
 
+    static {
+        listaClientes.add(new Cliente(1, "111.222.333-44", "João da Silva", "joao@email.com", "1234", "(41) 98888-1111", "Rua das Flores, 100 - Curitiba/PR"));
+        listaClientes.add(new Cliente(2, "222.333.444-55", "Maria Oliveira", "maria@email.com", "5678", "(41) 97777-2222", "Av. Comendador Franco, 500 - Curitiba/PR"));
+    }
     @GetMapping
     public List<Cliente> listar() {
         return listaClientes;
