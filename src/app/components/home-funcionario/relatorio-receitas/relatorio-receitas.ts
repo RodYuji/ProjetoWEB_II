@@ -279,15 +279,3 @@ export class RelatorioReceitas {
     return `${this.dataInicial ? this.formatarData(this.dataInicial) : 'início'} a ${this.dataFinal ? this.formatarData(this.dataFinal) : 'fim'}`;
   }
 }
-//teste
-//teste1
-//teste2
-//teste3
-//teste4
-//teste5
-//teste6
-//teste7
-//teste8
-//teste9
-//teste0
-//teste11
