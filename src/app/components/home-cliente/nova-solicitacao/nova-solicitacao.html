@@ -2,7 +2,7 @@
   <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
     <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
   </a>
-  <div class="mt-5 mb-5 mx-auto card border-0 shadow-lg rounded-4 p-4 p-md-5" style="max-width: 36rem; background-color: #234677; color: white;">
+  <div class="mt-5 mb-5 mx-auto card border-0 shadow-lg rounded-4 p-4 p-md-5" style="max-width: 36rem; background-color: #fdfdfd; color: rgb(30, 58, 95);">
 
     <div class="text-center mb-4">
       <h1 class="mb-1">Nova Solicitação de Manutenção</h1>
@@ -61,7 +61,7 @@
 
       <div class="mt-4 d-flex justify-content-center gap-3">
         <button type="submit" class="btn btn-light rounded-pill px-4 py-2 fw-semibold" [disabled]="solicitacaoForm.invalid">Registrar Solicitação</button>
-        <button type="button" class="btn btn-outline-light rounded-pill px-4 py-2" (click)="limparFormulario()">Limpar</button>
+        <button type="button" class="btn btn-light rounded-pill px-4 py-2 fw-semibold" (click)="limparFormulario()">Limpar</button>
       </div>
 
     </form>
