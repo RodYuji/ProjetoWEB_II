@@ -14,9 +14,14 @@ import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
 
 export class HomeFuncionario {
 
-  solicitacoesAbertas: SolicitacaoManutencao[];
+  solicitacoesAbertas: SolicitacaoManutencao[] = [];
+
   constructor(private solicitacaoService: SolicitacaoService) {
-    this.solicitacoesAbertas = this.solicitacaoService.listar().filter((solicitacao) => solicitacao.estado === 'ABERTA');
+    
+    this.solicitacaoService.listar().subscribe((solicitacoes) => { 
+      this.solicitacoesAbertas =solicitacoes.filter((solicitacao) => solicitacao.estado === 'ABERTA');
+    });
+
   }
   
 }

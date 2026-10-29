@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SolicitacaoManutencao } from '../models/solicitacao.model';
+import { Observable,of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -339,8 +340,8 @@ export class SolicitacaoService {
     },
   ];
 
-  listar(): SolicitacaoManutencao[] {
-    return this.solicitacoes;
+  listar(): Observable<SolicitacaoManutencao[]> {
+    return of(this.solicitacoes);
   }
 
   buscarPorId(id: number): SolicitacaoManutencao | undefined {
