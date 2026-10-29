@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CategoriaService } from '../../../shared/services/categoria.service';
+import { Categoria } from '../../../shared/models/categoria.model';
 
 @Component({
   selector: 'app-gerenciamento-categorias',
@@ -7,20 +9,28 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './gerenciamento-categorias.component.html',
   styleUrl: './gerenciamento-categorias.component.css',
 })
-export class GerenciamentoCategoriasComponent {
-  categorias = [
-    { nome: 'Eletrônicos' },
-    { nome: 'Informática' },
-    { nome: 'Eletrodomésticos' }
-  ];
+export class GerenciamentoCategoriasComponent implements OnInit {
+  private categoriaService = inject(CategoriaService);
 
+  categorias = signal<Categoria[]>([]);
+  
   modalAberto = false;
   modoEdicao = false;
-  indiceEditando = -1;
+  idEditando = 0;
   categoriaForm = { nome: '' };
 
   modalExclusaoAberto = false;
-  categoriaParaExcluir: any = null;
+  categoriaParaExcluir: Categoria | null = null;
+
+  ngOnInit(): void {
+    this.listarCategorias();
+  }
+
+  listarCategorias(): void {
+    this.categoriaService.listarTodas().subscribe(
+      categorias => this.categorias.set(categorias)
+    );
+  }
 
   abrirModal() {
     this.categoriaForm = { nome: '' };
@@ -28,8 +38,8 @@ export class GerenciamentoCategoriasComponent {
     this.modalAberto = true;
   }
 
-  editarCategoria(categoria: any) {
-    this.indiceEditando = this.categorias.indexOf(categoria);
+  editarCategoria(categoria: Categoria) {
+    this.idEditando = categoria.id;
     this.categoriaForm = { nome: categoria.nome };
     this.modoEdicao = true;
     this.modalAberto = true;
@@ -37,42 +47,38 @@ export class GerenciamentoCategoriasComponent {
 
   salvarCategoria() {
     const nome = this.categoriaForm.nome.trim();
-
     if (nome === '') {
       return;
     }
-const nomeExiste = this.categorias.some(
-  (categoria, index) =>
-    categoria.nome.trim().toLowerCase() === nome.toLowerCase() &&
-    (!this.modoEdicao || index !== this.indiceEditando)
-);
 
-if (nomeExiste) {
-  alert('Já existe uma categoria com esse nome.');
-  return;
-}
     if (this.modoEdicao) {
-      this.categorias[this.indiceEditando].nome = nome;
+      this.categoriaService.alterar(new Categoria(this.idEditando, nome)).subscribe({
+        next: () => { this.modalAberto = false; this.listarCategorias(); },
+        error: () => alert('Erro ao alterar a categoria.')
+      });
     } else {
-      this.categorias.push({ nome });
+      this.categoriaService.inserir(new Categoria(0, nome)).subscribe({
+        next: () => { this.modalAberto = false; this.listarCategorias(); },
+        error: (err) => alert(err.status === 409
+          ? 'Já existe uma categoria com esse nome.'
+          : 'Erro ao inserir a categoria.')
+      });
     }
-
-    this.modalAberto = false;
   }
 
   cancelarModal() {
     this.modalAberto = false;
   }
 
-  abrirModalExclusao(categoria: any) {
+  abrirModalExclusao(categoria: Categoria) {
     this.categoriaParaExcluir = categoria;
     this.modalExclusaoAberto = true;
   }
 
   confirmarExclusao() {
     if (this.categoriaParaExcluir) {
-      this.categorias = this.categorias.filter(
-        c => c !== this.categoriaParaExcluir
+      this.categoriaService.remover(this.categoriaParaExcluir.id).subscribe(
+        () => this.listarCategorias()
       );
     }
     this.modalExclusaoAberto = false;

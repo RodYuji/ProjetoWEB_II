@@ -20,7 +20,7 @@
         </thead>
 
         <tbody>
-          @for (categoria of categorias; track categoria) {
+          @for (categoria of categorias(); track categoria.id){
             <tr>
               <td>{{ categoria.nome }}</td>
 
