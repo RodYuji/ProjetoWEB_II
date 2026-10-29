@@ -9,19 +9,27 @@ import { SolicitacaoService } from '../../shared/services/solicitacao.service';
   templateUrl: './home-cliente.component.html',
   styleUrl: './home-cliente.component.css',
 })
+
 export class HomeClienteComponent {
   filtroStatus = 'TODAS';
 
- solicitacoes: any[] = [];
-solicitacoesFiltradas: any[] = [];
+  solicitacoes: any[] = [];
+  solicitacoesFiltradas: any[] = [];
 
- constructor(
-  private router: Router,
-  private solicitacaoService: SolicitacaoService
-) {
-  this.solicitacoes = this.solicitacaoService.listar();
-  this.solicitacoesFiltradas = this.solicitacoes;
-}
+  constructor(
+     private router: Router,
+     private solicitacaoService: SolicitacaoService
+  ) {
+    this.solicitacaoService.listar().subscribe({
+      next: (solicitacoes) => {
+        this.solicitacoes = solicitacoes;
+        this.solicitacoesFiltradas = solicitacoes;
+      },
+      error: () => {
+        alert('Erro ao carregar as solicitações.');
+      }
+    });
+  } 
 
   verDetalhes(solicitacao: any) {
     this.router.navigate(['/detalhes-solicitacao', solicitacao.id]);
