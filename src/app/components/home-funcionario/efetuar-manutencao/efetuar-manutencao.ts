@@ -37,7 +37,11 @@ export class EfetuarManutencao implements OnInit {
   }
 
   ngOnInit(): void {
-    this.funcionariosDisponiveis = this.funcionarioService.listar().filter((funcionario) => funcionario.nome !== this.funcionarioLogado);
+
+    this.funcionarioService.listar().subscribe((funcionarios) => {
+      this.funcionariosDisponiveis = funcionarios.filter((funcionario) => funcionario.nome !== this.funcionarioLogado);
+    });
+    
   }
 
   efetuarManutencao(): void {

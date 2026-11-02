@@ -29,23 +29,25 @@ export class RelatorioCategoria {
   carregarReceitas(): void {
     const agrupado = new Map<string, { total: number; quantidade: number }>();
 
-    this.solicitacaoService.listar()
-      .filter((solicitacao) => solicitacao.estado === 'PAGA')
-      .forEach((solicitacao) => {
-        const categoria = solicitacao.categoriaEquipamento?.trim() || 'Sem categoria';
-        const valor = Number((solicitacao as any).valor ?? solicitacao.valorOrcamento ?? 0);
+    this.solicitacaoService.listar().subscribe((solicitacoes) => {
+      solicitacoes
+        .filter((s) => s.estado === 'PAGA')
+        .forEach((solicitacao) => {
+          const categoria = solicitacao.categoriaEquipamento?.trim() || 'Sem categoria';
+          const valor = Number((solicitacao as any).valor ?? solicitacao.valorOrcamento ?? 0);
 
-        const atual = agrupado.get(categoria) ?? { total: 0, quantidade: 0 };
-        atual.total += valor;
-        atual.quantidade += 1;
-        agrupado.set(categoria, atual);
-      });
+          const atual = agrupado.get(categoria) ?? { total: 0, quantidade: 0 };
+          atual.total += valor;
+          atual.quantidade += 1;
+          agrupado.set(categoria, atual);
+        });
 
-    this.categorias = [...agrupado.entries()]
-      .map(([categoria, dados]) => ({ categoria, total: dados.total, quantidade: dados.quantidade }))
-      .sort((a, b) => b.total - a.total);
+      this.categorias = [...agrupado.entries()]
+        .map(([categoria, dados]) => ({ categoria, total: dados.total, quantidade: dados.quantidade }))
+        .sort((a, b) => b.total - a.total);
 
-    this.totalReceitas = this.categorias.reduce((total, categoria) => total + categoria.total, 0);
+      this.totalReceitas = this.categorias.reduce((total, categoria) => total + categoria.total, 0);
+    });
   }
 
   formatarMoeda(valor: number): string {

@@ -23,10 +23,14 @@ export class VisualizarSolicitacao {
   solicitacoesFiltradas: SolicitacaoManutencao[] = [];
 
   constructor(private solicitacaoService: SolicitacaoService) {
-    this.todasSolicitacoes = this.solicitacaoService.listar()
-      .filter((s) => s.estado !== 'REDIRECIONADA' || s.funcionarioDestinoRedirecionamento === this.funcionarioLogado)
-      .sort((a: SolicitacaoManutencao, b: SolicitacaoManutencao) => (a.dataHora.getTime() - b.dataHora.getTime()));
+
+    this.solicitacaoService.listar().subscribe((solicitacoes) => {
+      this.todasSolicitacoes = solicitacoes
+        .filter((s) => s.estado !== 'REDIRECIONADA' || s.funcionarioDestinoRedirecionamento === this.funcionarioLogado)
+        .sort((a: SolicitacaoManutencao, b: SolicitacaoManutencao) => (a.dataHora.getTime() - b.dataHora.getTime()));
       this.aplicarFiltro();
+    });
+    
   }
 
   corDoEstado(estado: string): string {

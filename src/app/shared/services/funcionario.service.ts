@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Funcionario } from '../models/funcionario.model';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class FuncionarioService {
     { nome: 'Rodrigo', cpf: '333.444.555-66', cargo: 'Técnico' }
   ];
 
-  listar(): Funcionario[] {
-    return this.funcionarios;
+  listar(): Observable<Funcionario[]> {
+    return of(this.funcionarios);
   }
 
   inserir(funcionario: Funcionario): void {
