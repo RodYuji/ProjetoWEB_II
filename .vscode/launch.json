@@ -3,6 +3,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "ManutencaoApplication",
+      "request": "launch",
+      "mainClass": "br.ufpr.manutencao.ManutencaoApplication",
+      "projectName": "manutencao"
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",

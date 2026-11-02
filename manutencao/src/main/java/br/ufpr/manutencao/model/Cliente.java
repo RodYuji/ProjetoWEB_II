@@ -1,6 +1,16 @@
 package br.ufpr.manutencao.model;
 
-public class Cliente extends Usuario {
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "cliente")
+public class Cliente extends Usuario{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String cpf;
     private String telefone;
     private String enderecoCompleto;
@@ -16,6 +26,9 @@ public class Cliente extends Usuario {
         this.telefone = telefone;
         this.enderecoCompleto = enderecoCompleto;
     }
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }

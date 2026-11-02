@@ -1,6 +1,13 @@
 package br.ufpr.manutencao.rest;
 
 import br.ufpr.manutencao.model.Cliente;
+import br.ufpr.manutencao.repository.ClienteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+// imports acima são do gab, abaixo são do fernando
+
 import br.ufpr.manutencao.util.SenhaUtil;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +25,9 @@ import java.util.Random;
 @RequestMapping("/api/clientes")
 public class ClienteREST {
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     // Lista temporária para simular a base de dados (seguindo o razer)
     public static List<Cliente> listaClientes = new ArrayList<>();
 
@@ -33,7 +43,8 @@ public class ClienteREST {
 
     @GetMapping
     public List<Cliente> listar() {
-        return listaClientes;
+        // Busca todos os clientes salvos no PostgreSQL
+        return clienteRepository.findAll();
     }
 
     @PostMapping("/autocadastro")
