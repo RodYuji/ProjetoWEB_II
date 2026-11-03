@@ -63,8 +63,19 @@
         <div class="modal-body">
           <input type="text" class="form-control" name="nome"
                  placeholder="Digite o nome da categoria"
-                 [(ngModel)]="categoriaForm.nome"
+                 [(ngModel)]="categoriaForm.nome" #nomeCategoria="ngModel"
+                 required maxlength="50"
                  (keyup.enter)="salvarCategoria()">
+          @if (nomeCategoria.errors && (nomeCategoria.dirty || nomeCategoria.touched)) {
+            <div class="alert alert-danger mt-2 mb-0">
+              <div [hidden]="!nomeCategoria.errors['required']">
+                Digite o nome da categoria.
+              </div>
+              <div [hidden]="!nomeCategoria.errors['maxlength']">
+                O nome deve ter no máximo 50 caracteres.
+              </div>
+            </div>
+          }
         </div>
 
         <div class="modal-footer">
@@ -72,7 +83,7 @@
             Cancelar
           </button>
           <button type="button" class="btn btn-primary"
-                  [disabled]="!categoriaForm.nome.trim()"
+                  [disabled]="!categoriaForm.nome.trim() || categoriaForm.nome.trim().length > 50"
                   (click)="salvarCategoria()">
             {{ modoEdicao ? 'Salvar Alterações' : 'Salvar' }}
           </button>

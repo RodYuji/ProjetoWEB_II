@@ -3,118 +3,96 @@ package br.ufpr.manutencao.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * Solicitacao de manutencao (tabela tb_solicitacao).
+ * O historico de mudancas de estado fica em Historico (tb_historico).
+ */
+@Entity
+@Table(name = "tb_solicitacao")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Solicitacao {
-    private int id;
-    private String descricaoEquipamento;
-    private String categoriaEquipamento;
-    private String descricaoDefeito;
-    private LocalDateTime dataHora;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_sol")
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cli")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cat")
+    private Categoria categoria;
+
+    /** Estado atual. */
+    @ManyToOne
+    @JoinColumn(name = "id_est")
     private Estado estado;
-    private int clienteId;
 
+    @Column(name = "desc_equip_sol")
+    private String descricaoEquipamento;
+
+    @Column(name = "desc_defeito_sol")
+    private String descricaoDefeito;
+
+    @Column(name = "data_hora_sol")
+    private LocalDateTime dataHora;
+
+    // RF012 Efetuar Orcamento
+    @Column(name = "valor_orc_sol")
     private BigDecimal valorOrcamento;
-    private String funcionarioOrcamento;
-    private LocalDateTime dataHoraOrcamento;
-    private String motivoRejeicao;
 
+    @ManyToOne
+    @JoinColumn(name = "id_fun_orc")
+    private Funcionario funcionarioOrcamento;
+
+    @Column(name = "data_hora_orc_sol")
+    private LocalDateTime dataHoraOrcamento;
+
+    // RF014 Efetuar Manutencao
+    @Column(name = "desc_manut_sol")
     private String descricaoManutencao;
+
+    @Column(name = "orient_cli_sol")
     private String orientacoesCliente;
-    private String funcionarioManutencao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_fun_manut")
+    private Funcionario funcionarioManutencao;
+
+    @Column(name = "data_hora_manut_sol")
     private LocalDateTime dataHoraManutencao;
 
-    private String funcionarioOrigemRedirecionamento;
-    private String funcionarioDestinoRedirecionamento;
-    private LocalDateTime dataHoraRedirecionamento;
+    // RF015 Redirecionar: funcionario responsavel atual (destino do ultimo redirecionamento)
+    @ManyToOne
+    @JoinColumn(name = "id_fun_resp")
+    private Funcionario funcionarioResponsavel;
 
-    private String funcionarioFinalizouManutencao;
-    private LocalDateTime dataHoraFinalizouManutencao;
-    private LocalDateTime dataPagamento;
+    // RF010 Pagar
+    @Column(name = "data_hora_pag_sol")
+    private LocalDateTime dataHoraPagamento;
 
-    public Solicitacao() {}
+    // RF016 Finalizar
+    @ManyToOne
+    @JoinColumn(name = "id_fun_final")
+    private Funcionario funcionarioFinalizacao;
 
-    public Solicitacao(int id, String descricaoEquipamento, String categoriaEquipamento,
-                       String descricaoDefeito, LocalDateTime dataHora, Estado estado,
-                       int clienteId) {
-        this.id = id;
-        this.descricaoEquipamento = descricaoEquipamento;
-        this.categoriaEquipamento = categoriaEquipamento;
-        this.descricaoDefeito = descricaoDefeito;
-        this.dataHora = dataHora;
-        this.estado = estado;
-        this.clienteId = clienteId;
-    }
-
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
-    public String getDescricaoEquipamento() { return descricaoEquipamento; }
-    public void setDescricaoEquipamento(String descricaoEquipamento) { this.descricaoEquipamento = descricaoEquipamento; }
-
-    public String getCategoriaEquipamento() { return categoriaEquipamento; }
-    public void setCategoriaEquipamento(String categoriaEquipamento) { this.categoriaEquipamento = categoriaEquipamento; }
-
-    public String getDescricaoDefeito() { return descricaoDefeito; }
-    public void setDescricaoDefeito(String descricaoDefeito) { this.descricaoDefeito = descricaoDefeito; }
-
-    public LocalDateTime getDataHora() { return dataHora; }
-    public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
-
-    public Estado getEstado() { return estado; }
-    public void setEstado(Estado estado) { this.estado = estado; }
-
-    public int getClienteId() { return clienteId; }
-    public void setClienteId(int clienteId) { this.clienteId = clienteId; }
-
-    public BigDecimal getValorOrcamento() { return valorOrcamento; }
-    public void setValorOrcamento(BigDecimal valorOrcamento) { this.valorOrcamento = valorOrcamento; }
-
-    public String getFuncionarioOrcamento() { return funcionarioOrcamento; }
-    public void setFuncionarioOrcamento(String funcionarioOrcamento) { this.funcionarioOrcamento = funcionarioOrcamento; }
-
-    public LocalDateTime getDataHoraOrcamento() { return dataHoraOrcamento; }
-    public void setDataHoraOrcamento(LocalDateTime dataHoraOrcamento) { this.dataHoraOrcamento = dataHoraOrcamento; }
-
-    public String getMotivoRejeicao() { return motivoRejeicao; }
-    public void setMotivoRejeicao(String motivoRejeicao) { this.motivoRejeicao = motivoRejeicao; }
-
-    public String getDescricaoManutencao() { return descricaoManutencao; }
-    public void setDescricaoManutencao(String descricaoManutencao) { this.descricaoManutencao = descricaoManutencao; }
-
-    public String getOrientacoesCliente() { return orientacoesCliente; }
-    public void setOrientacoesCliente(String orientacoesCliente) { this.orientacoesCliente = orientacoesCliente; }
-
-    public String getFuncionarioManutencao() { return funcionarioManutencao; }
-    public void setFuncionarioManutencao(String funcionarioManutencao) { this.funcionarioManutencao = funcionarioManutencao; }
-
-    public LocalDateTime getDataHoraManutencao() { return dataHoraManutencao; }
-    public void setDataHoraManutencao(LocalDateTime dataHoraManutencao) { this.dataHoraManutencao = dataHoraManutencao; }
-
-    public String getFuncionarioOrigemRedirecionamento() { return funcionarioOrigemRedirecionamento; }
-    public void setFuncionarioOrigemRedirecionamento(String funcionarioOrigemRedirecionamento) { this.funcionarioOrigemRedirecionamento = funcionarioOrigemRedirecionamento; }
-
-    public String getFuncionarioDestinoRedirecionamento() { return funcionarioDestinoRedirecionamento; }
-    public void setFuncionarioDestinoRedirecionamento(String funcionarioDestinoRedirecionamento) { this.funcionarioDestinoRedirecionamento = funcionarioDestinoRedirecionamento; }
-
-    public LocalDateTime getDataHoraRedirecionamento() { return dataHoraRedirecionamento; }
-    public void setDataHoraRedirecionamento(LocalDateTime dataHoraRedirecionamento) { this.dataHoraRedirecionamento = dataHoraRedirecionamento; }
-
-    public String getFuncionarioFinalizouManutencao() { return funcionarioFinalizouManutencao; }
-    public void setFuncionarioFinalizouManutencao(String funcionarioFinalizouManutencao) { this.funcionarioFinalizouManutencao = funcionarioFinalizouManutencao; }
-
-    public LocalDateTime getDataHoraFinalizouManutencao() { return dataHoraFinalizouManutencao; }
-    public void setDataHoraFinalizouManutencao(LocalDateTime dataHoraFinalizouManutencao) { this.dataHoraFinalizouManutencao = dataHoraFinalizouManutencao; }
-
-    public LocalDateTime getDataPagamento() { return dataPagamento; }
-    public void setDataPagamento(LocalDateTime dataPagamento) { this.dataPagamento = dataPagamento; }
-
-    public enum Estado {
-        ABERTA,
-        ORÇADA,
-        REJEITADA,
-        APROVADA,
-        REDIRECIONADA,
-        ARRUMADA,
-        PAGA,
-        FINALIZADA
-    }
+    @Column(name = "data_hora_final_sol")
+    private LocalDateTime dataHoraFinalizacao;
 }

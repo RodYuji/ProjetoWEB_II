@@ -1,87 +1,87 @@
 package br.ufpr.manutencao.rest;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.ufpr.manutencao.model.Categoria;
+import br.ufpr.manutencao.repository.CategoriaRepository;
 
 @CrossOrigin
 @RestController
 public class CategoriaREST {
 
-    public static List<Categoria> lista = new ArrayList<>();
+    // Repositorio injetado pelo Spring (slides 1048 e 1258)
+    @Autowired
+    private CategoriaRepository repo;
 
-    static {
-        // massa de teste exigida pelo enunciado
-        lista.add(new Categoria(1, "Notebook", true));
-        lista.add(new Categoria(2, "Desktop", true));
-        lista.add(new Categoria(3, "Impressora", true));
-        lista.add(new Categoria(4, "Mouse", true));
-        lista.add(new Categoria(5, "Teclado", true));
+    // Validacao no back-end (enunciado): nome obrigatorio, ate 50 caracteres (varchar(50))
+    private boolean nomeInvalido(Categoria categoria) {
+        return categoria == null || categoria.getNome() == null
+                || categoria.getNome().trim().isEmpty()
+                || categoria.getNome().trim().length() > 50;
     }
 
     @GetMapping("/categorias")
     public ResponseEntity<List<Categoria>> obterTodasCategorias() {
-        List<Categoria> ativas = lista.stream()
-                .filter(c -> c.isAtivo()).toList();
-        return ResponseEntity.ok(ativas);
+        return ResponseEntity.ok(repo.findByAtivoTrueOrderByNome());
     }
 
     @GetMapping("/categorias/{id}")
     public ResponseEntity<Categoria> obterCategoriaPorId(@PathVariable("id") int id) {
-        Categoria c = lista.stream().filter(cat -> cat.getId() == id && cat.isAtivo())
-                .findAny().orElse(null);
-        if (c == null)
+        Optional<Categoria> c = repo.findById(id);
+        if (c.isEmpty() || !c.get().isAtivo())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         else
-            return ResponseEntity.ok(c);
+            return ResponseEntity.ok(c.get());
     }
 
     @PostMapping("/categorias")
     public ResponseEntity<Categoria> inserirCategoria(@RequestBody Categoria categoria) {
-        Categoria c = lista.stream().filter(cat -> cat.isAtivo()
-                && cat.getNome().equalsIgnoreCase(categoria.getNome()))
-                .findAny().orElse(null);
-        if (c != null) {
+        if (nomeInvalido(categoria)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        if (repo.existsByNomeIgnoreCaseAndAtivoTrue(categoria.getNome().trim())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        c = lista.stream().max(Comparator.comparing(Categoria::getId)).orElse(null);
-        if (c == null)
-            categoria.setId(1);
-        else
-            categoria.setId(c.getId() + 1);
+        categoria.setId(null);          // o banco gera o id (identity)
+        categoria.setNome(categoria.getNome().trim());
         categoria.setAtivo(true);
-        lista.add(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
+        Categoria salva = repo.save(categoria);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salva);
     }
 
     @PutMapping("/categorias/{id}")
     public ResponseEntity<Categoria> alterarCategoria(@PathVariable("id") int id,
                                                       @RequestBody Categoria categoria) {
-        Categoria c = lista.stream().filter(cat -> cat.getId() == id && cat.isAtivo())
-                .findAny().orElse(null);
-        if (c != null) {
-            c.setNome(categoria.getNome());
-            return ResponseEntity.ok(c);
+        if (nomeInvalido(categoria)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        else
+        Optional<Categoria> op = repo.findById(id);
+        if (op.isEmpty() || !op.get().isAtivo())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        Categoria c = op.get();
+        String novoNome = categoria.getNome().trim();
+        if (!c.getNome().equalsIgnoreCase(novoNome) && repo.existsByNomeIgnoreCaseAndAtivoTrue(novoNome)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        c.setNome(novoNome);
+        return ResponseEntity.ok(repo.save(c));
     }
 
     @DeleteMapping("/categorias/{id}")
     public ResponseEntity<Categoria> removerCategoria(@PathVariable("id") int id) {
-        Categoria c = lista.stream().filter(cat -> cat.getId() == id && cat.isAtivo())
-                .findAny().orElse(null);
-        if (c != null) {
-            c.setAtivo(false);   // desativação, exigida pelo enunciado
-            return ResponseEntity.ok(c);
-        }
-        else
+        Optional<Categoria> op = repo.findById(id);
+        if (op.isEmpty() || !op.get().isAtivo())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        Categoria c = op.get();
+        c.setAtivo(false);              // desativacao, exigida pelo enunciado
+        return ResponseEntity.ok(repo.save(c));
     }
 }

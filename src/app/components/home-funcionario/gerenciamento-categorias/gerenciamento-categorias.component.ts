@@ -47,14 +47,16 @@ export class GerenciamentoCategoriasComponent implements OnInit {
 
   salvarCategoria() {
     const nome = this.categoriaForm.nome.trim();
-    if (nome === '') {
+    if (nome === '' || nome.length > 50) {
       return;
     }
 
     if (this.modoEdicao) {
       this.categoriaService.alterar(new Categoria(this.idEditando, nome)).subscribe({
         next: () => { this.modalAberto = false; this.listarCategorias(); },
-        error: () => alert('Erro ao alterar a categoria.')
+        error: (err) => alert(err.status === 409
+          ? 'Já existe uma categoria com esse nome.'
+          : 'Erro ao alterar a categoria.')
       });
     } else {
       this.categoriaService.inserir(new Categoria(0, nome)).subscribe({

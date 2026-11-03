@@ -32,11 +32,11 @@ public class ClienteREST {
     public static List<Cliente> listaClientes = new ArrayList<>();
 
     static {
-        Cliente c1 = new Cliente(1, "111.222.333-44", "João da Silva", "joao@email.com", null, "(41) 98888-1111", "Rua das Flores, 100 - Curitiba/PR");
+        Cliente c1 = new Cliente(1, "111.222.333-44", "João da Silva", "joao@email.com", null, "(41) 98888-1111", "80010000", "Rua das Flores", "100", null, "Centro", "Curitiba", "PR");
         SenhaUtil.definirSenha(c1, "1234");
         listaClientes.add(c1);
 
-        Cliente c2 = new Cliente(2, "222.333.444-55", "Maria Oliveira", "maria@email.com", null, "(41) 97777-2222", "Av. Comendador Franco, 500 - Curitiba/PR");
+        Cliente c2 = new Cliente(2, "222.333.444-55", "Maria Oliveira", "maria@email.com", null, "(41) 97777-2222", "81520000", "Av. Comendador Franco", "500", null, "Jardim Botânico", "Curitiba", "PR");
         SenhaUtil.definirSenha(c2, "5678");
         listaClientes.add(c2);
     }
