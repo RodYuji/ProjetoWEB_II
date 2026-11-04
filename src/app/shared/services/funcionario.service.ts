@@ -1,31 +1,45 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Funcionario } from '../models/funcionario.model';
-import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FuncionarioService {
-    funcionarios: Funcionario[] = [
-    { nome: 'Gabriel', cpf: '123.456.789-00', cargo: 'Técnico' },
-    { nome: 'Arthur', cpf: '987.654.321-00', cargo: 'Atendente' },
-    { nome: 'Carlos', cpf: '111.222.333-44', cargo: 'Técnico' },
-    { nome: 'Fernando', cpf: '222.333.444-55', cargo: 'Técnico' },
-    { nome: 'Rodrigo', cpf: '333.444.555-66', cargo: 'Técnico' }
-  ];
 
-  listar(): Observable<Funcionario[]> {
-    return of(this.funcionarios);
+  BASE_URL = "http://localhost:8080/funcionarios";
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+  private httpClient = inject(HttpClient);
+
+  listarTodos(): Observable<Funcionario[]> {
+    return this.httpClient.get<Funcionario[]>(this.BASE_URL, this.httpOptions);
   }
 
-  inserir(funcionario: Funcionario): void {
-    this.funcionarios.push(funcionario);
+  buscarPorId(id: number): Observable<Funcionario> {
+    return this.httpClient.get<Funcionario>(this.BASE_URL + "/" + id, this.httpOptions);
   }
 
-  remover(funcionario: Funcionario): void {
-    const index = this.funcionarios.indexOf(funcionario);
-    if (index > -1) {
-      this.funcionarios.splice(index, 1);
+  inserir(funcionario: Funcionario): Observable<Funcionario> {
+    return this.httpClient.post<Funcionario>(this.BASE_URL,
+      JSON.stringify(funcionario), this.httpOptions);
+  }
+
+  alterar(funcionario: Funcionario): Observable<Funcionario> {
+    return this.httpClient.put<Funcionario>(this.BASE_URL + "/" + funcionario.id,
+      JSON.stringify(funcionario), this.httpOptions);
+  }
+
+    // idLogado: id do funcionário que está usando o sistema (RF018: não pode remover a si mesmo)
+  remover(id: number, idLogado?: number): Observable<Funcionario> {
+    let url = this.BASE_URL + "/" + id;
+    if (idLogado) {
+      url += "?idLogado=" + idLogado;
     }
+    return this.httpClient.delete<Funcionario>(url, this.httpOptions);
   }
 }

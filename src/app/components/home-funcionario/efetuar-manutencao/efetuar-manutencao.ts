@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +26,7 @@ export class EfetuarManutencao implements OnInit {
   mostrarFormularioRedirecionamento = false;
   funcionarioDestino = '';
   private funcionarioLogado = 'Arthur';
-  funcionariosDisponiveis: Funcionario[] = [];
+  funcionariosDisponiveis = signal<Funcionario[]>([]);
   manutencaoConfirmada = false;
   redirecionamentoConfirmado = false;
 
@@ -38,8 +38,8 @@ export class EfetuarManutencao implements OnInit {
 
   ngOnInit(): void {
 
-    this.funcionarioService.listar().subscribe((funcionarios) => {
-      this.funcionariosDisponiveis = funcionarios.filter((funcionario) => funcionario.nome !== this.funcionarioLogado);
+    this.funcionarioService.listarTodos().subscribe((funcionarios) => {
+      this.funcionariosDisponiveis.set(funcionarios.filter((funcionario) => funcionario.nome !== this.funcionarioLogado));
     });
     
   }
