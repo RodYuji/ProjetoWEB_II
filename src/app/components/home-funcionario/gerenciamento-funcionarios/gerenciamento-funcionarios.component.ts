@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { FuncionarioService } from '../../../shared/services/funcionario.service';
+import { Funcionario } from '../../../shared/models/funcionario.model';
 
 @Component({
   selector: 'app-gerenciamento-funcionarios',
@@ -7,73 +9,95 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './gerenciamento-funcionarios.component.html',
   styleUrl: './gerenciamento-funcionarios.component.css',
 })
-export class GerenciamentoFuncionariosComponent {
-  funcionarios = [
-    { nome: 'Gabriel Formanek', cpf: '123.456.789-00', cargo: 'Técnico' },
-    { nome: 'Arthur Yuji', cpf: '987.654.321-00', cargo: 'Atendente' }
-  ];
+export class GerenciamentoFuncionariosComponent implements OnInit {
+  private funcionarioService = inject(FuncionarioService);
 
-  cargos = ['Técnico', 'Atendente', 'Gerente'];
+  funcionarios = signal<Funcionario[]>([]);
 
   modalAberto = false;
   modoEdicao = false;
-  indiceEditando = -1;
-  funcionarioForm = { nome: '', cpf: '', cargo: '' };
+  funcionarioForm = new Funcionario();
 
   modalExclusaoAberto = false;
-  funcionarioParaExcluir: any = null;
+  funcionarioParaExcluir: Funcionario | null = null;
+
+  // TODO: trocar pelo id do funcionário logado quando o login estiver integrado
+  idFuncionarioLogado: number | undefined = undefined;
+
+  ngOnInit(): void {
+    this.listarFuncionarios();
+  }
+
+  listarFuncionarios(): void {
+    this.funcionarioService.listarTodos().subscribe(
+      funcionarios => this.funcionarios.set(funcionarios)
+    );
+  }
+
+  // "aaaa-mm-dd" -> "dd/mm/aaaa" (formato brasileiro, exigido pelo enunciado)
+  formatarData(data: string): string {
+    if (!data) return '';
+    const [ano, mes, dia] = data.split('-');
+    return `${dia}/${mes}/${ano}`;
+  }
 
   abrirModal() {
-    this.funcionarioForm = { nome: '', cpf: '', cargo: '' };
+    this.funcionarioForm = new Funcionario();
     this.modoEdicao = false;
     this.modalAberto = true;
   }
 
-  editarFuncionario(funcionario: any) {
-    this.indiceEditando = this.funcionarios.indexOf(funcionario);
-    this.funcionarioForm = {
-      nome: funcionario.nome,
-      cpf: funcionario.cpf,
-      cargo: funcionario.cargo
-    };
+  editarFuncionario(funcionario: Funcionario) {
+    // cópia para não alterar a linha da tabela antes de salvar; a senha vem vazia
+    this.funcionarioForm = new Funcionario(funcionario.id, funcionario.nome, funcionario.email,
+                                           funcionario.dataNascimento, '', funcionario.ativo);
     this.modoEdicao = true;
     this.modalAberto = true;
   }
 
-  formularioValido(): boolean {
-    return this.funcionarioForm.nome.trim() !== '' &&
-           this.funcionarioForm.cpf.trim() !== '' &&
-           this.funcionarioForm.cargo !== '';
-  }
-
-  salvarFuncionario() {
-    if (!this.formularioValido()) {
+  salvarFuncionario(form: NgForm) {
+    if (form.invalid) {
       return;
     }
+    const f = this.funcionarioForm;
+    f.nome = f.nome.trim();
+    f.email = f.email.trim();
 
     if (this.modoEdicao) {
-      this.funcionarios[this.indiceEditando] = { ...this.funcionarioForm };
+      this.funcionarioService.alterar(f).subscribe({
+        next: () => { this.modalAberto = false; this.listarFuncionarios(); },
+        error: (err) => alert(err.status === 409
+          ? 'Já existe um usuário com esse e-mail.'
+          : 'Erro ao alterar o funcionário.')
+      });
     } else {
-      this.funcionarios.push({ ...this.funcionarioForm });
+      this.funcionarioService.inserir(f).subscribe({
+        next: () => { this.modalAberto = false; this.listarFuncionarios(); },
+        error: (err) => alert(err.status === 409
+          ? 'Já existe um usuário com esse e-mail.'
+          : 'Erro ao inserir o funcionário.')
+      });
     }
-
-    this.modalAberto = false;
   }
 
   cancelarModal() {
     this.modalAberto = false;
   }
 
-  abrirModalExclusao(funcionario: any) {
+  abrirModalExclusao(funcionario: Funcionario) {
     this.funcionarioParaExcluir = funcionario;
     this.modalExclusaoAberto = true;
   }
 
   confirmarExclusao() {
     if (this.funcionarioParaExcluir) {
-      this.funcionarios = this.funcionarios.filter(
-        f => f !== this.funcionarioParaExcluir
-      );
+      this.funcionarioService.remover(this.funcionarioParaExcluir.id, this.idFuncionarioLogado).subscribe({
+        next: () => this.listarFuncionarios(),
+        error: (err) => alert(
+          err.status === 400 ? 'Você não pode remover a si mesmo.' :
+          err.status === 409 ? 'Não é possível remover o último funcionário.' :
+          'Erro ao remover o funcionário.')
+      });
     }
     this.modalExclusaoAberto = false;
   }

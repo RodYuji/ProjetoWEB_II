@@ -1,13 +1,11 @@
 package br.ufpr.manutencao.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,16 +17,16 @@ import lombok.Setter;
 @Setter
 public class Funcionario extends Usuario {
 
-    @Temporal(TemporalType.DATE)
+    // LocalDate vai no JSON como "aaaa-mm-dd", o mesmo formato do <input type="date"> do Angular
     @Column(name = "data_nasc_fun")
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     public Funcionario() {
         super();
         setPerfil("FUNCIONARIO");
     }
 
-    public Funcionario(Integer id, String nome, String email, String senha, Date dataNascimento) {
+    public Funcionario(Integer id, String nome, String email, String senha, LocalDate dataNascimento) {
         super(id, nome, email, senha, null, "FUNCIONARIO");
         this.dataNascimento = dataNascimento;
     }

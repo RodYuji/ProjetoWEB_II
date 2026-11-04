@@ -90,7 +90,7 @@
                 <select id="funcionarioDestino" class="form-control" name="funcionarioDestino"
                   [(ngModel)]="funcionarioDestino" required>
                   <option value="" disabled selected>Selecione um funcionário</option>
-                  @for (funcionario of funcionariosDisponiveis; track funcionario.cpf) {
+                  @for (funcionario of funcionariosDisponiveis(); track funcionario.id) {
                     <option [value]="funcionario.nome">{{ funcionario.nome }}</option>
                   }
                 </select>

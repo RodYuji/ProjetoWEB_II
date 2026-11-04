@@ -15,18 +15,18 @@
         <thead>
           <tr>
             <th>Nome</th>
-            <th>CPF</th>
-            <th>Cargo</th>
+            <th>E-mail</th>
+            <th>Data de nascimento</th>
             <th>Ações</th>
           </tr>
         </thead>
 
         <tbody>
-          @for (funcionario of funcionarios; track funcionario) {
+          @for (funcionario of funcionarios(); track funcionario.id) {
             <tr>
               <td>{{ funcionario.nome }}</td>
-              <td>{{ funcionario.cpf }}</td>
-              <td>{{ funcionario.cargo }}</td>
+              <td>{{ funcionario.email }}</td>
+              <td>{{ formatarData(funcionario.dataNascimento) }}</td>
 
               <td>
                 <button
@@ -56,44 +56,82 @@
   <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
+        <form #formFuncionario="ngForm" (ngSubmit)="salvarFuncionario(formFuncionario)">
 
-        <div class="modal-header">
-          <h5 class="modal-title">
-            {{ modoEdicao ? 'Editar Funcionário' : 'Novo Funcionário' }}
-          </h5>
-          <button type="button" class="btn-close" (click)="cancelarModal()"></button>
-        </div>
+          <div class="modal-header">
+            <h5 class="modal-title">
+              {{ modoEdicao ? 'Editar Funcionário' : 'Novo Funcionário' }}
+            </h5>
+            <button type="button" class="btn-close" (click)="cancelarModal()"></button>
+          </div>
 
-        <div class="modal-body">
-          <input type="text" class="form-control mb-3" name="nome"
-                 placeholder="Digite o nome do funcionário"
-                 [(ngModel)]="funcionarioForm.nome">
+          <div class="modal-body">
 
-          <input type="text" class="form-control mb-3" name="cpf"
-                 placeholder="000.000.000-00"
-                 maxlength="14"
-                 [(ngModel)]="funcionarioForm.cpf">
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="nome" name="nome"
+                     [(ngModel)]="funcionarioForm.nome" #nome="ngModel"
+                     required maxlength="100">
+              @if (nome.errors && (nome.dirty || nome.touched)) {
+                <div class="alert alert-danger mt-2 mb-0">
+                  <div [hidden]="!nome.errors['required']">Digite o nome do funcionário.</div>
+                  <div [hidden]="!nome.errors['maxlength']">O nome deve ter no máximo 100 caracteres.</div>
+                </div>
+              }
+            </div>
 
-          <select class="form-select" name="cargo"
-                  [(ngModel)]="funcionarioForm.cargo">
-            <option value="" disabled>Selecione um cargo</option>
-            @for (cargo of cargos; track cargo) {
-              <option [value]="cargo">{{ cargo }}</option>
-            }
-          </select>
-        </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">E-mail (login)</label>
+              <input type="email" class="form-control" id="email" name="email"
+                     [(ngModel)]="funcionarioForm.email" #email="ngModel"
+                     required email maxlength="100">
+              @if (email.errors && (email.dirty || email.touched)) {
+                <div class="alert alert-danger mt-2 mb-0">
+                  <div [hidden]="!email.errors['required']">Digite o e-mail.</div>
+                  <div [hidden]="!email.errors['email']">Digite um e-mail válido.</div>
+                  <div [hidden]="!email.errors['maxlength']">O e-mail deve ter no máximo 100 caracteres.</div>
+                </div>
+              }
+            </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="cancelarModal()">
-            Cancelar
-          </button>
-          <button type="button" class="btn btn-primary"
-                  [disabled]="!formularioValido()"
-                  (click)="salvarFuncionario()">
-            {{ modoEdicao ? 'Salvar Alterações' : 'Salvar' }}
-          </button>
-        </div>
+            <div class="mb-3">
+              <label for="dataNascimento" class="form-label">Data de nascimento</label>
+              <input type="date" class="form-control" id="dataNascimento" name="dataNascimento"
+                     [(ngModel)]="funcionarioForm.dataNascimento" #dataNascimento="ngModel"
+                     required>
+              @if (dataNascimento.errors && (dataNascimento.dirty || dataNascimento.touched)) {
+                <div class="alert alert-danger mt-2 mb-0">
+                  <div [hidden]="!dataNascimento.errors['required']">Informe a data de nascimento.</div>
+                </div>
+              }
+            </div>
 
+            <div class="mb-0">
+              <label for="senha" class="form-label">
+                Senha {{ modoEdicao ? '(deixe em branco para manter a atual)' : '' }}
+              </label>
+              <input type="password" class="form-control" id="senha" name="senha"
+                     [(ngModel)]="funcionarioForm.senha" #senha="ngModel"
+                     [required]="!modoEdicao">
+              @if (senha.errors && (senha.dirty || senha.touched)) {
+                <div class="alert alert-danger mt-2 mb-0">
+                  <div [hidden]="!senha.errors['required']">Digite a senha.</div>
+                </div>
+              }
+            </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cancelarModal()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="formFuncionario.invalid">
+              {{ modoEdicao ? 'Salvar Alterações' : 'Salvar' }}
+            </button>
+          </div>
+
+        </form>
       </div>
     </div>
   </div>
