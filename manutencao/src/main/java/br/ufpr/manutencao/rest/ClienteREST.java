@@ -2,6 +2,8 @@ package br.ufpr.manutencao.rest;
 
 import br.ufpr.manutencao.model.Cliente;
 import br.ufpr.manutencao.repository.ClienteRepository;
+import br.ufpr.manutencao.repository.UsuarioRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Random; 
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -28,18 +30,8 @@ public class ClienteREST {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    // Lista temporária para simular a base de dados (seguindo o razer)
-    public static List<Cliente> listaClientes = new ArrayList<>();
-
-    static {
-        Cliente c1 = new Cliente(1, "111.222.333-44", "João da Silva", "joao@email.com", null, "(41) 98888-1111", "80010000", "Rua das Flores", "100", null, "Centro", "Curitiba", "PR");
-        SenhaUtil.definirSenha(c1, "1234");
-        listaClientes.add(c1);
-
-        Cliente c2 = new Cliente(2, "222.333.444-55", "Maria Oliveira", "maria@email.com", null, "(41) 97777-2222", "81520000", "Av. Comendador Franco", "500", null, "Jardim Botânico", "Curitiba", "PR");
-        SenhaUtil.definirSenha(c2, "5678");
-        listaClientes.add(c2);
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -48,19 +40,61 @@ public class ClienteREST {
     }
 
     @PostMapping("/autocadastro")
-    public Cliente autocadastro(@RequestBody Cliente cliente) {
-        // Gera a senha aleatória de 4 digitos
+    public ResponseEntity<Cliente> autocadastro(@RequestBody Cliente cliente) {
+        
+        if (cliente == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        // só dígitos em CPF CEP telefone email minúsculo
+        cliente.setCpf(somenteDigitos(cliente.getCpf()));
+        cliente.setCep(somenteDigitos(cliente.getCep()));
+        cliente.setTelefone(somenteDigitos(cliente.getTelefone()));
+
+        if (cliente.getEmail() != null)
+            cliente.setEmail(cliente.getEmail().trim().toLowerCase());
+
+        if (dadosInvalidos(cliente))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        // se já existe 409 CONFLICT
+        if (clienteRepository.findByCpf(cliente.getCpf()).isPresent()
+                || usuarioRepository.findByEmail(cliente.getEmail()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        //guarda só o hash SHA-256 e SALT
         String senhaAleatoria = String.format("%04d", new Random().nextInt(10000));
-
-        // Guarda só o hash SHA-256 + SALT, nunca a senha pura
         SenhaUtil.definirSenha(cliente, senhaAleatoria);
-        cliente.setPerfil("CLIENTE"); // ignora qualquer perfil vindo no JSON
 
-        // precisa enviar a senha por email, por enquanto só mostra no console
+        // TODO enviar por e-mail. Por enquanto só mostra no console.
         System.out.println("Senha gerada para " + cliente.getEmail() + ": " + senhaAleatoria);
 
-        cliente.setId(listaClientes.size() + 1);
-        listaClientes.add(cliente);
-        return cliente;
+        cliente.setId(null);          // o banco gera o id
+        cliente.setPerfil("CLIENTE");
+        cliente.setAtivo(true);
+
+        // salva no banco e devolve 201 CREATED
+        Cliente salvo = clienteRepository.save(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    }
+
+    private static String somenteDigitos(String valor) {
+        return valor == null ? null : valor.replaceAll("\\D", "");
+    }
+
+
+    private static boolean vazio(String valor) {
+        return valor == null || valor.trim().isEmpty();
+    }
+
+    // validacao backend
+    private boolean dadosInvalidos(Cliente c) {
+        return vazio(c.getNome()) || c.getNome().trim().length() > 100
+            || vazio(c.getEmail()) || !c.getEmail().contains("@") || c.getEmail().length() > 100
+            || c.getCpf() == null || c.getCpf().length() != 11
+            || vazio(c.getTelefone()) || c.getTelefone().length() > 15
+            || c.getCep() == null || c.getCep().length() != 8
+            || vazio(c.getLogradouro()) || vazio(c.getNumero()) || vazio(c.getBairro())
+            || vazio(c.getCidade()) || c.getUf() == null || c.getUf().trim().length() != 2;
     }
 }
