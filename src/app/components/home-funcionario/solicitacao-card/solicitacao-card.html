@@ -6,8 +6,8 @@
   <h3>{{ solicitacao.descricaoEquipamento | truncarTexto }}</h3>
   <p>Solicitação Nº {{ solicitacao.id }}</p>
   <p>Data/Hora: {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
-  <p><i class="fa fa-user" aria-hidden="true"></i> {{ solicitacao.nomeCliente }}</p>
-  <span class="status">{{ solicitacao.estado }}</span>
+  <p><i class="fa fa-user" aria-hidden="true"></i> {{ solicitacao.cliente.nome }}</p>
+  <span class="status">{{ solicitacao.estado.nome }}</span>
 
   <button class="btn-orcamento" [routerLink]="'/efetuar-orcamento/' + solicitacao.id">
     <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i> Efetuar orçamento

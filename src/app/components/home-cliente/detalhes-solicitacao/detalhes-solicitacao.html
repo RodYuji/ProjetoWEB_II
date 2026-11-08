@@ -1,18 +1,35 @@
-@if (solicitacao) {
 <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
-  </a>
+  <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+</a>
+@if (solicitacao(); as solicitacao) {
   <main class="pagina-detalhes-solicitacao">
     <h1>Detalhes da Solicitação</h1>
 
     <div class="card mb-3">
       <div class="card-body">
         <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
-        <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+        <p><strong>Categoria:</strong> {{ solicitacao.categoria.nome }}</p>
         <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
         <p><strong>Data:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
         <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>
-        <p><strong>Status:</strong> {{ solicitacao.estado }}</p>
+        <p><strong>Status:</strong> {{ solicitacao.estado.nome }}</p>
+        @if (solicitacao.valorOrcamento != null) {
+          <p><strong>Valor do orçamento:</strong> R$ {{ solicitacao.valorOrcamento }}</p>
+        }
+        @if (solicitacao.descricaoManutencao) {
+          <p><strong>Manutenção realizada:</strong> {{ solicitacao.descricaoManutencao }}</p>
+          <p><strong>Orientações:</strong> {{ solicitacao.orientacoesCliente }}</p>
+        }
+
+        @if (solicitacao.estado.nome === 'ORÇADA') {
+          <button class="btn btn-primary me-2" (click)="verOrcamento()">Aprovar/Rejeitar Serviço</button>
+        }
+        @if (solicitacao.estado.nome === 'REJEITADA') {
+          <button class="btn btn-warning me-2" (click)="resgatarServico()">Resgatar Serviço</button>
+        }
+        @if (solicitacao.estado.nome === 'ARRUMADA') {
+          <button class="btn btn-success me-2" (click)="verPagamento()">Pagar Serviço</button>
+        }
       </div>
     </div>
 
@@ -20,15 +37,26 @@
       <div class="card-body">
         <h2>Histórico</h2>
 
-        @for (item of solicitacao.historico; track $index) {
+        @for (item of historico(); track item.id) {
           <div class="historico-item">
-            <strong>{{ item.estado }}</strong>
+            <strong>{{ item.estadoNovo.nome }}</strong>
             <span>{{ item.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+            @if (item.funcionario) {
+              <span> - {{ item.funcionario.nome }}</span>
+            }
+            @if (item.funcionarioDestino) {
+              <span> → {{ item.funcionarioDestino.nome }}</span>
+            }
+            @if (item.observacao) {
+              <span> ({{ item.observacao }})</span>
+            }
           </div>
+        } @empty {
+          <p>Nenhum registro no histórico.</p>
         }
       </div>
     </div>
   </main>
 } @else {
-  <p>Solicitação não encontrada.</p>
+  <p class="ms-3 mt-3">Carregando solicitação...</p>
 }

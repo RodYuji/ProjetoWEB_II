@@ -2,12 +2,13 @@
   <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-cliente']">
     <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
   </a>
+  @if (solicitacao(); as solicitacao) {
   <div class="orcamento">
     <h1>Orçamento do Serviço</h1>
     <div class="dados-solicitacao">
       <h2>Dados da solicitação</h2>
       <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
-      <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+      <p><strong>Categoria:</strong> {{ solicitacao.categoria.nome }}</p>
       <p><strong>Defeito:</strong> {{ solicitacao.descricaoDefeito }}</p>
       <p><strong>Data:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy' }}</p>
       <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>
@@ -25,9 +26,13 @@
       </button>
     </div>
   </div>
+  } @else {
+    <p class="ms-3 mt-3">Carregando solicitação...</p>
+  }
 </div>
 
-<div class="modal-overlay" *ngIf="mostrarModalRejeicao" (click)="fecharModalRejeicao()">
+@if (mostrarModalRejeicao) {
+<div class="modal-overlay" (click)="fecharModalRejeicao()">
   <div class="modal-conteudo" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2>Motivo da Rejeição</h2>
@@ -59,3 +64,4 @@
     </div>
   </div>
 </div>
+}
