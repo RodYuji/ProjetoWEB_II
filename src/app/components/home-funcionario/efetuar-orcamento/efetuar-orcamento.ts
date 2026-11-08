@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-efetuar-orcamento',
@@ -14,7 +15,9 @@ import { Solicitacao } from '../../../shared/models/solicitacao.model';
 export class EfetuarOrcamento implements OnInit {
 
   // trocar pelo id do funcionário logado quando o login estiver integrado e apagar comentário
-  idFuncionario = 1;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);

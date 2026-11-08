@@ -4,18 +4,27 @@
   </svg></a>
 
   <div class="navbar-links">
-    <a
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Início
-    </a>
-    <a routerLink="/login" routerLinkActive="active">Login</a>
-    <a routerLink="/autocadastro" routerLinkActive="active">Cadastro</a>
-    <a routerLink="/home-funcionario" routerLinkActive="active">Home Funcionário</a>
-    <a routerLink="/gerenciamento-categorias" routerLinkActive="active">Gerenciamento de Categorias</a>
-    <a routerLink="/gerenciamento-funcionarios" routerLinkActive="active">Gerenciamento de Funcionários</a>
-    <a routerLink="/home-cliente" routerLinkActive="active">Home Cliente</a>
+    @if (usuarioLogado) {
+      @if (usuarioLogado.perfil == 'FUNCIONARIO') {
+        <!-- Menu do funcionário -->
+        <a routerLink="/home-funcionario" routerLinkActive="active">Início</a>
+        <a routerLink="/visualizar-solicitacao" routerLinkActive="active">Solicitações</a>
+        <a routerLink="/gerenciamento-categorias" routerLinkActive="active">Categorias</a>
+        <a routerLink="/gerenciamento-funcionarios" routerLinkActive="active">Funcionários</a>
+        <a routerLink="/relatorio-receitas" routerLinkActive="active">Relatórios</a>
+      } @else {
+        <!-- Menu do cliente -->
+        <a routerLink="/home-cliente" routerLinkActive="active">Início</a>
+        <a routerLink="/nova-solicitacao" routerLinkActive="active">Nova Solicitação</a>
+      }
+      <!-- Usuário logado e logout -->
+      <span class="navbar-usuario">
+        <i class="fa fa-user"></i> {{ usuarioLogado.nome }}
+      </span>
+      <a href="#" (click)="logout(); $event.preventDefault()">Sair</a>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      <a routerLink="/autocadastro" routerLinkActive="active">Cadastro</a>
+    }
   </div>
 </nav>

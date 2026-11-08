@@ -15,24 +15,37 @@ import { VisualizarSolicitacao } from './components/home-funcionario/visualizar-
 import { GerenciamentoFuncionariosComponent } from './components/home-funcionario/gerenciamento-funcionarios/gerenciamento-funcionarios.component';
 import { GerenciamentoCategoriasComponent } from './components/home-funcionario/gerenciamento-categorias/gerenciamento-categorias.component';
 import { EsquecerSenhaComponent } from './components/esqueci-senha/esqueci-senha.component';
+import { authGuard } from './auth/auth.guard';
+
+// nome: como a tela aparece nas mensagens do guard 
+const CLIENTE = { role: 'CLIENTE' };
+const FUNCIONARIO = { role: 'FUNCIONARIO' };
 
 export const routes: Routes = [
-  { path: 'home-cliente', component: HomeClienteComponent },
-  { path: 'login', component: LoginComponent },
+  // Públicas sem canActivate 
   { path: '', component: AutocadastroComponent },
-  { path: 'home-funcionario', component: HomeFuncionario },
-  { path: 'efetuar-orcamento', component: EfetuarOrcamento },
-  { path: 'efetuar-orcamento/:id', component: EfetuarOrcamento },
-  { path: 'nova-solicitacao', component: NovaSolicitacao },
-  { path: 'efetuar-manutencao/:id', component: EfetuarManutencao },
-  { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao },
-  { path: 'orcamento/:id', component: Orcamento },
-  { path: 'pagamento/:id', component: Pagamento },
-  { path: 'relatorio-receitas', component: RelatorioReceitas },
-  { path: 'relatorio-categoria', component: RelatorioCategoria },
-  { path: 'visualizar-solicitacao', component: VisualizarSolicitacao }, 
-  { path: 'gerenciamento-funcionarios', component: GerenciamentoFuncionariosComponent },
-  { path: 'gerenciamento-categorias', component: GerenciamentoCategoriasComponent }, 
+  { path: 'autocadastro', component: AutocadastroComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'esqueci-senha', component: EsquecerSenhaComponent },
+
+  // Perfil CLIENTE
+  { path: 'home-cliente', component: HomeClienteComponent, canActivate: [authGuard], data: { ...CLIENTE, nome: 'home do cliente' } },
+  { path: 'nova-solicitacao', component: NovaSolicitacao, canActivate: [authGuard], data: { ...CLIENTE, nome: 'nova solicitação' } },
+  { path: 'detalhes-solicitacao/:id', component: DetalhesSolicitacao, canActivate: [authGuard], data: { ...CLIENTE, nome: 'detalhes da solicitação' } },
+  { path: 'orcamento/:id', component: Orcamento, canActivate: [authGuard], data: { ...CLIENTE, nome: 'orçamento' } },
+  { path: 'pagamento/:id', component: Pagamento, canActivate: [authGuard], data: { ...CLIENTE, nome: 'pagamento' } },
+
+  // Perfil FUNCIONARIO
+  { path: 'home-funcionario', component: HomeFuncionario, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'home do funcionário' } },
+  { path: 'efetuar-orcamento', component: EfetuarOrcamento, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'efetuar orçamento' } },
+  { path: 'efetuar-orcamento/:id', component: EfetuarOrcamento, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'efetuar orçamento' } },
+  { path: 'efetuar-manutencao/:id', component: EfetuarManutencao, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'efetuar manutenção' } },
+  { path: 'visualizar-solicitacao', component: VisualizarSolicitacao, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'visualização de solicitações' } },
+  { path: 'relatorio-receitas', component: RelatorioReceitas, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'relatório de receitas' } },
+  { path: 'relatorio-categoria', component: RelatorioCategoria, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'relatório por categoria' } },
+  { path: 'gerenciamento-funcionarios', component: GerenciamentoFuncionariosComponent, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'gerenciamento de funcionários' } },
+  { path: 'gerenciamento-categorias', component: GerenciamentoCategoriasComponent, canActivate: [authGuard], data: { ...FUNCIONARIO, nome: 'gerenciamento de categorias' } },
+
+  // Qualquer outro endereço volta para o início
   { path: '**', redirectTo: '' },
 ];

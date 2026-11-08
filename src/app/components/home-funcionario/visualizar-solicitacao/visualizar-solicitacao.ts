@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
 import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-visualizar-solicitacao',
@@ -16,7 +17,9 @@ import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 export class VisualizarSolicitacao implements OnInit {
 
   // trocar pelo id do funcionário logado quando o login estiver integrado e apagar comentário
-  idFuncionario = 1;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
 
   private solicitacaoService = inject(SolicitacaoService);
 
