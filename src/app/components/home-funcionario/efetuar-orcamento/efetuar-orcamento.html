@@ -1,16 +1,16 @@
-@if (solicitacao) {
-  <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
-  </a>
+<a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
+  <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+</a>
+@if (solicitacao(); as solicitacao) {
   <main class="container">
     <h1>Efetuar Orçamento</h1>
-    <p><strong>Estado atual:</strong> {{ solicitacao.estado }}</p>
+    <p><strong>Estado atual:</strong> {{ solicitacao.estado.nome }}</p>
 
     <div class="card mb-3">
       <div class="card-body">
         <h2>Dados da Solicitação</h2>
         <p><strong>Nº da Solicitação:</strong> {{ solicitacao.id }}</p>
-        <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+        <p><strong>Categoria:</strong> {{ solicitacao.categoria.nome }}</p>
         <p><strong>Descrição:</strong> {{ solicitacao.descricaoEquipamento }}</p>
         <p><strong>Defeito relatado:</strong> {{ solicitacao.descricaoDefeito }}</p>
         <p><strong>Data da solicitação:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
@@ -20,44 +20,49 @@
     <div class="card mb-3">
       <div class="card-body">
         <h2>Dados do Cliente</h2>
-        <p><strong>Nome:</strong> {{ solicitacao.nomeCliente }}</p>
+        <p><strong>Nome:</strong> {{ solicitacao.cliente.nome }}</p>
+        <p><strong>CPF:</strong> {{ solicitacao.cliente.cpf }}</p>
+        <p><strong>E-mail:</strong> {{ solicitacao.cliente.email }}</p>
+        <p><strong>Telefone:</strong> {{ solicitacao.cliente.telefone }}</p>
+        <p><strong>Endereço:</strong> {{ solicitacao.cliente.logradouro }}, {{ solicitacao.cliente.numero }}
+          {{ solicitacao.cliente.complemento }} - {{ solicitacao.cliente.bairro }} -
+          {{ solicitacao.cliente.cidade }}/{{ solicitacao.cliente.uf }} - CEP {{ solicitacao.cliente.cep }}</p>
       </div>
     </div>
 
-    <div class="card mb-3">
-      <div class="card-body">
-        <h2>Registrar Orçamento</h2>
-        <form #formOrcamento="ngForm">
-          <div class="form-group">
-            <label for="valorOrcamento">Valor do Orçamento (R$):</label>
-            <input [disabled]="orcamentoConfirmado" type="number" class="form-control"
-              id="valorOrcamento" name="valorOrcamento"
-              [(ngModel)]="valorOrcamento" required min="0" step="1" placeholder="Preço">
-          </div>
+    @if (solicitacao.estado.nome === 'ABERTA') {
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2>Registrar Orçamento</h2>
+          <form #formOrcamento="ngForm">
+            <div class="form-group">
+              <label for="valorOrcamento">Valor do Orçamento (R$):</label>
+              <input type="number" class="form-control"
+                id="valorOrcamento" name="valorOrcamento" #valor="ngModel"
+                [(ngModel)]="valorOrcamento" required min="0.01" step="0.01" placeholder="Preço">
+              @if (valor.errors && (valor.dirty || valor.touched)) {
+                <div class="alert alert-danger">Informe um valor maior que zero.</div>
+              }
+            </div>
 
-          @if (!orcamentoConfirmado) {
             <button type="button" class="btn btn-primary" (click)="confirmarOrcamento()"
               [disabled]="!formOrcamento.form.valid">
               <i class="fa fa-save" aria-hidden="true"></i> Confirmar Orçamento
             </button>
-          } @else {
-            <button type="button" class="btn btn-secondary" (click)="editarOrcamento()">
-              <i class="fa fa-edit" aria-hidden="true"></i> Editar
-            </button>
-          }
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
-
-    <div class="card mb-3">
-      <div class="card-body">
-        <h2>Dados do Registro</h2>
-        <p><strong>Funcionário responsável:</strong> {{ solicitacao.funcionarioOrcamento }}</p>
-        <p><strong>Data e hora do orçamento:</strong> {{ solicitacao.dataHoraOrcamento | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Último Valor:</strong> {{ solicitacao.valorOrcamento }}</p>
+    } @else {
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2>Dados do Registro</h2>
+          <p><strong>Funcionário responsável:</strong> {{ solicitacao.funcionarioOrcamento?.nome }}</p>
+          <p><strong>Data e hora do orçamento:</strong> {{ solicitacao.dataHoraOrcamento | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p><strong>Valor:</strong> R$ {{ solicitacao.valorOrcamento }}</p>
+        </div>
       </div>
-    </div>
+    }
   </main>
 } @else {
-  <p>Solicitação não encontrada.</p>
+  <p class="ms-3 mt-3">Carregando solicitação...</p>
 }

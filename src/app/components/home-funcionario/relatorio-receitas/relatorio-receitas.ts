@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
 import { jsPDF } from 'jspdf'; //import the serviço nativo do JS para exportar PDF
 import { RouterLink } from '@angular/router';
 
@@ -31,16 +32,22 @@ export function obterDataHoraAtual(): string {
 export class RelatorioReceitas {
   dataInicial = '';
   dataFinal = '';
-  receitas: ReceitaDiaria[] = [];
-  totalReceitas = 0;
+  // signals: a tela atualiza quando a API responde
+  receitas = signal<ReceitaDiaria[]>([]);
+  totalReceitas = signal(0);
+
+  // TODO: trocar pelo id do funcionário logado quando o login estiver integrado
+  idFuncionario = 1;
   mensagemErro = '';
 
   private readonly nomeEmpresa = 'Oficina de Manutenção e Serviços';
-  private readonly solicitacoes: any[];
+  private solicitacoes: Solicitacao[] = [];
 
   constructor(private readonly solicitacaoService: SolicitacaoService) {
-    this.solicitacoes = this.solicitacaoService.solicitacoes;
-    this.aplicarFiltro();
+    this.solicitacaoService.listarTodas(this.idFuncionario).subscribe((dados) => {
+      this.solicitacoes = dados == null ? [] : dados;
+      this.aplicarFiltro();
+    });
   }
 
   aplicarFiltro(): void {
@@ -48,17 +55,18 @@ export class RelatorioReceitas {
 
     if (this.dataInicial && this.dataFinal && this.dataInicial > this.dataFinal) {
       this.mensagemErro = 'A data inicial deve ser anterior ou igual à data final.';
-      this.receitas = [];
-      this.totalReceitas = 0;
+      this.receitas.set([]);
+      this.totalReceitas.set(0);
       return;
     }
 
     const receitasPorDia = new Map<string, { descricao: string; valor: number }[]>();
 
     this.solicitacoes
-      .filter((solicitacao) => solicitacao.estado === 'PAGA' || solicitacao.status === 'PAGA')
+      // Receita = solicitações pagas (PAGA ou já FINALIZADA), pela data do pagamento
+      .filter((solicitacao) => solicitacao.dataHoraPagamento != null)
       .forEach((solicitacao) => {
-        const dataRaw = solicitacao.dataPagamento ?? solicitacao.data ?? solicitacao.dataHora;
+        const dataRaw = solicitacao.dataHoraPagamento ?? undefined;
         const data = this.obterData(dataRaw);
         if (!data || !this.noIntervalo(data)) {
           return;
@@ -66,23 +74,23 @@ export class RelatorioReceitas {
 
         const chave = this.formatarDataISO(data);
         const itens = receitasPorDia.get(chave) ?? [];
-        const valor = Number(solicitacao.valor ?? solicitacao.valorOrcamento ?? 0);
+        const valor = Number(solicitacao.valorOrcamento ?? 0);
 
         itens.push({
-          descricao: solicitacao.equipamento ?? solicitacao.descricaoEquipamento ?? solicitacao.descricao ?? 'Serviço de manutenção',
+          descricao: solicitacao.descricaoEquipamento || 'Serviço de manutenção',
           valor,
         });
         receitasPorDia.set(chave, itens);
       });
 
-    this.receitas = [...receitasPorDia.entries()]
+    this.receitas.set([...receitasPorDia.entries()]
       .sort(([dataA], [dataB]) => dataA.localeCompare(dataB))
       .map(([data, itens]) => ({
         data,
         itens,
         total: itens.reduce((total, item) => total + item.valor, 0),
-      }));
-    this.totalReceitas = this.receitas.reduce((total, receita) => total + receita.total, 0);
+      })));
+    this.totalReceitas.set(this.receitas().reduce((total, receita) => total + receita.total, 0));
   }
 
   gerarPdf(): void {
@@ -120,9 +128,9 @@ export class RelatorioReceitas {
 
     desenharCabecalho();
 
-    const totalServicos = this.receitas.reduce((total, receita) => total + receita.itens.length, 0);
-    const mediaDiaria = this.receitas.length > 0 ? this.totalReceitas / this.receitas.length : 0;
-    const melhorDia = this.receitas.reduce<{ data: string; total: number } | null>((maior, receita) => {
+    const totalServicos = this.receitas().reduce((total, receita) => total + receita.itens.length, 0);
+    const mediaDiaria = this.receitas().length > 0 ? this.totalReceitas() / this.receitas().length : 0;
+    const melhorDia = this.receitas().reduce<{ data: string; total: number } | null>((maior, receita) => {
       if (!maior || receita.total > maior.total) {
         return { data: receita.data, total: receita.total };
       }
@@ -146,7 +154,7 @@ export class RelatorioReceitas {
     documento.text('Receita total', margem + 270, posicaoY + 20);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.formatarMoeda(this.totalReceitas), margem + 270, posicaoY + 38);
+    documento.text(this.formatarMoeda(this.totalReceitas()), margem + 270, posicaoY + 38);
 
     documento.setFontSize(10);
     documento.setTextColor(80, 90, 105);
@@ -164,7 +172,7 @@ export class RelatorioReceitas {
 
     posicaoY += 122;
 
-    if (this.receitas.length === 0) {
+    if (this.receitas().length === 0) {
       garantirEspaco(24);
       documento.setFontSize(12);
       documento.text('Nenhuma receita encontrada no período informado.', margem, posicaoY + 12);
@@ -176,7 +184,7 @@ export class RelatorioReceitas {
       documento.text('Detalhamento por dia', margem, posicaoY + 12);
       posicaoY += espacamentoInformacoes;
 
-      this.receitas.forEach((receita) => {
+      this.receitas().forEach((receita) => {
         garantirEspaco(38);
 
         documento.setFontSize(12);
@@ -213,7 +221,7 @@ export class RelatorioReceitas {
       garantirEspaco(melhorDia ? 38 : 20);
       documento.setFontSize(12);
       documento.setTextColor(17, 24, 39);
-      documento.text(`Receita total do período: ${this.formatarMoeda(this.totalReceitas)}`, margem, posicaoY + 12);
+      documento.text(`Receita total do período: ${this.formatarMoeda(this.totalReceitas())}`, margem, posicaoY + 12);
       posicaoY += 18;
       if (melhorDia) {
         documento.text(`Maior faturamento: ${this.formatarData(melhorDia.data)} (${this.formatarMoeda(melhorDia.total)})`, margem, posicaoY + 12);

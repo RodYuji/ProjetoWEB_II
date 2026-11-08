@@ -1,37 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-orcamento',
-  imports: [DatePipe, RouterLink, NgIf, FormsModule],
+  imports: [DatePipe, RouterLink, FormsModule],
   templateUrl: './orcamento.html',
   styleUrl: './orcamento.css',
 })
-export class Orcamento {
+export class Orcamento implements OnInit {
 
-  solicitacao: any;
+  // solicitação carregada da API
+  solicitacao = signal<Solicitacao | null>(null);
   mostrarModalRejeicao = false;
   motivoRejeicao = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private solicitacaoService: SolicitacaoService
-  ) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private solicitacaoService = inject(SolicitacaoService);
 
-    this.solicitacao = this.solicitacaoService.solicitacoes.find(
-      solicitacao => solicitacao.id === id
-    );
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.solicitacaoService.buscarPorId(id).subscribe({
+      next: (dados: Solicitacao) => this.solicitacao.set(dados),
+      error: () => this.solicitacao.set(null)
+    });
   }
 
+  // aprovar serviço
   aprovarServico() {
-    this.solicitacao.estado = 'APROVADA';
-    alert('Serviço aprovado com sucesso!');
-    this.router.navigate(['/home-cliente']);
+    const s = this.solicitacao();
+    if (s == null) return;
+    this.solicitacaoService.aprovar(s.id).subscribe({
+      next: () => {
+        alert('Serviço Aprovado no Valor R$ ' + this.formatarValor(s.valorOrcamento));
+        this.router.navigate(['/home-cliente']);
+      },
+      error: () => alert('Não foi possível aprovar o serviço.')
+    });
   }
 
   abrirModalRejeicao() {
@@ -44,17 +53,25 @@ export class Orcamento {
     this.motivoRejeicao = '';
   }
 
+  // rejeitar serviço 
   confirmarRejeicao() {
+    const s = this.solicitacao();
+    if (s == null) return;
     if (!this.motivoRejeicao.trim()) {
       alert('Por favor, descreva o motivo da rejeição.');
       return;
     }
+    this.solicitacaoService.rejeitar(s.id, this.motivoRejeicao.trim()).subscribe({
+      next: () => {
+        alert('Serviço Rejeitado');
+        this.fecharModalRejeicao();
+        this.router.navigate(['/home-cliente']);
+      },
+      error: () => alert('Não foi possível rejeitar o serviço.')
+    });
+  }
 
-    this.solicitacao.estado = 'REJEITADA';
-    this.solicitacao.motivoRejeicao = this.motivoRejeicao;
-    
-    alert('Serviço rejeitado com sucesso!');
-    this.fecharModalRejeicao();
-    this.router.navigate(['/home-cliente']);
+  private formatarValor(valor: number | null): string {
+    return (valor ?? 0).toFixed(2).replace('.', ',');
   }
 }

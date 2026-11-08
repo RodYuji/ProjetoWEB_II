@@ -7,7 +7,7 @@
     <section class="minhas-solicitacoes">
         <h2>Solicitações:</h2>
         <div class="solicitacoes-lista">
-            @for (solicitacao of solicitacoesAbertas; track solicitacao.id) {
+            @for (solicitacao of solicitacoesAbertas(); track solicitacao.id) {
                 <app-solicitacao-card [solicitacao]="solicitacao"></app-solicitacao-card>
             } @empty {
                 <p>Nenhuma solicitação em aberto</p>

@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
-import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-efetuar-orcamento',
@@ -12,43 +11,44 @@ import { RouterLink } from '@angular/router';
   templateUrl: './efetuar-orcamento.html',
   styleUrl: './efetuar-orcamento.css',
 })
+export class EfetuarOrcamento implements OnInit {
 
-export class EfetuarOrcamento {
+  // trocar pelo id do funcionário logado quando o login estiver integrado e apagar comentário
+  idFuncionario = 1;
+
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private solicitacaoService = inject(SolicitacaoService);
-  private funcionarioLogado = 'Arthur';
-  solicitacao: SolicitacaoManutencao | undefined;
-  valorOrcamento: number | undefined;
-  orcamentoConfirmado = false;
 
-  constructor() {
-    const id = this.route.snapshot.paramMap.get('id');
-    const idNumero = Number(id);
-    this.solicitacao = this.solicitacaoService.buscarPorId(idNumero);
+  // solicitação carregada da API
+  solicitacao = signal<Solicitacao | null>(null);
+  valorOrcamento: number | undefined;
+
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.solicitacaoService.buscarPorId(id).subscribe({
+      next: (dados: Solicitacao) => this.solicitacao.set(dados),
+      error: () => this.solicitacao.set(null)
+    });
   }
 
+  // ABERTA -> ORÇADA 
   confirmarOrcamento(): void {
-  if (!this.solicitacao) return;
+    const s = this.solicitacao();
+    if (s == null || this.valorOrcamento == null) return;
 
-  this.solicitacao.dataHoraOrcamento = new Date();
-  this.solicitacao.funcionarioOrcamento = this.funcionarioLogado;
-  this.solicitacao.valorOrcamento = this.valorOrcamento;
-  this.solicitacao.estado = 'ORÇADA';
-  this.orcamentoConfirmado = true;
-
-  this.solicitacao.historico.push({ 
-    dataHora: new Date(),
-    estado: 'ORÇADA',
-    funcionarioOrigemManutencao: this.funcionarioLogado,
-  });
-  this.solicitacaoService.atualizar(this.solicitacao);
-  
-  alert('Orçamento confirmado com sucesso!');
-  this.router.navigate(['/home-funcionario']);
-}
-
-  editarOrcamento():void {
-    this.orcamentoConfirmado = false;
+    this.solicitacaoService.orcar(s.id, this.valorOrcamento, this.idFuncionario).subscribe({
+      next: () => {
+        alert('Orçamento confirmado com sucesso!');
+        this.router.navigate(['/home-funcionario']);
+      },
+      error: (erro) => {
+        if (erro.status === 409) {
+          alert('Esta solicitação não está mais ABERTA.');
+        } else {
+          alert('Não foi possível registrar o orçamento.');
+        }
+      }
+    });
   }
 }

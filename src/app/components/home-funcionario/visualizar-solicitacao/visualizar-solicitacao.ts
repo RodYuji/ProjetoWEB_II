@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
-import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { FormsModule } from '@angular/forms';
-
+import { Observable } from 'rxjs';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
+import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 
 @Component({
   selector: 'app-visualizar-solicitacao',
@@ -13,24 +13,22 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './visualizar-solicitacao.html',
   styleUrl: './visualizar-solicitacao.css',
 })
-export class VisualizarSolicitacao {  
-  todasSolicitacoes: SolicitacaoManutencao[] = [];
-  private funcionarioLogado = 'Arthur';
+export class VisualizarSolicitacao implements OnInit {
+
+  // trocar pelo id do funcionário logado quando o login estiver integrado e apagar comentário
+  idFuncionario = 1;
+
+  private solicitacaoService = inject(SolicitacaoService);
 
   filtro: string = 'TODAS';
   dataInicio: string = '';
   dataFim: string = '';
-  solicitacoesFiltradas: SolicitacaoManutencao[] = [];
 
-  constructor(private solicitacaoService: SolicitacaoService) {
+  // lista já filtrada e ordenada pelo back-end
+  solicitacoesFiltradas = signal<Solicitacao[]>([]);
 
-    this.solicitacaoService.listar().subscribe((solicitacoes) => {
-      this.todasSolicitacoes = solicitacoes
-        .filter((s) => s.estado !== 'REDIRECIONADA' || s.funcionarioDestinoRedirecionamento === this.funcionarioLogado)
-        .sort((a: SolicitacaoManutencao, b: SolicitacaoManutencao) => (a.dataHora.getTime() - b.dataHora.getTime()));
-      this.aplicarFiltro();
-    });
-    
+  ngOnInit(): void {
+    this.aplicarFiltro();
   }
 
   corDoEstado(estado: string): string {
@@ -56,34 +54,41 @@ export class VisualizarSolicitacao {
     }
   }
 
+  // TODAS, HOJE ou PERÍODO 
   aplicarFiltro(): void {
+    let consulta: Observable<Solicitacao[]>;
+
     if (this.filtro === 'HOJE') {
-      const hoje = new Date();
-      this.solicitacoesFiltradas = this.todasSolicitacoes.filter((s) => s.dataHora.toDateString() === hoje.toDateString());
-    } else if (this.filtro === 'PERIODO') {
-      if (this.dataInicio === '' || this.dataFim === '') {
-        this.solicitacoesFiltradas = this.todasSolicitacoes;
-      } else {
-        const inicio = new Date(this.dataInicio + 'T00:00:00');
-        const fim = new Date(this.dataFim + 'T23:59:59');
-        this.solicitacoesFiltradas = this.todasSolicitacoes.filter((s) => s.dataHora.getTime() >= inicio.getTime() && s.dataHora.getTime() <= fim.getTime());
-      }
+      const hoje = this.dataDeHoje();
+      consulta = this.solicitacaoService.listarPorPeriodo(this.idFuncionario, hoje, hoje);
+    } else if (this.filtro === 'PERIODO' && this.dataInicio !== '' && this.dataFim !== '') {
+      consulta = this.solicitacaoService.listarPorPeriodo(this.idFuncionario, this.dataInicio, this.dataFim);
     } else {
-      this.solicitacoesFiltradas = this.todasSolicitacoes;
+      consulta = this.solicitacaoService.listarTodas(this.idFuncionario);
     }
-  }
-  finalizarSolicitacao(solicitacao: SolicitacaoManutencao): void {
 
-    solicitacao.historico.push({
-      dataHora: new Date(),
-      estado: 'FINALIZADA',
-      funcionarioOrigemManutencao: this.funcionarioLogado,
+    consulta.subscribe({
+      next: (dados: Solicitacao[]) => this.solicitacoesFiltradas.set(dados == null ? [] : dados),
+      error: () => alert('Erro ao carregar as solicitações.')
     });
-    
-    solicitacao.funcionarioFinalizouManutencao = this.funcionarioLogado;
-    solicitacao.dataHoraFinalizouManutencao = new Date();
-    solicitacao.estado = 'FINALIZADA';
-    this.solicitacaoService.atualizar(solicitacao);
   }
 
+  // PAGA -> FINALIZADA 
+  finalizarSolicitacao(solicitacao: Solicitacao): void {
+    if (!confirm('Deseja finalizar a solicitação Nº ' + solicitacao.id + '?')) {
+      return;
+    }
+    this.solicitacaoService.finalizar(solicitacao.id, this.idFuncionario).subscribe({
+      next: () => this.aplicarFiltro(),
+      error: () => alert('Não foi possível finalizar a solicitação.')
+    });
+  }
+
+  // formato aaaa-mm-dd
+  private dataDeHoje(): string {
+    const d = new Date();
+    const mes = String(d.getMonth() + 1).padStart(2, '0');
+    const dia = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + mes + '-' + dia;
+  }
 }

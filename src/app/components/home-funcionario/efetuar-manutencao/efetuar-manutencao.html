@@ -1,7 +1,7 @@
-@if (solicitacao) {
-  <a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
-    <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
-  </a>
+<a class="btn btn-secondary ms-3 mt-3" [routerLink]="['/home-funcionario']">
+  <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
+</a>
+@if (solicitacao(); as solicitacao) {
   <main class="container">
     <h1>Efetuar Manutenção</h1>
 
@@ -9,28 +9,31 @@
       <div class="card-body">
         <h2>Dados da Solicitação</h2>
         <p><strong>Nº da Solicitação:</strong> {{ solicitacao.id }}</p>
-        <p><strong>Estado atual:</strong> {{ solicitacao.estado }}</p>
-        <p><strong>Categoria:</strong> {{ solicitacao.categoriaEquipamento }}</p>
+        <p><strong>Estado atual:</strong> {{ solicitacao.estado.nome }}</p>
+        <p><strong>Categoria:</strong> {{ solicitacao.categoria.nome }}</p>
         <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
         <p><strong>Defeito relatado:</strong> {{ solicitacao.descricaoDefeito }}</p>
         <p><strong>Data da solicitação:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Cliente:</strong> {{ solicitacao.nomeCliente }}</p>
+        <p><strong>Cliente:</strong> {{ solicitacao.cliente.nome }}</p>
       </div>
     </div>
 
         <div class="card mb-3">
       <div class="card-body">
         <h2>Histórico</h2>
-        @for (item of solicitacao.historico; track $index) {
+        @for (item of historico(); track item.id) {
           <div class="historico-item">
             <p>
-              <strong>{{ item.estado }}</strong>
+              <strong>{{ item.estadoNovo.nome }}</strong>
               - {{ item.dataHora | date:'dd/MM/yyyy HH:mm' }}
             </p>
-            @if (item.funcionarioDestinoManutencao) {
-              <p>Redirecionado de {{ item.funcionarioOrigemManutencao }} para {{ item.funcionarioDestinoManutencao }}</p>
-            } @else if (item.funcionarioOrigemManutencao) {
-              <p>Funcionário: {{ item.funcionarioOrigemManutencao }}</p>
+            @if (item.funcionarioDestino) {
+              <p>Redirecionado de {{ item.funcionario?.nome }} para {{ item.funcionarioDestino.nome }}</p>
+            } @else if (item.funcionario) {
+              <p>Funcionário: {{ item.funcionario.nome }}</p>
+            }
+            @if (item.observacao) {
+              <p>Observação: {{ item.observacao }}</p>
             }
           </div>
         } @empty {
@@ -72,10 +75,10 @@
             </form>
           } @else {
             <h2>Manutenção Registrada</h2>
-            <p><strong>Estado atual:</strong> {{ solicitacao.estado }}</p>
+            <p><strong>Estado atual:</strong> {{ solicitacao.estado.nome }}</p>
             <p><strong>Descrição da Manutenção:</strong> {{ solicitacao.descricaoManutencao }}</p>
             <p><strong>Orientações para o Cliente:</strong> {{ solicitacao.orientacoesCliente }}</p>
-            <p><strong>Funcionário responsável:</strong> {{ solicitacao.funcionarioManutencao }}</p>
+            <p><strong>Funcionário responsável:</strong> {{ solicitacao.funcionarioManutencao?.nome }}</p>
             <p><strong>Data e hora:</strong> {{ solicitacao.dataHoraManutencao | date:'dd/MM/yyyy HH:mm' }}</p>
           }
         </div>
@@ -88,10 +91,10 @@
               <div class="form-group">
                 <label for="funcionarioDestino">Redirecionar para:</label>
                 <select id="funcionarioDestino" class="form-control" name="funcionarioDestino"
-                  [(ngModel)]="funcionarioDestino" required>
-                  <option value="" disabled selected>Selecione um funcionário</option>
+                  [(ngModel)]="idFuncionarioDestino" required>
+                  <option [ngValue]="0" disabled>Selecione um funcionário</option>
                   @for (funcionario of funcionariosDisponiveis(); track funcionario.id) {
-                    <option [value]="funcionario.nome">{{ funcionario.nome }}</option>
+                    <option [ngValue]="funcionario.id">{{ funcionario.nome }}</option>
                   }
                 </select>
               </div>
@@ -99,16 +102,14 @@
               <button type="button" class="btn btn-secondary" (click)="cancelarRedirecionamento()">
                 <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
               </button>
-              <button type="button" class="btn btn-primary" (click)="confirmarRedirecionamento()" [disabled]="!formRedirecionamento.form.valid">
+              <button type="button" class="btn btn-primary" (click)="confirmarRedirecionamento()" [disabled]="idFuncionarioDestino === 0">
                 <i class="fa fa-save" aria-hidden="true"></i> Confirmar Redirecionamento
               </button>
             </form>
           } @else {
             <h2>Redirecionamento Registrado</h2>
-            <p><strong>Estado atual:</strong> {{ solicitacao.estado }}</p>
-            <p><strong>Redirecionado de:</strong> {{ solicitacao.funcionarioOrigemRedirecionamento }}</p>
-            <p><strong>Redirecionado para:</strong> {{ solicitacao.funcionarioDestinoRedirecionamento }}</p>
-            <p><strong>Data e hora:</strong> {{ solicitacao.dataHoraRedirecionamento | date:'dd/MM/yyyy HH:mm' }}</p>
+            <p><strong>Estado atual:</strong> {{ solicitacao.estado.nome }}</p>
+            <p><strong>Redirecionado para:</strong> {{ solicitacao.funcionarioResponsavel?.nome }}</p>
             <a class="btn btn-secondary" [routerLink]="['/visualizar-solicitacao']">
               <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar para a lista
             </a>
@@ -118,5 +119,5 @@
     }
   </main>
 } @else {
-  <p>Solicitação não encontrada.</p>
+  <p class="ms-3 mt-3">Carregando solicitação...</p>
 }

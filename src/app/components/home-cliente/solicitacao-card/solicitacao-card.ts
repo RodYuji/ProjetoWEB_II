@@ -19,13 +19,14 @@ import { SolicitacaoService } from '../../../shared/services/solicitacao.service
 })
 export class SolicitacaoCard {
   @Input() equipamento = '';
-  @Input() dataHora!: Date;
+  @Input() dataHora: string = '';
   @Input() estado = '';
   @Input() solicitacaoId: number = 0;
 
   @Output() detalhes = new EventEmitter<void>();
   @Output() orcamento = new EventEmitter<void>();
   @Output() pagamento = new EventEmitter<void>();
+  @Output() resgatado = new EventEmitter<void>();
 
   faClock = faClock;
   faFileInvoiceDollar = faFileInvoiceDollar;
@@ -63,11 +64,19 @@ export class SolicitacaoCard {
     return this.estado;
   }
 
+  // REJEITADA -> APROVADA
   resgatarServico(): void {
-    const solicitacao = this.solicitacaoService.buscarPorId(this.solicitacaoId);
-
-    if (solicitacao) {
-      solicitacao.estado = 'ABERTA';
+    if (!confirm('Deseja resgatar este serviço?')) {
+      return;
     }
+    this.solicitacaoService.resgatar(this.solicitacaoId).subscribe({
+      next: () => {
+        alert('Serviço resgatado com sucesso!');
+        this.resgatado.emit();
+      },
+      error: () => {
+        alert('Não foi possível resgatar o serviço.');
+      }
+    });
   }
 }

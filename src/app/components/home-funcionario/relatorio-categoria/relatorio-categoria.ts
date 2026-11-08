@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { obterDataHoraAtual } from '../relatorio-receitas/relatorio-receitas';
@@ -17,8 +17,12 @@ interface ReceitaCategoria {
   styleUrl: './relatorio-categoria.css',
 })
 export class RelatorioCategoria {
-  categorias: ReceitaCategoria[] = [];
-  totalReceitas = 0;
+  // signals: a tela atualiza quando a API responde
+  categorias = signal<ReceitaCategoria[]>([]);
+  totalReceitas = signal(0);
+
+  // TODO: trocar pelo id do funcionário logado quando o login estiver integrado
+  idFuncionario = 1;
 
   private readonly nomeEmpresa = 'Oficina de Manutenção e Serviços';
 
@@ -29,12 +33,13 @@ export class RelatorioCategoria {
   carregarReceitas(): void {
     const agrupado = new Map<string, { total: number; quantidade: number }>();
 
-    this.solicitacaoService.listar().subscribe((solicitacoes) => {
-      solicitacoes
-        .filter((s) => s.estado === 'PAGA')
+    this.solicitacaoService.listarTodas(this.idFuncionario).subscribe((solicitacoes) => {
+      // Receita = solicitações pagas (PAGA ou já FINALIZADA)
+      (solicitacoes == null ? [] : solicitacoes)
+        .filter((s) => s.dataHoraPagamento != null)
         .forEach((solicitacao) => {
-          const categoria = solicitacao.categoriaEquipamento?.trim() || 'Sem categoria';
-          const valor = Number((solicitacao as any).valor ?? solicitacao.valorOrcamento ?? 0);
+          const categoria = solicitacao.categoria?.nome?.trim() || 'Sem categoria';
+          const valor = Number(solicitacao.valorOrcamento ?? 0);
 
           const atual = agrupado.get(categoria) ?? { total: 0, quantidade: 0 };
           atual.total += valor;
@@ -42,11 +47,11 @@ export class RelatorioCategoria {
           agrupado.set(categoria, atual);
         });
 
-      this.categorias = [...agrupado.entries()]
+      this.categorias.set([...agrupado.entries()]
         .map(([categoria, dados]) => ({ categoria, total: dados.total, quantidade: dados.quantidade }))
-        .sort((a, b) => b.total - a.total);
+        .sort((a, b) => b.total - a.total));
 
-      this.totalReceitas = this.categorias.reduce((total, categoria) => total + categoria.total, 0);
+      this.totalReceitas.set(this.categorias().reduce((total, categoria) => total + categoria.total, 0));
     });
   }
 
@@ -89,9 +94,9 @@ export class RelatorioCategoria {
 
     desenharCabecalho();
 
-    const totalProdutos = this.categorias.reduce((total, categoria) => total + categoria.quantidade, 0);
-    const categoriaDestaque = this.categorias[0] ?? null;
-    const mediaCategoria = this.categorias.length > 0 ? this.totalReceitas / this.categorias.length : 0;
+    const totalProdutos = this.categorias().reduce((total, categoria) => total + categoria.quantidade, 0);
+    const categoriaDestaque = this.categorias()[0] ?? null;
+    const mediaCategoria = this.categorias().length > 0 ? this.totalReceitas() / this.categorias().length : 0;
 
     documento.setFillColor(245, 248, 251);
     documento.rect(margem, posicaoY, larguraPagina - margem * 2, 96, 'F');
@@ -103,7 +108,7 @@ export class RelatorioCategoria {
     documento.text('Receita total', margem + 18, posicaoY + 20);
     documento.setFontSize(12);
     documento.setTextColor(17, 24, 39);
-    documento.text(this.formatarMoeda(this.totalReceitas), margem + 18, posicaoY + 38);
+    documento.text(this.formatarMoeda(this.totalReceitas()), margem + 18, posicaoY + 38);
 
     documento.setFontSize(10);
     documento.setTextColor(86, 96, 108);
@@ -130,7 +135,7 @@ export class RelatorioCategoria {
 
     posicaoY += 122;
 
-    if (this.categorias.length === 0) {
+    if (this.categorias().length === 0) {
       garantirEspaco(24);
       documento.setFontSize(12);
       documento.text('Nenhuma receita paga registrada para categorias.', margem, posicaoY + 12);
@@ -142,8 +147,8 @@ export class RelatorioCategoria {
       documento.text('DETALHAMENTO POR CATEGORIA', margem, posicaoY + 12);
       posicaoY += espacamentoInformacoes;
 
-      this.categorias.forEach((categoria) => {
-        const percentual = this.totalReceitas > 0 ? (categoria.total / this.totalReceitas) * 100 : 0;
+      this.categorias().forEach((categoria) => {
+        const percentual = this.totalReceitas() > 0 ? (categoria.total / this.totalReceitas()) * 100 : 0;
         const linhasNome = documento.splitTextToSize(categoria.categoria, larguraPagina - margem * 2 - 18);
         garantirEspaco(28);
 
@@ -182,7 +187,7 @@ export class RelatorioCategoria {
       garantirEspaco(categoriaDestaque ? 18 + linhasDestaque.length * 16 : 24);
       documento.setFontSize(12);
       documento.setTextColor(17, 24, 39);
-      documento.text(`Total geral: ${this.formatarMoeda(this.totalReceitas)}`, margem, posicaoY + 12);
+      documento.text(`Total geral: ${this.formatarMoeda(this.totalReceitas())}`, margem, posicaoY + 12);
       posicaoY += 18;
       if (categoriaDestaque) {
         linhasDestaque.forEach((linha: string) => {

@@ -38,8 +38,8 @@
         }
 
         <div class="solicitacoes-lista">
-            @for (solicitacao of solicitacoesFiltradas; track solicitacao.id) {
-                <div class="solicitacao" [style.backgroundColor]="corDoEstado(solicitacao.estado)">
+            @for (solicitacao of solicitacoesFiltradas(); track solicitacao.id) {
+                <div class="solicitacao" [style.backgroundColor]="corDoEstado(solicitacao.estado.nome)">
                     <div class="icone-status">
                         <i class="fa fa-clock" aria-hidden="true"></i>
                     </div>
@@ -47,18 +47,18 @@
                     <h3>{{ solicitacao.descricaoEquipamento | truncarTexto }}</h3>
                     <p>Solicitação Nº {{ solicitacao.id }}</p>
                     <p>Data/Hora: {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
-                    <p><i class="fa fa-user" aria-hidden="true"></i> {{ solicitacao.nomeCliente }}</p>
-                    <span class="status">{{ solicitacao.estado }}</span>
+                    <p><i class="fa fa-user" aria-hidden="true"></i> {{ solicitacao.cliente.nome }}</p>
+                    <span class="status">{{ solicitacao.estado.nome }}</span>
 
-                    @if (solicitacao.estado == "ABERTA") {
+                    @if (solicitacao.estado.nome == "ABERTA") {
                         <button class="btn-orcamento" [routerLink]="'/efetuar-orcamento/' + solicitacao.id">
                             <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i> Efetuar orçamento
                         </button>
-                    } @else if (solicitacao.estado == "APROVADA" || solicitacao.estado == "REDIRECIONADA") {
+                    } @else if (solicitacao.estado.nome == "APROVADA" || solicitacao.estado.nome == "REDIRECIONADA") {
                         <button class="btn-manutencao" [routerLink]="'/efetuar-manutencao/' + solicitacao.id">
                             <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i> Efetuar manutenção
                         </button>
-                    } @else if (solicitacao.estado == "PAGA") {
+                    } @else if (solicitacao.estado.nome == "PAGA") {
                         <button class="btn-finalizar" (click)="finalizarSolicitacao(solicitacao)">Finalizar</button>
                     }
                 </div>

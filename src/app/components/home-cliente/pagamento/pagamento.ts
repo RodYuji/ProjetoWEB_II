@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { DatePipe } from '@angular/common';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-pagamento',
@@ -9,26 +10,33 @@ import { DatePipe } from '@angular/common';
   templateUrl: './pagamento.html',
   styleUrl: './pagamento.css',
 })
-export class Pagamento {
+export class Pagamento implements OnInit {
 
-  solicitacao: any;
+  // solicitação carregada da API
+  solicitacao = signal<Solicitacao | null>(null);
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private solicitacaoService: SolicitacaoService
-  ) {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private solicitacaoService = inject(SolicitacaoService);
+
+  ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    this.solicitacao = this.solicitacaoService.solicitacoes.find(
-      solicitacao => solicitacao.id === id
-    );
+    this.solicitacaoService.buscarPorId(id).subscribe({
+      next: (dados: Solicitacao) => this.solicitacao.set(dados),
+      error: () => this.solicitacao.set(null)
+    });
   }
 
+  // confirmar pagamento 
   confirmarPagamento() {
-    this.solicitacao.estado = 'PAGA';
-    this.solicitacao.dataPagamento = new Date();
-
-    this.router.navigate(['/home-cliente']);
+    const s = this.solicitacao();
+    if (s == null) return;
+    this.solicitacaoService.pagar(s.id).subscribe({
+      next: () => {
+        alert('Pagamento confirmado!');
+        this.router.navigate(['/home-cliente']);
+      },
+      error: () => alert('Não foi possível confirmar o pagamento.')
+    });
   }
 }
