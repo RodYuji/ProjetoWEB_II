@@ -19,7 +19,7 @@
           name="descricaoEquipamento"
           [(ngModel)]="descricaoEquipamento"
           required
-          maxlength="150"
+          maxlength="100"
           placeholder="Ex: Notebook Dell Inspiron"
           class="form-control"
         >
@@ -30,13 +30,13 @@
         <select
           id="categoriaEquipamento"
           name="categoriaEquipamento"
-          [(ngModel)]="categoriaEquipamento"
+          [(ngModel)]="idCategoria"
           required
           class="form-select"
         >
-          <option value="" disabled>Selecione uma categoria</option>
-          @for (categoria of categorias; track categoria) {
-            <option [value]="categoria">{{ categoria }}</option>
+          <option [ngValue]="0" disabled>Selecione uma categoria</option>
+          @for (categoria of categorias(); track categoria.id) {
+            <option [ngValue]="categoria.id">{{ categoria.nome }}</option>
           }
         </select>
       </div>

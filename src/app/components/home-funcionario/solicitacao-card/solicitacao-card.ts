@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { TruncarTextoPipe } from '../../../shared/pipes/truncar-texto-pipe';
 import { RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-solicitacao-card',
@@ -11,5 +11,5 @@ import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model'
   styleUrl: './solicitacao-card.css',
 })
 export class SolicitacaoCard {
-  @Input() solicitacao!: SolicitacaoManutencao;
+  @Input() solicitacao!: Solicitacao;
 }

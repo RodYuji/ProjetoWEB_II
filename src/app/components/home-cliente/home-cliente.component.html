@@ -25,21 +25,24 @@
                 <option value="APROVADA">Aprovadas</option>
                 <option value="REJEITADA">Rejeitadas</option>
                 <option value="ARRUMADA">Arrumadas</option>
+                <option value="REDIRECIONADA">Redirecionadas</option>
                 <option value="PAGA">Pagas</option>
+                <option value="FINALIZADA">Finalizadas</option>
             </select>
         </div>
 
         <div class="solicitacoes-lista">
-            @for (solicitacao of solicitacoesFiltradas; track solicitacao.id) {
+            @for (solicitacao of solicitacoesFiltradas(); track solicitacao.id) {
                 <app-solicitacao-card
                     [solicitacaoId]="solicitacao.id"
                     [equipamento]="solicitacao.descricaoEquipamento"
                     [dataHora]="solicitacao.dataHora"
-                    [estado]="solicitacao.estado"
+                    [estado]="solicitacao.estado.nome"
                     (detalhes)="verDetalhes(solicitacao)"
                     (orcamento)="verOrcamento(solicitacao)"
-                    (pagamento)="verPagamento(solicitacao)">
-                </app-solicitacao-card>
+                    (pagamento)="verPagamento(solicitacao)"
+                    (resgatado)="listarSolicitacoes()">
+                </app-solicitacao-card> 
             }
         </div>
     </section>

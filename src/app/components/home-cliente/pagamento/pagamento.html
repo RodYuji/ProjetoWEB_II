@@ -3,6 +3,7 @@
     <i class="fa fa-arrow-left" aria-hidden="true"></i> Voltar
   </a>
 
+  @if (solicitacao(); as solicitacao) {
   <div class="pagamento">
 
     <h1>Pagamento do Serviço</h1>
@@ -18,7 +19,7 @@
 
       <div class="dado">
         <strong>Categoria</strong>
-        <span>{{ solicitacao.categoriaEquipamento }}</span>
+        <span>{{ solicitacao.categoria.nome }}</span>
       </div>
 
       <div class="dado">
@@ -56,6 +57,9 @@
       Confirmar Pagamento
     </button>
   </div>
+  } @else {
+    <p class="ms-3 mt-3">Carregando solicitação...</p>
+  }
   
 
 </div>

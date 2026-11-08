@@ -1,12 +1,13 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { SolicitacaoManutencao } from '../../../shared/models/solicitacao.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { FuncionarioService } from '../../../shared/services/funcionario.service';
+import { HistoricoService } from '../../../shared/services/historico.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
 import { Funcionario } from '../../../shared/models/funcionario.model';
-import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Historico } from '../../../shared/models/historico.model';
 
 @Component({
   selector: 'app-efetuar-manutencao',
@@ -15,77 +16,97 @@ import { RouterLink } from '@angular/router';
   styleUrl: './efetuar-manutencao.css',
 })
 export class EfetuarManutencao implements OnInit {
-  solicitacao: SolicitacaoManutencao | undefined;
 
-  // RF014
+  // trocar pelo id do funcionário logado quando o login estiver integrado e apagar comentário
+  idFuncionario = 1;
+
+  private route = inject(ActivatedRoute);
+  private solicitacaoService = inject(SolicitacaoService);
+  private funcionarioService = inject(FuncionarioService);
+  private historicoService = inject(HistoricoService);
+
+  // Dados carregados da API - com signals a tela atualiza quando a API responde
+  solicitacao = signal<Solicitacao | null>(null);
+  historico = signal<Historico[]>([]);
+  funcionariosDisponiveis = signal<Funcionario[]>([]);
+
+  
   mostrarFormularioManutencao = false;
   descricaoManutencao = '';
   orientacoesCliente = '';
-
-  // RF015
-  mostrarFormularioRedirecionamento = false;
-  funcionarioDestino = '';
-  private funcionarioLogado = 'Arthur';
-  funcionariosDisponiveis = signal<Funcionario[]>([]);
   manutencaoConfirmada = false;
+
+  mostrarFormularioRedirecionamento = false;
+  idFuncionarioDestino = 0;
   redirecionamentoConfirmado = false;
 
-  constructor(private route: ActivatedRoute, private solicitacaoService: SolicitacaoService, private funcionarioService: FuncionarioService) {
-    const id = this.route.snapshot.paramMap.get('id');
-    const idNumero = Number(id);
-    this.solicitacao = this.solicitacaoService.buscarPorId(idNumero);
+  ngOnInit(): void {
+    this.carregar(Number(this.route.snapshot.paramMap.get('id')));
+
+    // não pode redirecionar para si mesmo
+    this.funcionarioService.listarTodos().subscribe((funcionarios) => {
+      this.funcionariosDisponiveis.set(
+        funcionarios.filter((funcionario) => funcionario.id !== this.idFuncionario));
+    });
   }
 
-  ngOnInit(): void {
-
-    this.funcionarioService.listarTodos().subscribe((funcionarios) => {
-      this.funcionariosDisponiveis.set(funcionarios.filter((funcionario) => funcionario.nome !== this.funcionarioLogado));
+  carregar(id: number): void {
+    this.solicitacaoService.buscarPorId(id).subscribe({
+      next: (dados: Solicitacao) => this.solicitacao.set(dados),
+      error: () => this.solicitacao.set(null)
     });
-    
+    this.historicoService.listarPorSolicitacao(id).subscribe({
+      next: (dados: Historico[]) => this.historico.set(dados == null ? [] : dados)
+    });
   }
 
   efetuarManutencao(): void {
     this.mostrarFormularioManutencao = true;
   }
 
+  // APROVADA/REDIRECIONADA -> ARRUMADA
   confirmarManutencao(): void {
-    if (!this.solicitacao) return;
+    const s = this.solicitacao();
+    if (s == null) return;
 
-    this.solicitacao.historico.push({
-      dataHora: new Date(),
-      estado: 'ARRUMADA',
-      funcionarioOrigemManutencao: this.funcionarioLogado,
+    this.solicitacaoService.arrumar(s.id, this.descricaoManutencao.trim(),
+        this.orientacoesCliente.trim(), this.idFuncionario).subscribe({
+      next: () => {
+        this.manutencaoConfirmada = true;
+        this.carregar(s.id);
+      },
+      error: (erro) => {
+        if (erro.status === 409) {
+          alert('Esta solicitação não pode ser arrumada por você no estado atual.');
+        } else {
+          alert('Não foi possível registrar a manutenção.');
+        }
+      }
     });
-
-    this.solicitacao.descricaoManutencao = this.descricaoManutencao;
-    this.solicitacao.orientacoesCliente = this.orientacoesCliente;
-    this.solicitacao.dataHoraManutencao = new Date();
-    this.solicitacao.funcionarioManutencao = this.funcionarioLogado;
-    this.solicitacao.estado = 'ARRUMADA';
-    this.solicitacaoService.atualizar(this.solicitacao);
-    this.manutencaoConfirmada = true;
   }
 
   redirecionarManutencao(): void {
     this.mostrarFormularioRedirecionamento = true;
   }
 
+  // APROVADA/REDIRECIONADA -> REDIRECIONADA
   confirmarRedirecionamento(): void {
-    if (!this.solicitacao) return;
+    const s = this.solicitacao();
+    if (s == null) return;
 
-    this.solicitacao.historico.push({
-      dataHora: new Date(),
-      estado: 'REDIRECIONADA',
-      funcionarioOrigemManutencao: this.funcionarioLogado,
-      funcionarioDestinoManutencao: this.funcionarioDestino,
+    this.solicitacaoService.redirecionar(s.id, this.idFuncionario, this.idFuncionarioDestino).subscribe({
+      next: () => {
+        this.redirecionamentoConfirmado = true;
+        this.carregar(s.id);
+      },
+      error: (erro) => {
+        if (erro.status === 409) {
+          alert('Esta solicitação não pode ser redirecionada por você no estado atual.');
+        } else {
+          alert('Não foi possível redirecionar a solicitação.');
+        }
+      }
     });
-
-    this.solicitacao.funcionarioOrigemRedirecionamento = this.funcionarioLogado;
-    this.solicitacao.funcionarioDestinoRedirecionamento = this.funcionarioDestino;
-    this.solicitacao.dataHoraRedirecionamento = new Date();
-    this.solicitacao.estado = 'REDIRECIONADA';
-    this.solicitacaoService.atualizar(this.solicitacao);
-    this.redirecionamentoConfirmado = true; 
   }
 
   cancelarManutencao(): void {

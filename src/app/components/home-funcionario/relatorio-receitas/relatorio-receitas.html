@@ -32,12 +32,12 @@
   
     <section class="resumo" aria-label="Resumo financeiro">
       <span>Receita encontrada.</span>
-      <strong>{{ formatarMoeda(totalReceitas) }}</strong>
+      <strong>{{ formatarMoeda(totalReceitas()) }}</strong>
     </section>
   
     <section class="resultado" aria-labelledby="titulo-resultado">
       <h2 id="titulo-resultado">Receitas por dia</h2>
-      @for (receita of receitas; track receita.data) {
+      @for (receita of receitas(); track receita.data) {
         <article class="grupo-dia">
           <div class="grupo-cabecalho">
             <h3>{{ formatarData(receita.data) }}</h3>

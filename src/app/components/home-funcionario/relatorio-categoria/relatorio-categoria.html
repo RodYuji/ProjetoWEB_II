@@ -12,11 +12,11 @@
 
   <section class="resumo-total">
     <span>Total geral</span>
-    <strong>{{ formatarMoeda(totalReceitas) }}</strong>
+    <strong>{{ formatarMoeda(totalReceitas()) }}</strong>
   </section>
 
   <section class="lista-categorias">
-    @for (categoria of categorias; track categoria.categoria) {
+    @for (categoria of categorias(); track categoria.categoria) {
       <article class="item-categoria">
         <div class="linha-principal">
           <h2>{{ categoria.categoria }}</h2>

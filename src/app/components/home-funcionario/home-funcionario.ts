@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
 import { SolicitacaoService } from '../../shared/services/solicitacao.service';
-import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
-
+import { Solicitacao } from '../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-home-funcionario',
@@ -11,17 +10,26 @@ import { SolicitacaoManutencao } from '../../shared/models/solicitacao.model';
   templateUrl: './home-funcionario.html',
   styleUrl: './home-funcionario.css',
 })
+export class HomeFuncionario implements OnInit {
 
-export class HomeFuncionario {
+  // RF011 - solicitações ABERTAS (signal: a tela atualiza quando a API responde)
+  solicitacoesAbertas = signal<Solicitacao[]>([]);
 
-  solicitacoesAbertas: SolicitacaoManutencao[] = [];
+  private solicitacaoService = inject(SolicitacaoService);
 
-  constructor(private solicitacaoService: SolicitacaoService) {
-    
-    this.solicitacaoService.listar().subscribe((solicitacoes) => { 
-      this.solicitacoesAbertas =solicitacoes.filter((solicitacao) => solicitacao.estado === 'ABERTA');
-    });
-
+  ngOnInit(): void {
+    this.listarAbertas();
   }
-  
+
+  listarAbertas(): void {
+    this.solicitacaoService.listarAbertas().subscribe({
+      next: (dados: Solicitacao[]) => {
+        if (dados == null) {
+          this.solicitacoesAbertas.set([]);
+        } else {
+          this.solicitacoesAbertas.set(dados);
+        }
+      }
+    });
+  }
 }

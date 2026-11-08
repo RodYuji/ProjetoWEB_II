@@ -1,45 +1,37 @@
-export type EstadoSolicitacao = 'ABERTA' | 'ORÇADA' | 'REJEITADA' | 'APROVADA' | 'REDIRECIONADA' | 'ARRUMADA' | 'PAGA' | 'FINALIZADA';
+import { Cliente } from './cliente.model';
+import { Categoria } from './categoria.model';
+import { Funcionario } from './funcionario.model';
+import { Estado } from './historico.model';
 
-export interface HistoricoSolicitacao {
-  dataHora: Date;
-  estado: EstadoSolicitacao;
-  
-  // Historico manutenção
-  funcionarioDestinoManutencao?: string;
-  funcionarioOrigemManutencao?: string;
-  dataHoraHistoricoManutencao?: Date;
-}
+export class Solicitacao {
+  constructor(
+    public id: number = 0,
+    public cliente: Cliente = new Cliente(),
+    public categoria: Categoria = new Categoria(),
+    public estado: Estado = new Estado(),
+    public descricaoEquipamento: string = "",
+    public descricaoDefeito: string = "",
+    public dataHora: string = "",
 
-export interface SolicitacaoManutencao {
+    //EFETUAR ORÇAMENTO
+    public valorOrcamento: number | null = null,
+    public funcionarioOrcamento: Funcionario | null = null,
+    public dataHoraOrcamento: string | null = null,
 
-  historico: HistoricoSolicitacao[];
-  
-  id: number;
-  descricaoEquipamento: string;
-  categoriaEquipamento: string;
-  descricaoDefeito: string;
-  dataHora: Date;
-  estado: EstadoSolicitacao;
-  nomeCliente: string;
+    //EFETUAR MANUTENCAO
+    public descricaoManutencao: string | null = null,
+    public orientacoesCliente: string | null = null,
+    public funcionarioManutencao: Funcionario | null = null,
+    public dataHoraManutencao: string | null = null,
 
-  // RF012 Efetuar Orçamento
-  valorOrcamento?: number;
-  funcionarioOrcamento?: string;
-  dataHoraOrcamento?: Date;
+    // REDIRECIONAR
+    public funcionarioResponsavel: Funcionario | null = null,
 
-  // RF014 Efetuar Manutenção
-  descricaoManutencao?: string;
-  orientacoesCliente?: string;
-  funcionarioManutencao?: string;
-  dataHoraManutencao?: Date;
+    // PAGAR
+    public dataHoraPagamento: string | null = null,
 
-  // RF015 Redirecionar Manutenção
-  funcionarioOrigemRedirecionamento?: string;
-  funcionarioDestinoRedirecionamento?: string;
-  dataHoraRedirecionamento?: Date;
-
-  // RF016 Finalizar Manutenção
-  funcionarioFinalizouManutencao?: string;
-  dataHoraFinalizouManutencao?: Date;
-
+    // FINALIZAR
+    public funcionarioFinalizacao: Funcionario | null = null,
+    public dataHoraFinalizacao: string | null = null
+  ) { }
 }
