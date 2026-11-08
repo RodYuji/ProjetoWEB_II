@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { obterDataHoraAtual } from '../relatorio-receitas/relatorio-receitas';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { LoginService } from '../../../shared/services/login.service';
 
 interface ReceitaCategoria {
   categoria: string;
@@ -21,8 +22,9 @@ export class RelatorioCategoria {
   categorias = signal<ReceitaCategoria[]>([]);
   totalReceitas = signal(0);
 
-  // TODO: trocar pelo id do funcionário logado quando o login estiver integrado
-  idFuncionario = 1;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
 
   private readonly nomeEmpresa = 'Oficina de Manutenção e Serviços';
 

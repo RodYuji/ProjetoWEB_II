@@ -8,6 +8,7 @@ import { HistoricoService } from '../../../shared/services/historico.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
 import { Funcionario } from '../../../shared/models/funcionario.model';
 import { Historico } from '../../../shared/models/historico.model';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-efetuar-manutencao',
@@ -18,7 +19,9 @@ import { Historico } from '../../../shared/models/historico.model';
 export class EfetuarManutencao implements OnInit {
 
   // trocar pelo id do funcionário logado quando o login estiver integrado e apagar comentário
-  idFuncionario = 1;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
 
   private route = inject(ActivatedRoute);
   private solicitacaoService = inject(SolicitacaoService);

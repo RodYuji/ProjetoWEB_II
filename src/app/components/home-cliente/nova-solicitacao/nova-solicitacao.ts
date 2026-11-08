@@ -5,6 +5,7 @@ import { Solicitacao } from '../../../shared/models/solicitacao.model';
 import { Categoria } from '../../../shared/models/categoria.model';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { CategoriaService } from '../../../shared/services/categoria.service';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-nova-solicitacao',
@@ -13,8 +14,9 @@ import { CategoriaService } from '../../../shared/services/categoria.service';
 })
 export class NovaSolicitacao implements OnInit {
 
-  // trocar pelo id do cliente logado quando o login estiver integrado e apagar comentário
-  idCliente = 3;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idCliente = this.loginService.usuarioLogado?.id ?? 0;
 
   private solicitacaoService = inject(SolicitacaoService);
   private categoriaService = inject(CategoriaService);
@@ -23,7 +25,9 @@ export class NovaSolicitacao implements OnInit {
   descricaoEquipamento = '';
   idCategoria = 0;
   descricaoDefeito = '';
-  mensagemErro = '';
+  // Signals: mudam dentro do subscribe e precisam atualizar a tela (Angular zoneless)
+  mensagemErro = signal('');
+  modalSucesso = signal(false);
 
   //com signal a tela atualiza quando a API responde
   categorias = signal<Categoria[]>([]);
@@ -43,7 +47,7 @@ export class NovaSolicitacao implements OnInit {
   // registrar solicitação 
   registrarSolicitacao(): void {
     if (!this.formularioValido()) {
-      this.mensagemErro = 'Preencha todos os campos da solicitação.';
+      this.mensagemErro.set('Preencha todos os campos da solicitação.');
       return;
     }
 
@@ -55,14 +59,13 @@ export class NovaSolicitacao implements OnInit {
 
     this.solicitacaoService.inserir(solicitacao).subscribe({
       next: () => {
-        alert('Solicitação registrada com sucesso!');
-        this.router.navigate(['/home-cliente']);
+        this.modalSucesso.set(true);
       },
       error: (erro) => {
         if (erro.status === 400) {
-          this.mensagemErro = 'Dados inválidos. Confira os campos.';
+          this.mensagemErro.set('Dados inválidos. Confira os campos.');
         } else {
-          this.mensagemErro = 'Não foi possível registrar a solicitação.';
+          this.mensagemErro.set('Não foi possível registrar a solicitação.');
         }
       }
     });
@@ -72,7 +75,13 @@ export class NovaSolicitacao implements OnInit {
     this.descricaoEquipamento = '';
     this.idCategoria = 0;
     this.descricaoDefeito = '';
-    this.mensagemErro = '';
+    this.mensagemErro.set('');
+  }
+
+  // Botão do modal de sucesso: volta para a página inicial do cliente (RF003)
+  irParaHome(): void {
+    this.modalSucesso.set(false);
+    this.router.navigate(['/home-cliente']);
   }
 
   private formularioValido(): boolean {

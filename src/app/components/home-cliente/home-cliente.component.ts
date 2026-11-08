@@ -3,6 +3,7 @@ import { SolicitacaoCard } from './solicitacao-card/solicitacao-card';
 import { Router } from '@angular/router';
 import { SolicitacaoService } from '../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../shared/models/solicitacao.model';
+import { LoginService } from '../../shared/services/login.service';
 
 @Component({
   selector: 'app-home-cliente',
@@ -13,7 +14,9 @@ import { Solicitacao } from '../../shared/models/solicitacao.model';
 export class HomeClienteComponent implements OnInit {
 
   // trocar pelo id do cliente logado quando o login estiver integrado e apagar comentário
-  idCliente = 3;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idCliente = this.loginService.usuarioLogado?.id ?? 0;
 
   filtroStatus = 'TODAS';
 

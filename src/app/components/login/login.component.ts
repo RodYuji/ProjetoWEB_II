@@ -1,41 +1,78 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { LoginService } from '../../shared/services/login.service';
+import { Login } from '../../shared/models/login.model';
+import { Usuario } from '../../shared/models/usuario.model';
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, ReactiveFormsModule, RouterLink], 
+  imports: [FormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
-  loginForm: FormGroup;
-  submitted = false;
+export class LoginComponent implements OnInit {
+  // Referência ao formulário do HTML (#formLogin)
+  @ViewChild('formLogin') formLogin!: NgForm;
 
-  email = ['rodrigo@gmail.com', 'fernando@gmail.com', 'gabriel@gmail.com', 'arhtur@gmail.com', 'carlos@gmail.com'];
-  senha = '1234';
+  // Dados digitados na tela 
+  login: Login = new Login();
+  loading = signal(false);
+  message = signal('');
 
-  constructor(private formBuilder: FormBuilder) {
-    this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4)]]
-    });
-  }
+  // true depois do primeiro clique em Entrar: só a partir daí os avisos de campo aparecem
+  enviado = signal(false);
 
-  get f() {
-    return this.loginForm.controls;
-  }
+  private loginService = inject(LoginService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  onSubmit(): void {
-    this.submitted = true;
-
-    if (this.loginForm.invalid) {
-      return;
+  ngOnInit(): void {
+    const usu = this.loginService.usuarioLogado;
+    if (usu) {
+      this.irParaHome(usu);
     }
+    else {
+      // Mensagem enviada pelo guard
+      this.route.queryParams.subscribe(params => {
+        this.message.set(params['error'] ?? '');
+      });
+    }
+  }
 
-    console.log('Email:', this.f['email'].value);
-    console.log('Senha:', this.f['password'].value);
-    alert('Login realizado com sucesso!');
-    window.location.href = '/home-cliente';
+  logar(): void {
+    this.enviado.set(true);   // passa a mostrar os avisos dos campos que faltam
+    this.loading.set(true);
+    if (this.formLogin.form.valid) {
+      this.loginService.login(this.login).subscribe({
+        next: (usu) => {
+          if (usu != null) {
+            this.loginService.usuarioLogado = usu;   // grava no localStorage
+            this.loading.set(false);
+            this.irParaHome(usu);
+          }
+          else {
+            this.loading.set(false);
+            this.message.set("E-mail/Senha inválidos.");
+          }
+        },
+        error: (err) => {
+          this.loading.set(false);
+          this.message.set(`Erro efetuando login: ${err.message}`);
+        }
+      });
+    }
+    else {
+      this.loading.set(false);
+    }
+  }
+
+  // o sistema identifica o perfil e manda para a página inicial dele
+  private irParaHome(usu: Usuario): void {
+    if (usu.perfil == "FUNCIONARIO")
+      this.router.navigate(["/home-funcionario"]);   
+    else
+      this.router.navigate(["/home-cliente"]);       
   }
 }

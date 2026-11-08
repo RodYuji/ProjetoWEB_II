@@ -35,3 +35,9 @@
     padding: 1rem;
   }
 }
+
+.navbar-usuario {
+  color: #ffffff;
+  font-weight: 600;
+  opacity: 0.85;
+}

@@ -11,16 +11,10 @@ import org.springframework.web.bind.annotation.*;
 // imports acima são do gab, abaixo são do fernando
 
 import br.ufpr.manutencao.util.SenhaUtil;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random; 
+import org.springframework.mail.MailException;
+import br.ufpr.manutencao.service.EmailService;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -32,6 +26,9 @@ public class ClienteREST {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping
     public List<Cliente> listar() {
@@ -66,15 +63,21 @@ public class ClienteREST {
         String senhaAleatoria = String.format("%04d", new Random().nextInt(10000));
         SenhaUtil.definirSenha(cliente, senhaAleatoria);
 
-        // TODO enviar por e-mail. Por enquanto só mostra no console.
-        System.out.println("Senha gerada para " + cliente.getEmail() + ": " + senhaAleatoria);
-
         cliente.setId(null);          // o banco gera o id
         cliente.setPerfil("CLIENTE");
         cliente.setAtivo(true);
 
-        // salva no banco e devolve 201 CREATED
+        // salva no banco
         Cliente salvo = clienteRepository.save(cliente);
+
+        // envia a senha por email
+        try {
+            emailService.enviarSenhaAutocadastro(salvo.getEmail(), salvo.getNome(), senhaAleatoria);
+        } catch (MailException e) {
+            System.out.println("Falha ao enviar e-mail para " + salvo.getEmail()
+                    + " (" + e.getMessage() + "). Senha gerada: " + senhaAleatoria);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 

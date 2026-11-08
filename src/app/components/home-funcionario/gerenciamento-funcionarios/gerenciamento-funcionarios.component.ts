@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { FuncionarioService } from '../../../shared/services/funcionario.service';
 import { Funcionario } from '../../../shared/models/funcionario.model';
+import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-gerenciamento-funcionarios',
@@ -21,8 +22,9 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
   modalExclusaoAberto = false;
   funcionarioParaExcluir: Funcionario | null = null;
 
-  // TODO: trocar pelo id do funcionário logado quando o login estiver integrado
-  idFuncionarioLogado: number | undefined = undefined;
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idFuncionarioLogado: number | undefined = this.loginService.usuarioLogado?.id;
 
   ngOnInit(): void {
     this.listarFuncionarios();

@@ -55,8 +55,8 @@
         ></textarea>
       </div>
 
-      @if (mensagemErro) {
-        <div class="alert alert-danger py-2 mb-3" role="alert">{{ mensagemErro }}</div>
+      @if (mensagemErro()) {
+        <div class="alert alert-danger py-2 mb-3" role="alert">{{ mensagemErro() }}</div>
       }
 
       <div class="mt-4 d-flex justify-content-center gap-3">
@@ -67,3 +67,28 @@
     </form>
   </div>
 </div>
+
+<!-- Modal de sucesso ao registrar a solicitação -->
+@if (modalSucesso()) {
+  <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">Solicitação registrada!</h5>
+        </div>
+
+        <div class="modal-body">
+          <p class="mb-0">Sua solicitação de manutenção foi registrada com sucesso e está no estado <strong>ABERTA</strong>.</p>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="irParaHome()">
+            Ver minhas solicitações
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+}
