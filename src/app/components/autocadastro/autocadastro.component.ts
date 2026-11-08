@@ -3,12 +3,14 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { NumericoDirective } from '../../shared/directives/numerico.directive';
+import { MascaraDirective } from '../../shared/directives/mascara.directive';
 import { Cliente } from '../../shared/models/cliente.model';
-
+import { ClienteService } from '../../shared/services/cliente.service';
+import { LoginService } from '../../shared/services/login.service';
 
 @Component({
   selector: 'app-autocadastro.component',
-  imports: [RouterLink, FormsModule, NumericoDirective],
+  imports: [RouterLink, FormsModule, NumericoDirective, MascaraDirective],
   templateUrl: './autocadastro.component.html',
   styleUrl: './autocadastro.component.css',
 })
@@ -26,6 +28,18 @@ export class AutocadastroComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
+  private clienteService = inject(ClienteService);
+  private loginService = inject(LoginService);
+
+  message = signal('');
+  loading = signal(false);
+
+  // true depois do primeiro clique em Cadastrar: só a partir daí os avisos de campo aparecem
+  enviado = signal(false);
+
+  // Modal de sucesso (no lugar do alert)
+  modalSucesso = signal(false);
+  emailCadastrado = signal('');
 
   buscarEndereco(): void {
 
@@ -56,11 +70,43 @@ export class AutocadastroComponent {
     });
   }
 
-  // Verifica se o formulário é válido e, se OK, redireciona para o login
   cadastrar(): void {
+    this.enviado.set(true);   // passa a mostrar os avisos dos campos que faltam
     if (this.formCadastro.form.valid) {
-      // TODO: chamar o service de clientes (back-end) com this.cliente()
-      this.router.navigate(['/login']);
+      this.loading.set(true);
+      this.message.set('');
+      this.clienteService.autocadastro(this.cliente()).subscribe({
+        next: (cli) => {
+          this.loading.set(false);
+          if (cli != null) {
+            this.emailCadastrado.set(cli.email);
+            this.modalSucesso.set(true);
+          }
+          else {
+            this.message.set('Não foi possível concluir o cadastro.');
+          }
+        },
+        error: (err) => {
+          this.loading.set(false);
+          if (err.status == 409) {
+            this.message.set('CPF ou e-mail já cadastrado.');
+          }
+          else if (err.status == 400) {
+            this.message.set('Dados inválidos. Confira os campos e tente novamente.');
+          }
+          else {
+            this.message.set(`Erro ao cadastrar: ${err.message}`);
+          }
+        }
+      });
     }
+  }
+
+  // Botão do modal de sucesso
+  irParaLogin(): void {
+    this.modalSucesso.set(false);
+    // Encerra qualquer sessão anterior: quem acabou de se cadastrar entra com a própria conta
+    this.loginService.logout();
+    this.router.navigate(['/login']);
   }
 }

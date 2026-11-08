@@ -6,20 +6,43 @@
       <p class="mb-0 text-white-50">Entre com sua conta para continuar</p>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    @if (message()) {
+      <div class="alert alert-danger" role="alert">
+        {{ message() }}
+      </div>
+    }
+
+    <form #formLogin="ngForm">
 
       <div class="mb-3 input-group">
         <span class="input-group-text">E-mail:</span>
-        <input type="email" formControlName="email" placeholder="seu@email.com" class="form-control">
+        <input type="email" id="email" name="email" placeholder="seu@email.com" class="form-control"
+               [(ngModel)]="login.email" #email="ngModel" required email>
       </div>
+      @if (email.errors && enviado()) {
+        <div class="alert alert-danger">
+          <div [hidden]="!email.errors['required']">Digite o e-mail.</div>
+          <div [hidden]="!email.errors['email']">Digite um e-mail válido.</div>
+        </div>
+      }
 
       <div class="mb-3 input-group">
         <span class="input-group-text">Senha:</span>
-        <input type="password" formControlName="password" placeholder="Sua senha" class="form-control">
+        <input type="password" id="senha" name="senha" placeholder="Sua senha" class="form-control"
+               [(ngModel)]="login.senha" #senha="ngModel" required>
       </div>
+      @if (senha.errors && enviado()) {
+        <div class="alert alert-danger">
+          <div [hidden]="!senha.errors['required']">Digite a senha.</div>
+        </div>
+      }
 
       <div class="mt-5 d-flex flex-column align-items-center">
-        <input type="submit" class="btn btn-light rounded-pill px-5 py-2 fw-semibold mb-3" value="Entrar"/>
+        <button type="button" class="btn btn-light rounded-pill px-5 py-2 fw-semibold mb-3"
+                (click)="logar()" [disabled]="loading()">
+          {{ loading() ? 'Entrando...' : 'Entrar' }}
+        </button>
+        <a routerLink="/autocadastro" class="text-light text-decoration-underline mb-2">Não tenho cadastro</a>
         <a routerLink="/esqueci-senha" class="text-light text-decoration-underline">Esqueci minha senha</a>
       </div>
 
