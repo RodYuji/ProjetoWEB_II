@@ -6,6 +6,7 @@ import { Historico } from '../models/historico.model';
 @Injectable({
   providedIn: 'root'
 })
+
 export class HistoricoService {
 
   BASE_URL = "http://localhost:8080/solicitacoes";

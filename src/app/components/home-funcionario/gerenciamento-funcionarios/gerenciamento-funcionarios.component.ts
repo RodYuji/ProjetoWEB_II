@@ -25,6 +25,9 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
   // Id do usuário logado (vem do login)
   private loginService = inject(LoginService);
   idFuncionarioLogado: number | undefined = this.loginService.usuarioLogado?.id;
+  hoje: string = new Date().getFullYear() + '-'
+    + String(new Date().getMonth() + 1).padStart(2, '0') + '-'
+    + String(new Date().getDate()).padStart(2, '0');
 
   ngOnInit(): void {
     this.listarFuncionarios();
@@ -36,7 +39,6 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
     );
   }
 
-  // "aaaa-mm-dd" -> "dd/mm/aaaa" (formato brasileiro, exigido pelo enunciado)
   formatarData(data: string): string {
     if (!data) return '';
     const [ano, mes, dia] = data.split('-');
@@ -61,6 +63,11 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    
+    if (this.funcionarioForm.dataNascimento > this.hoje) {
+      alert('A data de nascimento não pode ser no futuro.');
+      return;
+    }
     const f = this.funcionarioForm;
     f.nome = f.nome.trim();
     f.email = f.email.trim();
@@ -68,16 +75,18 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
     if (this.modoEdicao) {
       this.funcionarioService.alterar(f).subscribe({
         next: () => { this.modalAberto = false; this.listarFuncionarios(); },
-        error: (err) => alert(err.status === 409
-          ? 'Já existe um usuário com esse e-mail.'
-          : 'Erro ao alterar o funcionário.')
+        error: (err) => alert(
+          err.status === 409 ? 'Já existe um usuário com esse e-mail.' :
+          err.status === 400 ? 'Dados inválidos, confira os campos.' :
+          'Erro ao alterar o funcionário.')
       });
     } else {
       this.funcionarioService.inserir(f).subscribe({
         next: () => { this.modalAberto = false; this.listarFuncionarios(); },
-        error: (err) => alert(err.status === 409
-          ? 'Já existe um usuário com esse e-mail.'
-          : 'Erro ao inserir o funcionário.')
+        error: (err) => alert(
+          err.status === 409 ? 'Já existe um usuário com esse e-mail.' :
+          err.status === 400 ? 'Dados inválidos, confira os campos.' :
+          'Erro ao inserir o funcionário.')
       });
     }
   }
@@ -92,12 +101,13 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
   }
 
   confirmarExclusao() {
-    if (this.funcionarioParaExcluir) {
+    if (this.funcionarioParaExcluir && this.idFuncionarioLogado) {
       this.funcionarioService.remover(this.funcionarioParaExcluir.id, this.idFuncionarioLogado).subscribe({
         next: () => this.listarFuncionarios(),
         error: (err) => alert(
           err.status === 400 ? 'Você não pode remover a si mesmo.' :
           err.status === 409 ? 'Não é possível remover o último funcionário.' :
+          err.status === 412 ? 'Este funcionário tem solicitações redirecionadas para ele. É necessário concluir ou redirecionar essas solicitações antes de ser removido.' :
           'Erro ao remover o funcionário.')
       });
     }
