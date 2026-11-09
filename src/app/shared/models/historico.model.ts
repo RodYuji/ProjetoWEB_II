@@ -1,13 +1,16 @@
 import { Funcionario } from './funcionario.model';
 
 export class Estado {
+
   constructor(
     public id: number = 0,
     public nome: string = ""
   ) { }
+  
 }
 
 export class Historico {
+
   constructor(
     public id: number = 0,
     public dataHora: string = "",
@@ -17,4 +20,5 @@ export class Historico {
     public funcionarioDestino: Funcionario | null = null,
     public observacao: string | null = null
   ) { }
+
 }

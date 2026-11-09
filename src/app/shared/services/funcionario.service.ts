@@ -34,12 +34,9 @@ export class FuncionarioService {
       JSON.stringify(funcionario), this.httpOptions);
   }
 
-    // idLogado: id do funcionário que está usando o sistema (RF018: não pode remover a si mesmo)
-  remover(id: number, idLogado?: number): Observable<Funcionario> {
-    let url = this.BASE_URL + "/" + id;
-    if (idLogado) {
-      url += "?idLogado=" + idLogado;
-    }
-    return this.httpClient.delete<Funcionario>(url, this.httpOptions);
+  // idLogado: id do funcionário que está usando o sistema (RF018: não pode remover a si mesmo)
+  remover(id: number, idLogado: number): Observable<Funcionario> {
+    return this.httpClient.delete<Funcionario>(this.BASE_URL + "/" + id + "?idLogado=" + idLogado,
+      this.httpOptions);
   }
 }

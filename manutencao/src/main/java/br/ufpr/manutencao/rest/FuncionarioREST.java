@@ -1,5 +1,6 @@
 package br.ufpr.manutencao.rest;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.ufpr.manutencao.model.Funcionario;
+import br.ufpr.manutencao.model.Estado;
 import br.ufpr.manutencao.model.Usuario;
+
 import br.ufpr.manutencao.repository.FuncionarioRepository;
+import br.ufpr.manutencao.repository.SolicitacaoRepository;
 import br.ufpr.manutencao.repository.UsuarioRepository;
 import br.ufpr.manutencao.util.SenhaUtil;
 
@@ -18,20 +22,25 @@ import br.ufpr.manutencao.util.SenhaUtil;
 @RestController
 public class FuncionarioREST {
 
-    // Repositorios injetados pelo Spring (slides 1048 e 1258)
+    // Repositorios injetados pelo Spring
     @Autowired
     private FuncionarioRepository repo;
 
-    // O e-mail e unico entre TODOS os usuarios (clientes e funcionarios)
+    // O e-mail e unico entre todos os usuarios
     @Autowired
     private UsuarioRepository usuarioRepo;
+    
+    // Para conferir se o funcionario tem solicitacoes redirecionadas pendentes 
+    @Autowired
+    private SolicitacaoRepository solicitacaoRepo;
 
-    // Validacao no back-end (enunciado): nome e e-mail obrigatorios (ate 100), data obrigatoria
+    // Validacao no back-end: nome e e-mail obrigatorios (ate 100), data obrigatoria
     private boolean dadosInvalidos(Funcionario f) {
         return f == null
-                || f.getNome() == null || f.getNome().trim().isEmpty() || f.getNome().trim().length() > 100
-                || f.getEmail() == null || !f.getEmail().contains("@") || f.getEmail().trim().length() > 100
-                || f.getDataNascimento() == null;
+            || f.getNome() == null || f.getNome().trim().isEmpty() || f.getNome().trim().length() > 100
+            || f.getEmail() == null || !f.getEmail().contains("@") || f.getEmail().trim().length() > 100
+            || f.getDataNascimento() == null
+            || f.getDataNascimento().isAfter(LocalDate.now());
     }
 
     private boolean senhaVazia(Funcionario f) {
@@ -73,7 +82,8 @@ public class FuncionarioREST {
 
     @PutMapping("/funcionarios/{id}")
     public ResponseEntity<Funcionario> alterarFuncionario(@PathVariable("id") int id,
-                                                          @RequestBody Funcionario funcionario) {
+        @RequestBody Funcionario funcionario) {
+        
         if (dadosInvalidos(funcionario)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -99,16 +109,22 @@ public class FuncionarioREST {
     // idLogado: id do funcionario que esta usando o sistema (RF018: nao pode remover a si mesmo)
     @DeleteMapping("/funcionarios/{id}")
     public ResponseEntity<Funcionario> removerFuncionario(@PathVariable("id") int id,
-                                                          @RequestParam(value = "idLogado", required = false) Integer idLogado) {
+        @RequestParam(value = "idLogado", required = true) Integer idLogado) {
+        
         Optional<Funcionario> op = repo.findById(id);
         if (op.isEmpty() || !op.get().isAtivo())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        if (idLogado != null && idLogado == id) {
+        if (idLogado == id) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();     // remover a si mesmo
         }
+        
         if (repo.findByAtivoTrueOrderByNome().size() <= 1) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();        // ultimo funcionario
+        }
+
+        if (!solicitacaoRepo.findByFuncionarioResponsavelIdAndEstadoNome(id, Estado.REDIRECIONADA).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();  // tem solicitacao redirecionada para ele
         }
         Funcionario f = op.get();
         f.setAtivo(false);              // desativacao, exigida pelo enunciado

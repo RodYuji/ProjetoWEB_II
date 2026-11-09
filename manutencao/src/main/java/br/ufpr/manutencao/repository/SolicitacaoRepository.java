@@ -17,4 +17,7 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Intege
     // RF013: todas / por periodo de abertura
     List<Solicitacao> findAllByOrderByDataHoraAsc();
     List<Solicitacao> findByDataHoraBetweenOrderByDataHoraAsc(LocalDateTime inicio, LocalDateTime fim);
+    
+    // RF015/RF018: solicitacoes que estao com um funcionario em um estado
+    List<Solicitacao> findByFuncionarioResponsavelIdAndEstadoNome(Integer funcionarioId, String nomeEstado);
 }

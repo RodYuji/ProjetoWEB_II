@@ -98,7 +98,7 @@
               <label for="dataNascimento" class="form-label">Data de nascimento</label>
               <input type="date" class="form-control" id="dataNascimento" name="dataNascimento"
                      [(ngModel)]="funcionarioForm.dataNascimento" #dataNascimento="ngModel"
-                     required>
+                     required [max]="hoje">
               @if (dataNascimento.errors && (dataNascimento.dirty || dataNascimento.touched)) {
                 <div class="alert alert-danger mt-2 mb-0">
                   <div [hidden]="!dataNascimento.errors['required']">Informe a data de nascimento.</div>
