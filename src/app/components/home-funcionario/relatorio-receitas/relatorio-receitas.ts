@@ -1,8 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { jsPDF } from 'jspdf';
+import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
+import { Solicitacao } from '../../../shared/models/solicitacao.model';
+import { jsPDF } from 'jspdf'; //import the serviço nativo do JS para exportar PDF
 import { RouterLink } from '@angular/router';
-import { RelatorioService, ReceitaDiaria } from '../../../shared/services/relatorio.service';
+import { LoginService } from '../../../shared/services/login.service';
+
+interface ReceitaDiaria {
+  data: string;
+  itens: { descricao: string; valor: number }[];
+  total: number;
+}
 
 export function obterDataHoraAtual(): string {
   return new Date().toLocaleString('pt-BR', {
@@ -25,14 +33,23 @@ export function obterDataHoraAtual(): string {
 export class RelatorioReceitas {
   dataInicial = '';
   dataFinal = '';
+  // signals: a tela atualiza quando a API responde
   receitas = signal<ReceitaDiaria[]>([]);
   totalReceitas = signal(0);
+
+  // Id do usuário logado (vem do login)
+  private loginService = inject(LoginService);
+  idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
   mensagemErro = '';
 
   private readonly nomeEmpresa = 'Oficina de Manutenção e Serviços';
+  private solicitacoes: Solicitacao[] = [];
 
-  constructor(private readonly relatorioService: RelatorioService) {
-    this.aplicarFiltro();
+  constructor(private readonly solicitacaoService: SolicitacaoService) {
+    this.solicitacaoService.listarTodas(this.idFuncionario).subscribe((dados) => {
+      this.solicitacoes = dados == null ? [] : dados;
+      this.aplicarFiltro();
+    });
   }
 
   aplicarFiltro(): void {
@@ -45,19 +62,39 @@ export class RelatorioReceitas {
       return;
     }
 
-    this.relatorioService.buscarReceitaPorDia(this.dataInicial, this.dataFinal).subscribe({
-      next: (receitas) => {
-        this.receitas.set(receitas);
-        this.totalReceitas.set(receitas.reduce((total, receita) => total + receita.total, 0));
-      },
-      error: () => {
-        this.receitas.set([]);
-        this.totalReceitas.set(0);
-        this.mensagemErro = 'Não foi possível carregar o relatório. Tente novamente.';
-      },
-    });
+    const receitasPorDia = new Map<string, { descricao: string; valor: number }[]>();
+
+    this.solicitacoes
+      // Receita = solicitações pagas (PAGA ou já FINALIZADA), pela data do pagamento
+      .filter((solicitacao) => solicitacao.dataHoraPagamento != null)
+      .forEach((solicitacao) => {
+        const dataRaw = solicitacao.dataHoraPagamento ?? undefined;
+        const data = this.obterData(dataRaw);
+        if (!data || !this.noIntervalo(data)) {
+          return;
+        }
+
+        const chave = this.formatarDataISO(data);
+        const itens = receitasPorDia.get(chave) ?? [];
+        const valor = Number(solicitacao.valorOrcamento ?? 0);
+
+        itens.push({
+          descricao: solicitacao.descricaoEquipamento || 'Serviço de manutenção',
+          valor,
+        });
+        receitasPorDia.set(chave, itens);
+      });
+
+    this.receitas.set([...receitasPorDia.entries()]
+      .sort(([dataA], [dataB]) => dataA.localeCompare(dataB))
+      .map(([data, itens]) => ({
+        data,
+        itens,
+        total: itens.reduce((total, item) => total + item.valor, 0),
+      })));
+    this.totalReceitas.set(this.receitas().reduce((total, receita) => total + receita.total, 0));
   }
-  //Paginação do relatório
+
   gerarPdf(): void {
     const documento = new jsPDF({ unit: 'pt', format: 'a4' });
     const margem = 42;
@@ -205,6 +242,7 @@ export class RelatorioReceitas {
     documento.save('relatorio-receitas.pdf');
   }
 
+  //checar se a conversão esta funcionando corretamente
   formatarMoeda(valor: number): string {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
@@ -243,7 +281,6 @@ export class RelatorioReceitas {
   }
 
   formatarData(dataISO: string): string {
-    // A API fornece datas ISO; a tela e o PDF exibem DD/MM/AAAA.
     const [ano, mes, dia] = dataISO.split('-');
     return `${dia}/${mes}/${ano}`;
   }
