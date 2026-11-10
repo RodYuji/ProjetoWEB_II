@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { RelatorioReceitas } from './relatorio-receitas';
+import { ReceitaDiaria } from '../../../shared/services/relatorio.service';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
@@ -25,6 +28,14 @@ const SOLICITACOES: Solicitacao[] = [
 
 describe('RelatorioReceitas', () => {
   let component: RelatorioReceitas;
+  let fixture: ComponentFixture<RelatorioReceitas>;
+  let httpTesting: HttpTestingController;
+
+  const receitas: ReceitaDiaria[] = [{
+    data: '2026-08-07',
+    itens: [{ descricao: 'Notebook', valor: 250 }],
+    total: 250,
+  }];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,9 +47,11 @@ describe('RelatorioReceitas', () => {
       ],
     }).compileComponents();
 
-    const fixture: ComponentFixture<RelatorioReceitas> = TestBed.createComponent(RelatorioReceitas);
+    httpTesting = TestBed.inject(HttpTestingController);
+    fixture = TestBed.createComponent(RelatorioReceitas);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    httpTesting.expectOne('http://localhost:8080/api/relatorios/receita-dia').flush(receitas);
   });
 
   //logica para agrupar os pagamentos por dias
@@ -48,7 +61,7 @@ describe('RelatorioReceitas', () => {
     expect(component.receitas()[0].total).toBe(350);
   });
 
-  it('filtra por intervalo de datas', () => {
+  it('envia filtros opcionais para a API e atualiza o total', () => {
     component.dataInicial = '2026-08-07';
     component.dataFinal = '2026-08-08';
     component.aplicarFiltro();
@@ -57,12 +70,23 @@ describe('RelatorioReceitas', () => {
     expect(component.mensagemErro).toBe('');
   });
 
-  it('gera o PDF do relatório sem lançar erros', () => {
-    component.dataInicial = '2026-08-01';
-    component.dataFinal = '2026-08-12';
+  it('rejeita intervalo inválido sem consultar a API', () => {
+    component.dataInicial = '2026-08-11';
+    component.dataFinal = '2026-08-10';
     component.aplicarFiltro();
 
-    expect(() => component.gerarPdf()).not.toThrow();
+    expect(component.mensagemErro).toBe('A data inicial deve ser anterior ou igual à data final.');
+    expect(component.receitas()).toEqual([]);
+    expect(component.totalReceitas()).toBe(0);
+  });
+
+  it('mostra erro se a API não puder carregar o relatório', () => {
+    component.aplicarFiltro();
+    httpTesting.expectOne('http://localhost:8080/api/relatorios/receita-dia')
+      .flush('Falha', { status: 500, statusText: 'Erro interno' });
+
+    expect(component.mensagemErro).toBe('Não foi possível carregar o relatório. Tente novamente.');
+    expect(component.receitas()).toEqual([]);
   });
 
   it('gera relatórios extensos sem erros', () => {
