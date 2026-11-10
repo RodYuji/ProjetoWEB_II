@@ -209,6 +209,39 @@ export class RelatorioReceitas {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
+  private obterData(valor: Date | string | undefined): Date | null {
+    if (!valor) {
+      return null;
+    }
+    if (valor instanceof Date) {
+      return Number.isNaN(valor.getTime()) ? null : valor;
+    }
+
+    if (valor.includes('T')) {
+      valor = valor.split('T')[0];
+    }
+
+    const partes = valor.includes('/') ? valor.split('/').map(Number) : valor.split('-').map(Number);
+    if (partes.length !== 3 || partes.some(Number.isNaN)) {
+      return null;
+    }
+
+    const [ano, mes, dia] = valor.includes('/')
+      ? [partes[2], partes[1], partes[0]]
+      : [partes[0], partes[1], partes[2]];
+    const data = new Date(ano, mes - 1, dia);
+    return data.getFullYear() === ano && data.getMonth() === mes - 1 && data.getDate() === dia ? data : null;
+  }
+
+  private noIntervalo(data: Date): boolean {
+    const dataISO = this.formatarDataISO(data);
+    return (!this.dataInicial || dataISO >= this.dataInicial) && (!this.dataFinal || dataISO <= this.dataFinal);
+  }
+
+  private formatarDataISO(data: Date): string {
+    return `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(data.getDate()).padStart(2, '0')}`;
+  }
+
   formatarData(dataISO: string): string {
     // A API fornece datas ISO; a tela e o PDF exibem DD/MM/AAAA.
     const [ano, mes, dia] = dataISO.split('-');
