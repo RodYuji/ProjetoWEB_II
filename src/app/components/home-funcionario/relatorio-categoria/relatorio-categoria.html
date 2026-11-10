@@ -15,6 +15,10 @@
     <strong>{{ formatarMoeda(totalReceitas()) }}</strong>
   </section>
 
+  @if (mensagemErro) {
+    <p class="mensagem-erro" role="alert">{{ mensagemErro }}</p>
+  }
+
   <section class="lista-categorias">
     @for (categoria of categorias(); track categoria.categoria) {
       <article class="item-categoria">

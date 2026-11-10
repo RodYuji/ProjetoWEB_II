@@ -1,15 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import { obterDataHoraAtual } from '../relatorio-receitas/relatorio-receitas';
-import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
-import { LoginService } from '../../../shared/services/login.service';
-
-interface ReceitaCategoria {
-  categoria: string;
-  total: number;
-  quantidade: number;
-}
+import { RelatorioService, ReceitaCategoria } from '../../../shared/services/relatorio.service';
 
 @Component({
   selector: 'app-relatorio-categoria',
@@ -18,50 +11,37 @@ interface ReceitaCategoria {
   styleUrl: './relatorio-categoria.css',
 })
 export class RelatorioCategoria {
-  // signals: a tela atualiza quando a API responde
   categorias = signal<ReceitaCategoria[]>([]);
   totalReceitas = signal(0);
-
-  // Id do usuário logado (vem do login)
-  private loginService = inject(LoginService);
-  idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
+  mensagemErro = '';
 
   private readonly nomeEmpresa = 'Oficina de Manutenção e Serviços';
 
-  constructor(private readonly solicitacaoService: SolicitacaoService) {
+  constructor(private readonly relatorioService: RelatorioService) {
     this.carregarReceitas();
   }
 
   carregarReceitas(): void {
-    const agrupado = new Map<string, { total: number; quantidade: number }>();
-
-    this.solicitacaoService.listarTodas(this.idFuncionario).subscribe((solicitacoes) => {
-      // Receita = solicitações pagas (PAGA ou já FINALIZADA)
-      (solicitacoes == null ? [] : solicitacoes)
-        .filter((s) => s.dataHoraPagamento != null)
-        .forEach((solicitacao) => {
-          const categoria = solicitacao.categoria?.nome?.trim() || 'Sem categoria';
-          const valor = Number(solicitacao.valorOrcamento ?? 0);
-
-          const atual = agrupado.get(categoria) ?? { total: 0, quantidade: 0 };
-          atual.total += valor;
-          atual.quantidade += 1;
-          agrupado.set(categoria, atual);
-        });
-
-      this.categorias.set([...agrupado.entries()]
-        .map(([categoria, dados]) => ({ categoria, total: dados.total, quantidade: dados.quantidade }))
-        .sort((a, b) => b.total - a.total));
-
-      this.totalReceitas.set(this.categorias().reduce((total, categoria) => total + categoria.total, 0));
+    this.relatorioService.buscarReceitaPorCategoria().subscribe({
+      next: (categorias) => {
+        this.categorias.set(categorias);
+        this.totalReceitas.set(categorias.reduce((total, categoria) => total + categoria.total, 0));
+      },
+      error: () => {
+        this.categorias.set([]);
+        this.totalReceitas.set(0);
+        this.mensagemErro = 'Não foi possível carregar o relatório. Tente novamente.';
+      },
     });
   }
+
 
   formatarMoeda(valor: number): string {
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   gerarPdf(): void {
+    //Paginação
     const documento = new jsPDF({ unit: 'pt', format: 'a4' });
     const margem = 42;
     const espacamentoPx = 40;
