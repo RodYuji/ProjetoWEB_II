@@ -14,7 +14,7 @@
         <p><strong>Hora:</strong> {{ solicitacao.dataHora | date:'HH:mm' }}</p>
         <p><strong>Status:</strong> {{ solicitacao.estado.nome }}</p>
         @if (solicitacao.valorOrcamento != null) {
-          <p><strong>Valor do orçamento:</strong> R$ {{ solicitacao.valorOrcamento }}</p>
+          <p><strong>Valor do orçamento:</strong> {{ solicitacao.valorOrcamento | moeda }}</p>
         }
         @if (solicitacao.descricaoManutencao) {
           <p><strong>Manutenção realizada:</strong> {{ solicitacao.descricaoManutencao }}</p>
@@ -59,4 +59,4 @@
   </main>
 } @else {
   <p class="ms-3 mt-3">Carregando solicitação...</p>
-}
+}

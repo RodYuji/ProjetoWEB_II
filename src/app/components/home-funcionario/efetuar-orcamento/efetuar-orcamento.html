@@ -58,11 +58,11 @@
           <h2>Dados do Registro</h2>
           <p><strong>Funcionário responsável:</strong> {{ solicitacao.funcionarioOrcamento?.nome }}</p>
           <p><strong>Data e hora do orçamento:</strong> {{ solicitacao.dataHoraOrcamento | date:'dd/MM/yyyy HH:mm' }}</p>
-          <p><strong>Valor:</strong> R$ {{ solicitacao.valorOrcamento }}</p>
+          <p><strong>Valor:</strong> {{ solicitacao.valorOrcamento | moeda }}</p>
         </div>
       </div>
     }
   </main>
 } @else {
   <p class="ms-3 mt-3">Carregando solicitação...</p>
-}
+}

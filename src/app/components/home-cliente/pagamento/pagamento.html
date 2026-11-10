@@ -50,7 +50,7 @@
 
     <div class="valor">
       <p>Valor do serviço</p>
-      <strong>R$ {{ solicitacao.valorOrcamento}}</strong>
+      <strong>{{ solicitacao.valorOrcamento | moeda }}</strong>
     </div>
 
     <button class="btn-pagar" (click)="confirmarPagamento()">
@@ -62,4 +62,4 @@
   }
   
 
-</div>
+</div>

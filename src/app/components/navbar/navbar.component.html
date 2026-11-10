@@ -20,10 +20,8 @@
       @if (usuarioLogado.perfil == 'FUNCIONARIO') {
         <!-- Menu do funcionário -->
         <a routerLink="/home-funcionario" routerLinkActive="active">Início</a>
-        <a routerLink="/visualizar-solicitacao" routerLinkActive="active">Solicitações</a>
         <a routerLink="/gerenciamento-categorias" routerLinkActive="active">Categorias</a>
         <a routerLink="/gerenciamento-funcionarios" routerLinkActive="active">Funcionários</a>
-        <a routerLink="/relatorio-receitas" routerLinkActive="active">Relatórios</a>
       } @else {
         <!-- Menu do cliente -->
         <a routerLink="/home-cliente" routerLinkActive="active">Início</a>

@@ -14,7 +14,18 @@
         <p><strong>Equipamento:</strong> {{ solicitacao.descricaoEquipamento }}</p>
         <p><strong>Defeito relatado:</strong> {{ solicitacao.descricaoDefeito }}</p>
         <p><strong>Data da solicitação:</strong> {{ solicitacao.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Cliente:</strong> {{ solicitacao.cliente.nome }}</p>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h2>Dados do Cliente</h2>
+        <p><strong>Nome:</strong> {{ solicitacao.cliente.nome }}</p>
+        <p><strong>CPF:</strong> {{ solicitacao.cliente.cpf }}</p>
+        <p><strong>E-mail:</strong> {{ solicitacao.cliente.email }}</p>
+        <p><strong>Telefone:</strong> {{ solicitacao.cliente.telefone }}</p>
+        <p><strong>Endereço:</strong> {{ solicitacao.cliente.logradouro }}, {{ solicitacao.cliente.numero }}
+          {{ solicitacao.cliente.complemento }} - {{ solicitacao.cliente.bairro }} -
+          {{ solicitacao.cliente.cidade }}/{{ solicitacao.cliente.uf }} - CEP {{ solicitacao.cliente.cep }}</p>
       </div>
     </div>
 
