@@ -2,13 +2,14 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { MoedaPipe } from '../../../shared/pipes/moeda-pipe';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
 import { LoginService } from '../../../shared/services/login.service';
 
 @Component({
   selector: 'app-efetuar-orcamento',
-  imports: [FormsModule, DatePipe, RouterLink],
+  imports: [FormsModule, DatePipe, RouterLink, MoedaPipe],
   templateUrl: './efetuar-orcamento.html',
   styleUrl: './efetuar-orcamento.css',
 })
@@ -53,4 +54,4 @@ export class EfetuarOrcamento implements OnInit {
       }
     });
   }
-}
+}

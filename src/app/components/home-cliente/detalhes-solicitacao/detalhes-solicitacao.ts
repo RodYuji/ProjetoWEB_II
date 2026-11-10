@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MoedaPipe } from '../../../shared/pipes/moeda-pipe';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { HistoricoService } from '../../../shared/services/historico.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
@@ -8,7 +9,7 @@ import { Historico } from '../../../shared/models/historico.model';
 
 @Component({
   selector: 'app-detalhes-solicitacao',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, MoedaPipe],
   templateUrl: './detalhes-solicitacao.html',
   styleUrl: './detalhes-solicitacao.css',
 })
@@ -58,4 +59,4 @@ export class DetalhesSolicitacao implements OnInit {
       error: () => alert('Não foi possível resgatar o serviço.')
     });
   }
-}
+}
