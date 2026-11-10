@@ -1,13 +1,14 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MoedaPipe } from '../../../shared/pipes/moeda-pipe';
 import { FormsModule } from '@angular/forms';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-orcamento',
-  imports: [DatePipe, RouterLink, FormsModule],
+  imports: [DatePipe, RouterLink, FormsModule, MoedaPipe],
   templateUrl: './orcamento.html',
   styleUrl: './orcamento.css',
 })
@@ -21,6 +22,7 @@ export class Orcamento implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private solicitacaoService = inject(SolicitacaoService);
+  private moedaPipe = new MoedaPipe();
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -36,7 +38,7 @@ export class Orcamento implements OnInit {
     if (s == null) return;
     this.solicitacaoService.aprovar(s.id).subscribe({
       next: () => {
-        alert('Serviço Aprovado no Valor R$ ' + this.formatarValor(s.valorOrcamento));
+        alert('Serviço Aprovado no Valor ' + this.moedaPipe.transform(s.valorOrcamento));
         this.router.navigate(['/home-cliente']);
       },
       error: () => alert('Não foi possível aprovar o serviço.')
@@ -71,7 +73,4 @@ export class Orcamento implements OnInit {
     });
   }
 
-  private formatarValor(valor: number | null): string {
-    return (valor ?? 0).toFixed(2).replace('.', ',');
-  }
-}
+}

@@ -15,7 +15,7 @@
     </div>
     <div class="valor">
       <p>Valor do orçamento</p>
-      <strong>R$ {{ solicitacao.valorOrcamento }}</strong>
+      <strong>{{ solicitacao.valorOrcamento | moeda }}</strong>
     </div>
     <div class="acoes">
       <button class="btn-aprovar" (click)="aprovarServico()">
@@ -64,4 +64,4 @@
     </div>
   </div>
 </div>
-}
+}

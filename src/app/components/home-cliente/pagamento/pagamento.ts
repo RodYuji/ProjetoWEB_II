@@ -1,12 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { MoedaPipe } from '../../../shared/pipes/moeda-pipe';
 import { SolicitacaoService } from '../../../shared/services/solicitacao.service';
 import { Solicitacao } from '../../../shared/models/solicitacao.model';
 
 @Component({
   selector: 'app-pagamento',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, MoedaPipe],
   templateUrl: './pagamento.html',
   styleUrl: './pagamento.css',
 })
@@ -39,4 +40,4 @@ export class Pagamento implements OnInit {
       error: () => alert('Não foi possível confirmar o pagamento.')
     });
   }
-}
+}
