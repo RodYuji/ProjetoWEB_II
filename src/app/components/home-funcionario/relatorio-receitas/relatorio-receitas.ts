@@ -255,6 +255,10 @@ export class RelatorioReceitas {
       return Number.isNaN(valor.getTime()) ? null : valor;
     }
 
+    if (valor.includes('T')) {
+      valor = valor.split('T')[0];
+    }
+
     const partes = valor.includes('/') ? valor.split('/').map(Number) : valor.split('-').map(Number);
     if (partes.length !== 3 || partes.some(Number.isNaN)) {
       return null;
