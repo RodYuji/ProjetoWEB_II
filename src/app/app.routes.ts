@@ -14,7 +14,6 @@ import { RelatorioCategoria } from './components/home-funcionario/relatorio-cate
 import { VisualizarSolicitacao } from './components/home-funcionario/visualizar-solicitacao/visualizar-solicitacao';
 import { GerenciamentoFuncionariosComponent } from './components/home-funcionario/gerenciamento-funcionarios/gerenciamento-funcionarios.component';
 import { GerenciamentoCategoriasComponent } from './components/home-funcionario/gerenciamento-categorias/gerenciamento-categorias.component';
-import { EsquecerSenhaComponent } from './components/esqueci-senha/esqueci-senha.component';
 import { authGuard } from './auth/auth.guard';
 
 // nome: como a tela aparece nas mensagens do guard 
@@ -26,7 +25,6 @@ export const routes: Routes = [
   { path: '', component: AutocadastroComponent },
   { path: 'autocadastro', component: AutocadastroComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'esqueci-senha', component: EsquecerSenhaComponent },
 
   // Perfil CLIENTE
   { path: 'home-cliente', component: HomeClienteComponent, canActivate: [authGuard], data: { ...CLIENTE, nome: 'home do cliente' } },
