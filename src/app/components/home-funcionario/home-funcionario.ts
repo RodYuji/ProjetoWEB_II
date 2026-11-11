@@ -12,7 +12,7 @@ import { Solicitacao } from '../../shared/models/solicitacao.model';
 })
 export class HomeFuncionario implements OnInit {
 
-  // RF011 - solicitações ABERTAS (signal: a tela atualiza quando a API responde)
+  // solicitações ABERTAS
   solicitacoesAbertas = signal<Solicitacao[]>([]);
 
   private solicitacaoService = inject(SolicitacaoService);

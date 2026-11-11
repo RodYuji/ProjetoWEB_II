@@ -53,7 +53,7 @@ public class ClienteREST {
         if (dadosInvalidos(cliente))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        // se já existe 409 CONFLICT
+        // se já existe 409 
         if (clienteRepository.findByCpf(cliente.getCpf()).isPresent()
                 || usuarioRepository.findByEmail(cliente.getEmail()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -67,7 +67,6 @@ public class ClienteREST {
         cliente.setPerfil("CLIENTE");
         cliente.setAtivo(true);
 
-        // salva no banco
         Cliente salvo = clienteRepository.save(cliente);
 
         // envia a senha por email

@@ -19,8 +19,7 @@ export class ClienteService {
 
   private httpClient = inject(HttpClient);
 
-  // RF001, no padrão do inserir() do slide 1126:
-  // 201 -> devolve o cliente cadastrado; erro (409, 400...) -> repassa para a tela tratar
+  // 201 -> devolve o cliente cadastrado
   autocadastro(cliente: Cliente): Observable<Cliente | null> {
     return this.httpClient.post<Cliente>(this.BASE_URL + "/autocadastro",
       JSON.stringify(cliente),

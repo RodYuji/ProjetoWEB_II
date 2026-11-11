@@ -1,18 +1,10 @@
--- =====================================================================
--- Sistema de Controle de Manutenção de Equipamentos - UFPR/SEPT WEB II
--- 01_criacao.sql: criação das tabelas (executar no database manutencao_db)
---
--- Padrão de codificação (slide 1190):
 --   tabelas  : tb_<nome no singular>
---   colunas  : <campo>_<sufixo da tabela>  (ex.: nome_cat, id_cat)
+--   colunas  : <campo>_<sufixo da tabela>  (nome_cat, id_cat)
 --   chave PK : id_<sufixo>  integer generated always as identity
---   chave FK : mesmo nome da PK de origem (ex.: id_cat em tb_solicitacao)
+--   chave FK : mesmo nome da PK de origem (id_cat em tb_solicitacao)
 --
 -- Usuários: tb_usuario guarda os dados de login (comuns a cliente e
--- funcionário); tb_cliente e tb_funcionario guardam só o que é específico
--- e usam o id do usuário como chave (herança JOINED no JPA).
--- Endereço do cliente: cidade/estado não normalizados (permitido pelo enunciado).
--- =====================================================================
+-- funcionário); 
 
 SET client_encoding = 'UTF8';
 
@@ -59,7 +51,6 @@ CREATE TABLE tb_categoria (
     ativo_cat  boolean     not null default true
 );
 
--- Tabela sem cadastro: previamente preenchida no 02_carga.sql
 CREATE TABLE tb_estado (
     id_est    integer primary key generated always as identity,
     nome_est  varchar(20) not null unique
@@ -82,7 +73,7 @@ CREATE TABLE tb_solicitacao (
     orient_cli_sol       varchar(500),
     id_fun_manut         integer references tb_funcionario (id_fun),
     data_hora_manut_sol  timestamp,
-    -- RF015 funcionário responsável atual (destino do último redirecionamento)
+    -- RF015 funcionário responsável atual 
     id_fun_resp          integer references tb_funcionario (id_fun),
     -- RF010 pagamento
     data_hora_pag_sol    timestamp,
@@ -100,7 +91,7 @@ CREATE TABLE tb_historico (
     id_est_novo       integer      not null references tb_estado (id_est),
     id_fun            integer      references tb_funcionario (id_fun), -- nulo em ações do cliente
     id_fun_destino    integer      references tb_funcionario (id_fun), -- só em redirecionamento
-    obs_his           varchar(500)                                     -- ex.: motivo da rejeição
+    obs_his           varchar(500)                                     
 );
 
 CREATE INDEX ix_solicitacao_cli ON tb_solicitacao (id_cli);

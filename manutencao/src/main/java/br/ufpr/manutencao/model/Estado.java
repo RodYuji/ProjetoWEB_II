@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Estado de uma solicitacao (tabela tb_estado, previamente preenchida no 02_carga.sql).
- * Nomes: ABERTA, ORÇADA, REJEITADA, APROVADA, REDIRECIONADA, ARRUMADA, PAGA, FINALIZADA.
+ABERTA, ORÇADA, REJEITADA, APROVADA, REDIRECIONADA, ARRUMADA, PAGA, FINALIZADA.
  */
 @Entity
 @Table(name = "tb_estado")

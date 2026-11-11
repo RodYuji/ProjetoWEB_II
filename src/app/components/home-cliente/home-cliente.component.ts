@@ -13,7 +13,7 @@ import { LoginService } from '../../shared/services/login.service';
 })
 export class HomeClienteComponent implements OnInit {
 
-  // Id do usuário logado (vem do login)
+  // Id do usuário logado 
   private loginService = inject(LoginService);
   idCliente = this.loginService.usuarioLogado?.id ?? 0;
 

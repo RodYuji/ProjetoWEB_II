@@ -2,15 +2,8 @@ import { Directive, ElementRef, HostListener, Input, inject } from '@angular/cor
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 /**
- * Máscara de digitação (enunciado: "campos com formatação devem possuir máscara").
- *
- * Uso: <input [(ngModel)]="cliente().cpf" mascara="000.000.000-00">
- *   - "0" representa um dígito; os outros caracteres são inseridos automaticamente.
- *   - Várias máscaras separadas por "|" (ex.: telefone fixo e celular):
- *     mascara="(00) 0000-0000|(00) 00000-0000" -> usa a menor que comporta os dígitos.
- *
- * Na tela aparece formatado (123.456.789-01), mas o model recebe só os dígitos
- * (12345678901), que é o que o back-end grava no banco.
+ * Máscara de digitação 
+ *     mascara="(00) 0000-0000|(00) 00000-0000"
  */
 @Directive({
   selector: '[mascara]',
@@ -28,7 +21,6 @@ export class MascaraDirective implements ControlValueAccessor {
   private onChange: (valor: string) => void = () => {};
   private onTouched: () => void = () => {};
 
-  // A cada tecla (ou colagem): pega só os dígitos, formata na tela e manda os dígitos ao model
   @HostListener('input')
   aoDigitar() {
     const valor: string = this.el.nativeElement.value;
@@ -42,7 +34,6 @@ export class MascaraDirective implements ControlValueAccessor {
     this.onTouched();
   }
 
-  // Valor vindo do model (ex.: ao carregar dados): mostra formatado
   writeValue(valor: any): void {
     const digitos = this.limitar(String(valor ?? '').replace(/\D/g, ''));
     this.el.nativeElement.value = this.formatar(digitos);
@@ -64,12 +55,10 @@ export class MascaraDirective implements ControlValueAccessor {
     return this.mascara.split('|');
   }
 
-  // Quantos dígitos cabem na máscara
   private capacidade(m: string): number {
     return (m.match(/0/g) || []).length;
   }
 
-  // Não deixa digitar mais dígitos do que cabem na maior máscara
   private limitar(digitos: string): string {
     const max = Math.max(...this.mascaras().map(m => this.capacidade(m)));
     return digitos.substring(0, max);

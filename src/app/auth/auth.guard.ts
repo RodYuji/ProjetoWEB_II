@@ -7,7 +7,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   const usuarioLogado = loginService.usuarioLogado;
-  // Nome amigável da tela se não tiver usa a URL
   let url = route.data?.['nome'] ?? state.url;
   if (usuarioLogado) {
     if (route.data?.['role'] && route.data?.['role'].indexOf(usuarioLogado.perfil) === -1) {
@@ -15,7 +14,6 @@ export const authGuard: CanActivateFn = (route, state) => {
       router.navigate(['/login'], { queryParams: { error: "Proibido o acesso a " + url } });
       return false;
     }
-    // em qualquer outro caso permite o acesso
     return true;
   }
   // Se não está logado vai para login

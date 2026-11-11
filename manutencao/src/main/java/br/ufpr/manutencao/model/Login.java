@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Dados enviados no corpo do POST /login.
- */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

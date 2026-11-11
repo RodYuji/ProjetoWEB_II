@@ -13,7 +13,7 @@ import { Usuario } from '../../shared/models/usuario.model';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  // Referência ao formulário do HTML (#formLogin)
+  // Referência ao formulário do HTML 
   @ViewChild('formLogin') formLogin!: NgForm;
 
   // Dados digitados na tela 
@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
   loading = signal(false);
   message = signal('');
 
-  // true depois do primeiro clique em Entrar: só a partir daí os avisos de campo aparecem
   enviado = signal(false);
 
   private loginService = inject(LoginService);

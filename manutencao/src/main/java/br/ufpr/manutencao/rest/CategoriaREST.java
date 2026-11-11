@@ -48,7 +48,7 @@ public class CategoriaREST {
         if (repo.existsByNomeIgnoreCaseAndAtivoTrue(categoria.getNome().trim())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        categoria.setId(null);          // o banco gera o id (identity)
+        categoria.setId(null);          // o banco gera o id 
         categoria.setNome(categoria.getNome().trim());
         categoria.setAtivo(true);
         Categoria salva = repo.save(categoria);
@@ -81,7 +81,7 @@ public class CategoriaREST {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         Categoria c = op.get();
-        c.setAtivo(false);              // desativacao, exigida pelo enunciado
+        c.setAtivo(false);              // desativacao
         return ResponseEntity.ok(repo.save(c));
     }
 }

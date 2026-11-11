@@ -18,7 +18,6 @@ interface ReceitaCategoria {
   styleUrl: './relatorio-categoria.css',
 })
 export class RelatorioCategoria {
-  // signals: a tela atualiza quando a API responde
   categorias = signal<ReceitaCategoria[]>([]);
   totalReceitas = signal(0);
 
@@ -36,7 +35,6 @@ export class RelatorioCategoria {
     const agrupado = new Map<string, { total: number; quantidade: number }>();
 
     this.solicitacaoService.listarTodas(this.idFuncionario).subscribe((solicitacoes) => {
-      // Receita = solicitações pagas (PAGA ou já FINALIZADA)
       (solicitacoes == null ? [] : solicitacoes)
         .filter((s) => s.dataHoraPagamento != null)
         .forEach((solicitacao) => {
