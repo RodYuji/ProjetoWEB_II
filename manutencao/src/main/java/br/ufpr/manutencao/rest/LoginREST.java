@@ -19,7 +19,7 @@ import br.ufpr.manutencao.util.SenhaUtil;
 @RestController
 public class LoginREST {
 
-    // Busca em tb_usuario: o mesmo login serve para cliente e funcionario (RF002)
+    // Busca em tb_usuario
     @Autowired
     private UsuarioRepository repo;
 

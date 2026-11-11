@@ -18,7 +18,7 @@ import { LoginService } from '../../../shared/services/login.service';
 })
 export class EfetuarManutencao implements OnInit {
 
-  // Id do usuário logado (vem do login)
+  // Id do usuário logado 
   private loginService = inject(LoginService);
   idFuncionario = this.loginService.usuarioLogado?.id ?? 0;
 
@@ -27,7 +27,7 @@ export class EfetuarManutencao implements OnInit {
   private funcionarioService = inject(FuncionarioService);
   private historicoService = inject(HistoricoService);
 
-  // Dados carregados da API - com signals a tela atualiza quando a API responde
+  // Dados carregados da API 
   solicitacao = signal<Solicitacao | null>(null);
   historico = signal<Historico[]>([]);
   funcionariosDisponiveis = signal<Funcionario[]>([]);

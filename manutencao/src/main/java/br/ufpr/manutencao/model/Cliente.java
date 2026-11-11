@@ -21,7 +21,7 @@ public class Cliente extends Usuario {
     @Column(name = "telefone_cli")
     private String telefone;
 
-    // Endereco completo (RF001). Cidade e estado nao normalizados, como permite o enunciado.
+    // Cidade e estado nao normalizados
     @Column(name = "cep_cli")
     private String cep;
 

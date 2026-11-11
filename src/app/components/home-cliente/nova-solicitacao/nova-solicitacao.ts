@@ -25,7 +25,7 @@ export class NovaSolicitacao implements OnInit {
   descricaoEquipamento = '';
   idCategoria = 0;
   descricaoDefeito = '';
-  // Signals: mudam dentro do subscribe e precisam atualizar a tela (Angular zoneless)
+  // Signals mudam dentro do subscribe e precisam atualizar a tela
   mensagemErro = signal('');
   modalSucesso = signal(false);
 
@@ -78,7 +78,7 @@ export class NovaSolicitacao implements OnInit {
     this.mensagemErro.set('');
   }
 
-  // Botão do modal de sucesso: volta para a página inicial do cliente (RF003)
+  // Botão do modal de sucesso
   irParaHome(): void {
     this.modalSucesso.set(false);
     this.router.navigate(['/home-cliente']);

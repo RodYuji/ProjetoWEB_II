@@ -44,3 +44,7 @@ relatorio-categoria.pdf
 # System files
 .DS_Store
 Thumbs.db
+
+# Postman (gerado pela extensão do VS Code)
+.postman/
+postman/

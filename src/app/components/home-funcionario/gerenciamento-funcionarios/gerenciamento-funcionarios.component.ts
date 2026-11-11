@@ -22,7 +22,7 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
   modalExclusaoAberto = false;
   funcionarioParaExcluir: Funcionario | null = null;
 
-  // Id do usuário logado (vem do login)
+  // Id do usuário logado 
   private loginService = inject(LoginService);
   idFuncionarioLogado: number | undefined = this.loginService.usuarioLogado?.id;
   hoje: string = new Date().getFullYear() + '-'
@@ -52,7 +52,6 @@ export class GerenciamentoFuncionariosComponent implements OnInit {
   }
 
   editarFuncionario(funcionario: Funcionario) {
-    // cópia para não alterar a linha da tabela antes de salvar; a senha vem vazia
     this.funcionarioForm = new Funcionario(funcionario.id, funcionario.nome, funcionario.email,
                                            funcionario.dataNascimento, '', funcionario.ativo);
     this.modoEdicao = true;

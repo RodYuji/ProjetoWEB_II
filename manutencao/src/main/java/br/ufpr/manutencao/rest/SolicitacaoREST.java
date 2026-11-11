@@ -172,7 +172,7 @@ public class SolicitacaoREST {
         return ResponseEntity.ok(mudarEstado(s, Estado.APROVADA, null, null, "Serviço resgatado pelo cliente."));
     }
 
-    //ARRUMADA
+    //ARRUMADA - MANUTENCAO
     @PutMapping("/solicitacoes/{id}/arrumar")
     public ResponseEntity<Solicitacao> arrumar(@PathVariable("id") int id, @RequestBody Solicitacao solicitacao){
         if (vazio(solicitacao.getDescricaoManutencao()) || solicitacao.getDescricaoManutencao().trim().length() > 500

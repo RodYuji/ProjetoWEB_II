@@ -22,7 +22,7 @@ import br.ufpr.manutencao.util.SenhaUtil;
 @RestController
 public class FuncionarioREST {
 
-    // Repositorios injetados pelo Spring
+    // Repositorios injetados Spring
     @Autowired
     private FuncionarioRepository repo;
 
@@ -34,7 +34,7 @@ public class FuncionarioREST {
     @Autowired
     private SolicitacaoRepository solicitacaoRepo;
 
-    // Validacao no back-end: nome e e-mail obrigatorios (ate 100), data obrigatoria
+    // Validacao no back-end
     private boolean dadosInvalidos(Funcionario f) {
         return f == null
             || f.getNome() == null || f.getNome().trim().isEmpty() || f.getNome().trim().length() > 100
@@ -70,12 +70,12 @@ public class FuncionarioREST {
         if (usuarioRepo.findByEmail(email).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
-        funcionario.setId(null);        // o banco gera o id (identity)
+        funcionario.setId(null);        
         funcionario.setNome(funcionario.getNome().trim());
         funcionario.setEmail(email);
         funcionario.setPerfil("FUNCIONARIO");
         funcionario.setAtivo(true);
-        SenhaUtil.definirSenha(funcionario, funcionario.getSenha());   // grava hash SHA-256 + salt
+        SenhaUtil.definirSenha(funcionario, funcionario.getSenha());   // grava hash 
         Funcionario salvo = repo.save(funcionario);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
@@ -100,13 +100,13 @@ public class FuncionarioREST {
         f.setNome(funcionario.getNome().trim());
         f.setEmail(novoEmail);
         f.setDataNascimento(funcionario.getDataNascimento());
-        if (!senhaVazia(funcionario)) {             // senha so muda se vier preenchida
+        if (!senhaVazia(funcionario)) {             
             SenhaUtil.definirSenha(f, funcionario.getSenha());
         }
         return ResponseEntity.ok(repo.save(f));
     }
 
-    // idLogado: id do funcionario que esta usando o sistema (RF018: nao pode remover a si mesmo)
+    // idLogado
     @DeleteMapping("/funcionarios/{id}")
     public ResponseEntity<Funcionario> removerFuncionario(@PathVariable("id") int id,
         @RequestParam(value = "idLogado", required = true) Integer idLogado) {
@@ -127,7 +127,7 @@ public class FuncionarioREST {
             return ResponseEntity.status(HttpStatus.PRECONDITION_FAILED).build();  // tem solicitacao redirecionada para ele
         }
         Funcionario f = op.get();
-        f.setAtivo(false);              // desativacao, exigida pelo enunciado
+        f.setAtivo(false);              // desativacao
         return ResponseEntity.ok(repo.save(f));
     }
 }

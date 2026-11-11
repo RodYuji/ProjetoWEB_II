@@ -17,7 +17,6 @@ import lombok.Setter;
 @Setter
 public class Funcionario extends Usuario {
 
-    // LocalDate vai no JSON como "aaaa-mm-dd", o mesmo formato do <input type="date"> do Angular
     @Column(name = "data_nasc_fun")
     private LocalDate dataNascimento;
 

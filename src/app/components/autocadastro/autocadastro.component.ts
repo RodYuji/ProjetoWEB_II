@@ -19,7 +19,6 @@ import { LoginService } from '../../shared/services/login.service';
 export class AutocadastroComponent {
 
   // Recebe uma referência do formulário aqui no componente
-  // 'formCadastro' deve ser o nome do formulário no HTML
   @ViewChild('formCadastro') formCadastro!: NgForm;
 
   // Atributo de binding, os dados digitados no formulário vêm para este atributo
@@ -34,10 +33,8 @@ export class AutocadastroComponent {
   message = signal('');
   loading = signal(false);
 
-  // true depois do primeiro clique em Cadastrar: só a partir daí os avisos de campo aparecem
   enviado = signal(false);
 
-  // Modal de sucesso (no lugar do alert)
   modalSucesso = signal(false);
   emailCadastrado = signal('');
 
@@ -105,7 +102,6 @@ export class AutocadastroComponent {
   // Botão do modal de sucesso
   irParaLogin(): void {
     this.modalSucesso.set(false);
-    // Encerra qualquer sessão anterior: quem acabou de se cadastrar entra com a própria conta
     this.loginService.logout();
     this.router.navigate(['/login']);
   }

@@ -1,7 +1,7 @@
 package br.ufpr.manutencao.model;
 
 public class Relatorio {
-    private String chave; // SERVE PRA DATA E PRA CATEGORIA
+    private String chave; 
     private double totalReceita;
 
     public Relatorio() {}

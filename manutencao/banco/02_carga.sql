@@ -1,14 +1,9 @@
--- =====================================================================
--- 02_carga.sql: dados iniciais para testes (executar depois do 01_criacao.sql)
 -- Senha de TODOS os usuários: 1234  (gravada como SHA-256 de senha + salt,
 -- no mesmo formato do util/SenhaUtil.java)
--- As datas são relativas ao dia em que o script roda (current_date), para
--- sempre haver solicitações de "hoje" no filtro do RF013.
--- =====================================================================
+
 
 SET client_encoding = 'UTF8';
 
--- Estados (tabela previamente preenchida) ------------------------------
 INSERT INTO tb_estado (nome_est) VALUES
   ('ABERTA'),
   ('ORÇADA'),

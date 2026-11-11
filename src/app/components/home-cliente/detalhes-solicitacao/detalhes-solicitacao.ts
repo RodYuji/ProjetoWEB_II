@@ -15,7 +15,7 @@ import { Historico } from '../../../shared/models/historico.model';
 })
 export class DetalhesSolicitacao implements OnInit {
 
-  // dados da solicitação e histórico - com signals a tela atualiza quando a API responde
+  // dados da solicitação e histórico 
   solicitacao = signal<Solicitacao | null>(null);
   historico = signal<Historico[]>([]);
 
@@ -59,4 +59,4 @@ export class DetalhesSolicitacao implements OnInit {
       error: () => alert('Não foi possível resgatar o serviço.')
     });
   }
-}
+}
